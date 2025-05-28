@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Estoque de Ferramentas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #a5b4fc;
+            --success: #10b981;
+            --success-light: #d1fae5;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --info: #3b82f6;
+            --info-light: #dbeafe;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-500: #6b7280;
+            --gray-700: #374151;
+            --gray-900: #111827;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 12px;
+            --radius-lg: 16px;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            color: var(--gray-900);
+            font-weight: 400;
+        }
+
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    overflow: hidden;
+}
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: -1px;
+        }
+
+        .header-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.875rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--white);
+            color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: var(--white);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+
+        .main-content {
+            padding: 2rem;
+        }
+
+        .summary-panel {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--gray-50);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-light), transparent);
+            opacity: 0.1;
+            border-radius: 0 var(--radius) 0 60px;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .summary-card.success {
+            border-left-color: var(--success);
+        }
+
+        .summary-card.warning {
+            border-left-color: var(--warning);
+        }
+
+        .summary-card.danger {
+            border-left-color: var(--danger);
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-icon {
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        .summary-value {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: var(--gray-900);
+            line-height: 1;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+            font-weight: 500;
+            margin-top: 0.25rem;
+        }
+
+        .search-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-bar {
+            position: relative;
+            max-width: 400px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 3rem;
+            border-radius: var(--radius);
+            border: 2px solid var(--gray-200);
+            font-size: 1rem;
+            background: var(--white);
+            transition: all 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-500);
+            font-size: 1.125rem;
+        }
+
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    padding: 1rem;
+}
+
+.equipment-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 420px; 
+    max-height: 520px; 
+}
+
+.equipment-img {
+    max-width: 100%;
+    max-height: 160px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+.file-input-wrapper {
+    position: relative;
+    width: 100%;
+    padding: 1rem;
+    border: 2px dashed var(--gray-200);
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-input-wrapper:hover {
+    border-color: var(--primary);
+    background: var(--gray-50);
+}
+
+.file-input-wrapper input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-input-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--gray-500);
+}
+
+.file-input-icon {
+    font-size: 1.5rem;
+    color: var(--primary);
+}
+
+.card-image-container {
+    width: 100%;
+    height: 180px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--gray-50);
+    border-bottom: 1px solid var(--gray-200);
+}
+
+        .equipment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .card-header {
+            padding: 1.5rem 1.5rem 1rem 1.5rem;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--gray-900);
+            margin: 0 0 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-indicator.disponivel {
+            background: var(--success);
+            box-shadow: 0 0 0 2px var(--success-light);
+        }
+
+        .status-indicator.em-uso {
+            background: var(--warning);
+            box-shadow: 0 0 0 2px var(--warning-light);
+        }
+
+        .status-indicator.manutencao {
+            background: var(--danger);
+            box-shadow: 0 0 0 2px var(--danger-light);
+        }
+
+        .card-body {
+        padding: 1rem 1.5rem 1.5rem 1.5rem;
+        flex: 1;
+        overflow-y: auto; 
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 0.75rem;
+            height: 100%;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-700);
+        }
+
+        .info-icon {
+            width: 16px;
+            color: var(--gray-500);
+            text-align: center;
+        }
+
+        .info-label {
+            font-weight: 500;
+            min-width: 80px;
+        }
+
+        .info-value {
+            flex: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .badge.disponivel {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .badge.em-uso {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .badge.manutencao {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .card-actions {
+            padding: 1rem 1.5rem;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-100);
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        .btn-action {
+            padding: 0.5rem;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+        }
+
+        .btn-edit {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .btn-edit:hover {
+            background: var(--info);
+            color: var(--white);
+        }
+
+        .btn-withdraw {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .btn-withdraw:hover {
+            background: var(--warning);
+            color: var(--white);
+        }
+
+        .btn-delete {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .btn-delete:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            max-width: 500px;
+            width: 90vw;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 50%;
+            transition: background 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+        }
+
+        .form-input {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-select {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .form-select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-textarea {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .form-actions {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-cancel {
+            background: var(--gray-100);
+            color: var(--gray-700);
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.875rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background: var(--gray-200);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray-500);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-description {
+            font-size: 1rem;
+        }
+
+@media (max-width: 768px) {
+    .container {
+        margin: 0.5rem;
+        max-width: 100%;
+    }
+
+    .equipment-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .main-content {
+        padding: 1rem;
+    }
+
+    .header {
+        padding: 1.5rem 1rem;
+    }
+
+    .header h1 {
+        font-size: 1.75rem;
+    }
+
+    .header-subtitle {
+        font-size: 0.875rem;
+    }
+
+    .equipment-card {
+        min-height: auto;
+        max-height: none;
+        margin: 0;
+        width: 100%;
+    }
+
+    .summary-panel {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .summary-card {
+        padding: 1rem;
+    }
+
+    .summary-value {
+        font-size: 1.5rem;
+    }
+
+    .search-section {
+        margin-bottom: 1rem;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        margin: 0;
+        border-radius: 0;
+    }
+
+    .summary-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .card-body {
+        padding: 0.75rem;
+    }
+
+    .info-grid {
+        gap: 0.35rem;
+    }
+
+    .info-item {
+        font-size: 0.75rem;
+    }
+    .modal {
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-toolbox"></i> Estoque Itens Da Salinha</h1>
+                <p class="header-subtitle">Sistema de controle e gerenciamento de ferramentas</p>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" id="addItemBtn">
+                        <i class="fas fa-plus"></i>
+                        Adicionar Item
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="summary-panel" id="summaryPanel"></div>
+            <div class="search-section">
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Buscar por nome, categoria, status ou usuário...">
+                </div>
+            </div>
+            <div class="equipment-grid" id="equipmentGrid"></div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+    <script>
+        let equipments = [];
+
+        function capitalizeFirst(str) {
+            return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return 'Não informado';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function getStatusInfo(status) {
+            const statusMap = {
+                'Disponível': { class: 'disponivel', icon: 'fas fa-check-circle' },
+                'Em uso': { class: 'em-uso', icon: 'fas fa-user-check' },
+                'Manutenção': { class: 'manutencao', icon: 'fas fa-tools' }
+            };
+            return statusMap[status] || { class: 'disponivel', icon: 'fas fa-question-circle' };
+        }
+
+        function renderSummary() {
+            const total = equipments.length;
+            const disponivel = equipments.filter(e => e.status === 'Disponível').length;
+            const emUso = equipments.filter(e => e.status === 'Em uso').length;
+            const manutencao = equipments.filter(e => e.status === 'Manutenção').length;
+            const quantidadeTotal = equipments.reduce((sum, e) => sum + (parseInt(e.quantidade) || 0), 0);
+
+            document.getElementById('summaryPanel').innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <i class="fas fa-boxes summary-icon" style="color: var(--primary)"></i>
+                        <div class="summary-value">${quantidadeTotal}</div>
+                    </div>
+                    <div class="summary-label">Total de Itens</div>
+                </div>
+                <div class="summary-card success">
+                    <div class="summary-header">
+                        <i class="fas fa-check-circle summary-icon" style="color: var(--success)"></i>
+                        <div class="summary-value">${disponivel}</div>
+                    </div>
+                    <div class="summary-label">Disponíveis</div>
+                </div>
+                <div class="summary-card warning">
+                    <div class="summary-header">
+                        <i class="fas fa-user-check summary-icon" style="color: var(--warning)"></i>
+                        <div class="summary-value">${emUso}</div>
+                    </div>
+                    <div class="summary-label">Em Uso</div>
+                </div>
+                <div class="summary-card danger">
+                    <div class="summary-header">
+                        <i class="fas fa-tools summary-icon" style="color: var(--danger)"></i>
+                        <div class="summary-value">${manutencao}</div>
+                    </div>
+                    <div class="summary-label">Manutenção</div>
+                </div>
+            `;
+        }
+
+        function renderEquipments(searchTerm = '') {
+            renderSummary();
+            const grid = document.getElementById('equipmentGrid');
+            
+            let filtered = equipments.filter(eq =>
+                (eq.nome || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (eq.categoria || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (eq.status || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (eq.ultimoUsuario || '').toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <div class="empty-title">Nenhum item encontrado</div>
+                        <div class="empty-description">Tente ajustar os termos de busca</div>
+                    </div>
+                `;
+                return;
+            }
+
+    const DEFAULT_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+    <rect width="200" height="200" fill="#f3f4f6"/>
+    <path d="M100 70 C 70 70, 50 85, 50 110 C 50 135, 70 150, 100 150 C 130 150, 150 135, 150 110 C 150 85, 130 70, 100 70" fill="#9ca3af"/>
+    <circle cx="82" cy="100" r="8" fill="#f3f4f6"/>
+    <circle cx="118" cy="100" r="8" fill="#f3f4f6"/>
+    <path d="M75 125 Q 100 140 125 125" stroke="#f3f4f6" stroke-width="4" fill="none"/>
+    <text x="100" y="180" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="14">Sem Imagem</text>
+</svg>`)}`;
+
+    grid.innerHTML = filtered.map(eq => {
+    const statusInfo = getStatusInfo(eq.status);
+    return `
+         <div class="equipment-card">
+            <div class="card-image-container">
+                ${eq.imagemId 
+                    ? `<img src="/imagem/${eq.imagemId}" alt="Foto do item" class="equipment-img" onerror="this.src='${DEFAULT_IMAGE}'">`
+                    : `<img src="${DEFAULT_IMAGE}" alt="Imagem padrão" class="equipment-img">`
+                }
+            </div>
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="status-indicator ${statusInfo.class}"></div>
+                    ${DOMPurify.sanitize(eq.nome || '')}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <i class="fas fa-tags info-icon"></i>
+                        <span class="info-label">Categoria:</span>
+                        <span class="info-value">${capitalizeFirst(eq.categoria)}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-sort-numeric-up info-icon"></i>
+                        <span class="info-label">Quantidade:</span>
+                        <span class="info-value">${eq.quantidade || 0}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-traffic-light info-icon"></i>
+                        <span class="info-label">Status:</span>
+                        <span class="badge ${statusInfo.class}">${eq.status}</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-calendar-plus info-icon"></i>
+                        <span class="info-label">Entrada:</span>
+                        <span class="info-value">${formatDate(eq.dataEntrada)}</span>
+                    </div>
+                    ${eq.dataretirada ? `
+                        <div class="info-item">
+                            <i class="fas fa-calendar-minus info-icon"></i>
+                            <span class="info-label">Saída:</span>
+                            <span class="info-value">${formatDate(eq.dataretirada)}</span>
+                        </div>
+                    ` : ''}
+                    ${eq.ultimoUsuario ? `
+                        <div class="info-item">
+                            <i class="fas fa-user info-icon"></i>
+                            <span class="info-label">Usuário:</span>
+                            <span class="info-value">${DOMPurify.sanitize(eq.ultimoUsuario)}</span>
+                        </div>
+                    ` : ''}
+                    ${eq.ultimaquantidade ? `
+                        <div class="info-item">
+                            <i class="fas fa-cubes info-icon"></i>
+                            <span class="info-label">Última Quantidade:</span>}
+                        </div>
+                    ` : ''}   
+                    ${eq.observacao ? `
+                        <div class="info-item">
+                            <i class="fas fa-info-circle info-icon"></i>
+                            <span class="info-label">Obs:</span>
+                            <span class="info-value">${DOMPurify.sanitize(eq.observacao)}</span>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+            <div class="card-actions">
+                <button class="btn-action btn-edit" onclick="editItem('${eq.id}')" title="Editar">
+                    <i class="fas fa-edit"></i>
+                </button>
+                ${
+                    eq.status === 'Disponível'
+                    ? `<button class="btn-action btn-withdraw" onclick="withdrawItem('${eq.id}')" title="Retirar">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </button>`
+                    : eq.status === 'Em uso'
+                    ? `<button class="btn-action btn-edit" onclick="returnItem('${eq.id}')" title="Devolver">
+                            <i class="fas fa-undo"></i>
+                        </button>`
+                    : ''
+                }
+                <button class="btn-action btn-delete" onclick="deleteItem('${eq.id}')" title="Excluir">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+    `;
+}).join('');
+        }
+
+        function returnItem(id) {
+            fetch('/return-equipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            })
+            .then(async res => {
+                if (res.ok) {
+                    await getEquipments();
+                } else {
+                    alert('Erro ao devolver item!');
+                }
+            })
+            .catch(() => alert('Erro ao devolver item!'));
+        }
+
+        function showModal(type, editId = null) {
+            removeExistingModal();
+
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.id = 'modalOverlay';
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+
+            const isWithdraw = type === 'withdraw';
+            const isEdit = type === 'edit';
+            
+            let title = 'Adicionar Item';
+            if (isEdit) title = 'Editar Item';
+            else if (isWithdraw) title = 'Retirar Item';
+
+            modal.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">${title}</h2>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="itemForm" class="form-grid">
+                        ${isWithdraw ? createWithdrawForm() : createItemForm(isEdit)}
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                            <button type="submit" class="btn-submit">
+                                ${isEdit ? 'Salvar Alterações' : isWithdraw ? 'Confirmar Retirada' : 'Adicionar Item'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            modalOverlay.appendChild(modal);
+            document.body.appendChild(modalOverlay);
+
+            const fileInput = modal.querySelector('input[type="file"]');
+if (fileInput) {
+    fileInput.onchange = function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.createElement('img');
+                preview.src = e.target.result;
+                preview.className = 'equipment-img';
+                preview.style.marginTop = '1rem';
+                const wrapper = fileInput.closest('.file-input-wrapper');
+                const existingPreview = wrapper.querySelector('img');
+                if (existingPreview) {
+                    existingPreview.remove();
+                }
+                wrapper.appendChild(preview);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+}
+
+if (isEdit || isWithdraw) {
+    setTimeout(() => {
+        // Verifica se o modal ainda existe
+        if (!document.body.contains(modal)) return;
+        
+        const eq = equipments.find(e => e.id == editId);
+        if (!eq) return;
+        
+        const form = modal.querySelector('#itemForm');
+        if (!form || !document.body.contains(form)) return;
+        
+        Object.keys(eq).forEach(key => {
+            try {
+                const input = form.querySelector(`[name="${key}"]`);
+                if (input && document.body.contains(input)) {
+                    if (input.type === 'checkbox') {
+                        input.checked = !!eq[key];
+                    } else if (input.tagName === 'SELECT') {
+                        // Verificação mais segura para select
+                        const options = Array.from(input.options);
+                        options.forEach(opt => {
+                            if (opt && opt.parentNode) {
+                                opt.selected = opt.value == eq[key];
+                            }
+                        });
+                    } else if (input.tagName === 'TEXTAREA') {
+                        input.value = eq[key] || '';
+                    } else {
+                        input.value = eq[key] ?? '';
+                    }
+                }
+            } catch (error) {
+                console.warn('Erro ao preencher campo:', key, error);
+            }
+        });
+    }, 100);
+}
+
+            // Submit do formulário
+            modal.querySelector('#itemForm').onsubmit = async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+let imagemId = null;
+const imagemFile = formData.get('imagem');
+if (imagemFile && imagemFile.size > 0) {
+    if (imagemFile.size > 5 * 1024 * 1024) {
+        alert('A imagem deve ter no máximo 5MB');
+        return;
+    }
+    if (!['image/png', 'image/jpeg'].includes(imagemFile.type)) {
+        alert('Apenas imagens PNG ou JPEG são permitidas');
+        return;
+    }
+    const imgForm = new FormData();
+    imgForm.append('imagem', imagemFile);
+    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
+    if (!imgRes.ok) {
+        throw new Error('Erro ao fazer upload da imagem');
+    }
+    const imgData = await imgRes.json();
+    imagemId = imgData.fileId;
+}
+
+                try {
+                    if (isEdit) {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                id: editId
+                            })
+                        });
+                    } else if (isWithdraw) {
+                        await fetch('/withdraw-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id: editId,
+                                dataretirada: new Date().toISOString().slice(0,10),
+                                ultimoUsuario: data.ultimoUsuario,
+                                quantidade: data.quantidade || 1,
+                                observacao: data.observacao || ''
+                            })
+                        });
+                    } else {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                status: 'Disponível',
+                                dataEntrada: new Date().toISOString().slice(0,10),
+                                ...(imagemId ? { imagemId } : {})
+                            })
+                        });
+                    }
+                    
+                    closeModal();
+                    await getEquipments();
+                    
+                } catch (err) {
+                    alert('Erro ao salvar no banco de dados: ' + err.message);
+                }
+            };
+
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+        }
+
+        function createItemForm(isEdit) {
+            return `
+        <div class="form-group">
+            <label class="form-label" for="nome">Nome do Item</label>
+            <input class="form-input" type="text" name="nome" id="nome" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Imagem do Item</label>
+            <div class="file-input-wrapper">
+                <input type="file" name="imagem" id="imagem" accept="image/png,image/jpeg">
+                <div class="file-input-label">
+                    <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+                    <span>Clique ou arraste uma imagem aqui</span>
+                    <small>PNG ou JPEG até 5MB</small>
+                </div>
+            </div>
+            ${isEdit ? '<small>Deixe em branco para manter a imagem atual</small>' : ''}
+        </div>
+                <div class="form-group">
+                    <label class="form-label" for="categoria">Categoria</label>
+                    <input class="form-input" type="text" name="categoria" id="categoria" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="quantidade">Quantidade</label>
+                    <input class="form-input" type="number" name="quantidade" id="quantidade" min="0" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="status">Status</label>
+                    <select class="form-select" name="status" id="status" required>
+                        <option value="Disponível">Disponível</option>
+                        <option value="Em uso">Em uso</option>
+                        <option value="Manutenção">Manutenção</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="observacao">Observação</label>
+                    <textarea class="form-textarea" name="observacao" id="observacao"></textarea>
+                </div>
+            `;
+        }
+
+        function createWithdrawForm() {
+            const usuarios = ["test"];
+            return `
+                <div class="form-group">
+                    <label class="form-label" for="ultimoUsuario">Usuário que Retirou</label>
+                    <select class="form-select" name="ultimoUsuario" id="ultimoUsuario" required>
+                        ${usuarios.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('')}
+                    </select>
+                </div>
+        <div class="form-group">
+            <label class="form-label" for="quantidade">Quantidade</label>
+            <input class="form-input" type="number" name="quantidade" id="quantidade" min="1" required>
+        </div>
+                <div class="form-group">
+                    <label class="form-label" for="observacao">Observação</label>
+                    <textarea class="form-textarea" name="observacao" id="observacao"></textarea>
+                </div>
+            `;
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            if (modal) modal.remove();
+        }
+
+        function removeExistingModal() {
+            closeModal();
+        }
+
+        document.getElementById('addItemBtn').onclick = () => showModal('add');
+
+        function editItem(id) {
+            showModal('edit', id);
+        }
+
+        function withdrawItem(id) {
+            showModal('withdraw', id);
+        }
+
+        function deleteItem(id) {
+            if (!confirm('Tem certeza que deseja excluir este item?')) return;
+            fetch('/delete-equipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            })
+            .then(async res => {
+                if (res.ok) {
+                    await getEquipments();
+                } else {
+                    alert('Erro ao excluir item!');
+                }
+            })
+            .catch(() => alert('Erro ao excluir item!'));
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderEquipments(this.value);
+        });
+
+        async function getEquipments() {
+            try {
+                const response = await fetch('/get_all_equipaments', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+equipments = data.map(item => ({
+    ...item,
+    id: item._id || item.id || Date.now() + Math.floor(Math.random() * 10000)
+}));
+                    renderEquipments();
+                } else {
+                    alert('Erro ao buscar itens do estoque.');
+                }
+            } catch (err) {
+                alert('Erro ao conectar ao servidor.');
+            }
+        }
+        getEquipments();
+        renderEquipments();
+    </script>
+</body>
