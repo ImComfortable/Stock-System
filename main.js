@@ -44,7 +44,7 @@ const upload = multer({
         if (file.mimetype === "image/png" || file.mimetype === "image/jpeg") {
             cb(null, true);
         } else {
-            cb(new Error('Apenas PNG e JPEG são permitidos!'), false);
+            cb(new Error('Only PNG and JPEG are allowed!'), false);
         }
     }
 });
@@ -53,16 +53,16 @@ async function connectToMongo() {
     try {
         await mongoose.connect(MONGODB_URI);
         console.log('Mongoose connected successfully');
-        
+
         const conn = mongoose.connection;
         gfs = new mongoose.mongo.GridFSBucket(conn.db, {
             bucketName: 'uploads'
         });
-        
+
         mongoClient = new MongoClient(MONGODB_URI);
         await mongoClient.connect();
         db = mongoClient.db();
-        
+
         console.log('MongoDB and GridFS initialized successfully');
         return mongoClient;
     } catch (err) {
@@ -71,30 +71,30 @@ async function connectToMongo() {
     }
 }
 
-app.post('/upload-image', upload.single('imagem'), (req, res) => {
+app.post('/upload-image', upload.single('image'), (req, res) => {
     if (!req.file) {
-        return res.status(400).json({ error: 'Nenhuma imagem enviada' });
+        return res.status(400).json({ error: 'No image uploaded' });
     }
     console.log('File uploaded:', req.file);
-    res.json({ 
+    res.json({
         fileId: req.file.id ? req.file.id.toString() : req.file.filename,
-        filename: req.file.filename 
+        filename: req.file.filename
     });
 });
 
 app.get('/', (req, res) => {
-    res.redirect('/estoque.html');
+    res.redirect('Static/estoque.html');
 });
 
-app.get('/imagem/:id', async (req, res) => {
+app.get('/image/:id', async (req, res) => {
     try {
         const _id = new mongoose.Types.ObjectId(req.params.id);
         const collection = mongoose.connection.db.collection('uploads.files');
         const file = await collection.findOne({ _id });
 
         if (!file) {
-            console.log('Imagem não encontrada');
-            return res.status(404).json({ error: 'Imagem não encontrada' });
+            console.log('Image not found');
+            return res.status(404).json({ error: 'Image not found' });
         }
 
         const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
@@ -105,8 +105,8 @@ app.get('/imagem/:id', async (req, res) => {
         bucket.openDownloadStream(_id).pipe(res);
 
     } catch (err) {
-        console.error('Erro ao buscar imagem:', err);
-        res.status(500).json({ error: 'Erro ao buscar imagem' });
+        console.error('Error fetching image:', err);
+        res.status(500).json({ error: 'Error fetching image' });
     }
 });
 
@@ -114,97 +114,97 @@ app.post('/add-equipment', async (req, res) => {
     try {
         const collection = db.collection('equipments');
         const data = req.body;
-        
-        console.log('Dados recebidos:', data); // Log para debug
+
+        console.log('Received data:', data); // Debug log
 
         if (data.id) {
             const id = data.id;
             delete data.id;
-            if (!data.imagemId) delete data.imagemId;
-            
-            console.log('Atualizando documento com imagemId:', data.imagemId);
-            
+            if (!data.imageId) delete data.imageId;
+
+            console.log('Updating document with imageId:', data.imageId);
+
             await collection.updateOne(
                 { _id: new ObjectId(id) },
                 { $set: data }
             );
-            res.json({ message: 'Equipamento atualizado com sucesso' });
+            res.json({ message: 'Equipment updated successfully' });
         } else {
-            data.dataEntrada = new Date().toISOString().slice(0,10);
-            data.status = 'Disponível';
-            
-            console.log('Inserindo novo documento com imagemId:', data.imagemId);
-            
+            data.entryDate = new Date().toISOString().slice(0, 10);
+            data.status = 'Available';
+
+            console.log('Inserting new document with imageId:', data.imageId);
+
             await collection.insertOne(data);
-            res.status(201).json({ message: 'Equipamento adicionado com sucesso' });
+            res.status(201).json({ message: 'Equipment added successfully' });
         }
     } catch (error) {
-        console.error('Erro ao adicionar/editar equipamento:', error);
-        res.status(500).json({ error: 'Erro ao adicionar/editar equipamento' });
+        console.error('Error adding/editing equipment:', error);
+        res.status(500).json({ error: 'Error adding/editing equipment' });
     }
 });
 
 app.post('/withdraw-equipment', async (req, res) => {
     try {
-        let { id, dataretirada, ultimoUsuario, observacao, quantidade } = req.body;
-        quantidade = parseInt(quantidade, 10);
+        let { id, withdrawDate, lastUser, note, quantity } = req.body;
+        quantity = parseInt(quantity, 10);
 
         const collection = db.collection('equipments');
-        const equipamento = await collection.findOne({ _id: new ObjectId(id) });
+        const equipment = await collection.findOne({ _id: new ObjectId(id) });
 
-        if (!equipamento) {
-            return res.status(404).json({ error: 'Equipamento não encontrado para retirada.' });
+        if (!equipment) {
+            return res.status(404).json({ error: 'Equipment not found for withdrawal.' });
         }
 
-        const estoqueAtual = parseInt(equipamento.quantidade, 10) || 0;
+        const currentStock = parseInt(equipment.quantity, 10) || 0;
 
-        if (quantidade > estoqueAtual) {
-            return res.status(400).json({ error: 'Quantidade de retirada maior que o estoque disponível.' });
+        if (quantity > currentStock) {
+            return res.status(400).json({ error: 'Withdrawal quantity greater than available stock.' });
         }
 
-        const novoEstoque = estoqueAtual - quantidade;
+        const newStock = currentStock - quantity;
 
-        if (novoEstoque === 0) {
+        if (newStock === 0) {
             await collection.updateOne(
                 { _id: new ObjectId(id) },
-                { 
+                {
                     $set: {
-                        status: 'Em uso',
-                        dataretirada,
-                        ultimoUsuario,
-                        observacao
+                        status: 'In use',
+                        withdrawDate,
+                        lastUser,
+                        note
                     }
                 }
             );
         } else {
             await collection.updateOne(
                 { _id: new ObjectId(id) },
-                { 
-                    $set: { 
-                        quantidade: novoEstoque,
-                        status: 'Disponível'
+                {
+                    $set: {
+                        quantity: newStock,
+                        status: 'Available'
                     }
                 }
             );
 
-            const novoEquipamento = {
-                ...equipamento,
+            const newEquipment = {
+                ...equipment,
                 _id: undefined,
-                quantidade: quantidade,
-                status: 'Em uso',
-                dataretirada,
-                ultimoUsuario,
-                observacao,
-                origemId: equipamento._id
+                quantity: quantity,
+                status: 'In use',
+                withdrawDate,
+                lastUser,
+                note,
+                originId: equipment._id
             };
-            delete novoEquipamento._id;
-            await collection.insertOne(novoEquipamento);
+            delete newEquipment._id;
+            await collection.insertOne(newEquipment);
         }
 
         res.json({ success: true });
     } catch (error) {
-        console.error('Erro ao retirar equipamento:', error);
-        res.status(500).json({ error: 'Erro ao retirar equipamento' });
+        console.error('Error withdrawing equipment:', error);
+        res.status(500).json({ error: 'Error withdrawing equipment' });
     }
 });
 
@@ -213,23 +213,23 @@ app.post('/return-equipment', async (req, res) => {
         const { id } = req.body;
         const collection = db.collection('equipments');
 
-        const docEmUso = await collection.findOne({ _id: new ObjectId(id) });
-        if (!docEmUso) {
-            return res.status(404).json({ error: 'Equipamento não encontrado para devolução.' });
+        const inUseDoc = await collection.findOne({ _id: new ObjectId(id) });
+        if (!inUseDoc) {
+            return res.status(404).json({ error: 'Equipment not found for return.' });
         }
 
-        if (docEmUso.status === 'Em uso' && docEmUso.ultimoUsuario && docEmUso.origemId) {
-            const docOriginal = await collection.findOne({ _id: new ObjectId(docEmUso.origemId) });
+        if (inUseDoc.status === 'In use' && inUseDoc.lastUser && inUseDoc.originId) {
+            const originalDoc = await collection.findOne({ _id: new ObjectId(inUseDoc.originId) });
 
-            if (docOriginal) {
+            if (originalDoc) {
                 await collection.updateOne(
-                    { _id: docOriginal._id },
-                    { $inc: { quantidade: docEmUso.quantidade }, $set: { status: 'Disponível' } }
+                    { _id: originalDoc._id },
+                    { $inc: { quantity: inUseDoc.quantity }, $set: { status: 'Available' } }
                 );
             } else {
-                const novoDisponivel = { ...docEmUso, status: 'Disponível', ultimoUsuario: '', dataretirada: '', observacao: '' };
-                delete novoDisponivel._id;
-                await collection.insertOne(novoDisponivel);
+                const newAvailable = { ...inUseDoc, status: 'Available', lastUser: '', withdrawDate: '', note: '' };
+                delete newAvailable._id;
+                await collection.insertOne(newAvailable);
             }
 
             await collection.deleteOne({ _id: new ObjectId(id) });
@@ -238,13 +238,13 @@ app.post('/return-equipment', async (req, res) => {
         } else {
             await collection.updateOne(
                 { _id: new ObjectId(id) },
-                { $set: { status: 'Disponível', dataretirada: '', ultimoUsuario: '' } }
+                { $set: { status: 'Available', withdrawDate: '', lastUser: '' } }
             );
             return res.json({ success: true });
         }
     } catch (error) {
-        console.error('Erro ao devolver equipamento:', error);
-        res.status(500).json({ error: 'Erro ao devolver equipamento' });
+        console.error('Error returning equipment:', error);
+        res.status(500).json({ error: 'Error returning equipment' });
     }
 });
 
@@ -254,16 +254,16 @@ app.post('/delete-equipment', async (req, res) => {
         const collection = db.collection('equipments');
         const result = await collection.deleteOne({ _id: new ObjectId(id) });
         if (result.deletedCount === 0) {
-            return res.status(404).json({ error: 'Equipamento não encontrado para exclusão.' });
+            return res.status(404).json({ error: 'Equipment not found for deletion.' });
         }
         res.json({ success: true });
     } catch (error) {
-        console.error('Erro ao deletar equipamento:', error);
-        res.status(500).json({ error: 'Erro ao deletar equipamento' });
+        console.error('Error deleting equipment:', error);
+        res.status(500).json({ error: 'Error deleting equipment' });
     }
 });
 
-app.get('/get_all_equipaments', async (req, res) => {
+app.get('/get_all_equipments', async (req, res) => {
     try {
         const collection = db.collection('equipments');
         const documents = await collection.find({}).toArray();
@@ -273,7 +273,7 @@ app.get('/get_all_equipaments', async (req, res) => {
         }));
         res.json(docsWithId);
     } catch (err) {
-        res.status(500).json({ error: 'Erro ao buscar dados de auditoria' });
+        res.status(500).json({ error: 'Error fetching audit data' });
     }
 });
 async function startServer() {
@@ -282,7 +282,7 @@ async function startServer() {
 
         app.listen(PORT, HOST, () => {
             console.log(`Server running at http://${HOST}:${PORT}`);
-            console.log(`Access inventory page at http://${HOST}:${PORT}/inventorypage.html`);
+            console.log(`Access inventory page at http://${HOST}:${PORT}/inventory.html`);
         });
     } catch (error) {
         console.error('Failed to start server:', error);

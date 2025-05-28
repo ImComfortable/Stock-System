@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Estoque de Ferramentas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
@@ -48,14 +50,14 @@
             font-weight: 400;
         }
 
-.container {
-    max-width: 1200px;
-    margin: 2rem auto;
-    background: var(--white);
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-xl);
-    overflow: hidden;
-}
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+        }
 
         .header {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
@@ -127,7 +129,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s;
         }
 
@@ -147,13 +149,13 @@
         }
 
         .btn-secondary {
-            background: rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
             color: var(--white);
-            border: 2px solid rgba(255,255,255,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         }
 
         .btn-secondary:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
@@ -267,85 +269,85 @@
             font-size: 1.125rem;
         }
 
-.equipment-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    padding: 1rem;
-}
+        .equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
 
-.equipment-card {
-    background: var(--white);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    border: 1px solid var(--gray-200);
-    overflow: hidden;
-    transition: all 0.3s ease;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-height: 420px; 
-    max-height: 520px; 
-}
+        .equipment-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 420px;
+            max-height: 520px;
+        }
 
-.equipment-img {
-    max-width: 100%;
-    max-height: 160px;
-    object-fit: contain;
-    border-radius: 8px;
-    box-shadow: var(--shadow-sm);
-}
+        .equipment-img {
+            max-width: 100%;
+            max-height: 160px;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+        }
 
-.file-input-wrapper {
-    position: relative;
-    width: 100%;
-    padding: 1rem;
-    border: 2px dashed var(--gray-200);
-    border-radius: var(--radius);
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
+        .file-input-wrapper {
+            position: relative;
+            width: 100%;
+            padding: 1rem;
+            border: 2px dashed var(--gray-200);
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
-.file-input-wrapper:hover {
-    border-color: var(--primary);
-    background: var(--gray-50);
-}
+        .file-input-wrapper:hover {
+            border-color: var(--primary);
+            background: var(--gray-50);
+        }
 
-.file-input-wrapper input[type="file"] {
-    opacity: 0;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    cursor: pointer;
-}
+        .file-input-wrapper input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
 
-.file-input-label {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--gray-500);
-}
+        .file-input-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray-500);
+        }
 
-.file-input-icon {
-    font-size: 1.5rem;
-    color: var(--primary);
-}
+        .file-input-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
 
-.card-image-container {
-    width: 100%;
-    height: 180px;
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--gray-50);
-    border-bottom: 1px solid var(--gray-200);
-}
+        .card-image-container {
+            width: 100%;
+            height: 180px;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
 
         .equipment-card:hover {
             transform: translateY(-4px);
@@ -390,9 +392,9 @@
         }
 
         .card-body {
-        padding: 1rem 1.5rem 1.5rem 1.5rem;
-        flex: 1;
-        overflow-y: auto; 
+            padding: 1rem 1.5rem 1.5rem 1.5rem;
+            flex: 1;
+            overflow-y: auto;
         }
 
         .info-grid {
@@ -432,19 +434,20 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.025em;
+            /* Remove background to allow color classes to work */
         }
 
-        .badge.disponivel {
+        .badge.available {
             background: var(--success-light);
             color: var(--success);
         }
 
-        .badge.em-uso {
+        .badge.in-use {
             background: var(--warning-light);
             color: var(--warning);
         }
 
-        .badge.manutencao {
+        .badge.maintenance {
             background: var(--danger-light);
             color: var(--danger);
         }
@@ -532,6 +535,7 @@
                 opacity: 0;
                 transform: scale(0.95) translateY(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1) translateY(0);
@@ -699,107 +703,171 @@
             font-size: 1rem;
         }
 
-@media (max-width: 768px) {
-    .container {
-        margin: 0.5rem;
-        max-width: 100%;
-    }
+        @media (max-width: 768px) {
+            .container {
+                margin: 0.5rem;
+                max-width: 100%;
+            }
 
-    .equipment-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-        padding: 0.5rem;
-    }
+            .equipment-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                padding: 0.5rem;
+            }
 
-    .main-content {
-        padding: 1rem;
-    }
+            .main-content {
+                padding: 1rem;
+            }
 
-    .header {
-        padding: 1.5rem 1rem;
-    }
+            .header {
+                padding: 1.5rem 1rem;
+            }
 
-    .header h1 {
-        font-size: 1.75rem;
-    }
+            .header h1 {
+                font-size: 1.75rem;
+            }
 
-    .header-subtitle {
-        font-size: 0.875rem;
-    }
+            .header-subtitle {
+                font-size: 0.875rem;
+            }
 
-    .equipment-card {
-        min-height: auto;
-        max-height: none;
-        margin: 0;
-        width: 100%;
-    }
+            .equipment-card {
+                min-height: auto;
+                max-height: none;
+                margin: 0;
+                width: 100%;
+            }
 
-    .summary-panel {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.75rem;
-    }
+            .summary-panel {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
 
-    .summary-card {
-        padding: 1rem;
-    }
+            .summary-card {
+                padding: 1rem;
+            }
 
-    .summary-value {
-        font-size: 1.5rem;
-    }
+            .summary-value {
+                font-size: 1.5rem;
+            }
 
-    .search-section {
-        margin-bottom: 1rem;
-    }
+            .search-section {
+                margin-bottom: 1rem;
+            }
 
-    .search-bar {
-        max-width: 100%;
-    }
-}
+            .search-bar {
+                max-width: 100%;
+            }
+        }
 
-@media (max-width: 480px) {
-    .container {
-        margin: 0;
-        border-radius: 0;
-    }
+        @media (max-width: 480px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
 
-    .summary-panel {
-        grid-template-columns: 1fr;
-    }
+            .summary-panel {
+                grid-template-columns: 1fr;
+            }
 
-    .card-body {
-        padding: 0.75rem;
-    }
+            .card-body {
+                padding: 0.75rem;
+            }
 
-    .info-grid {
-        gap: 0.35rem;
-    }
+            .info-grid {
+                gap: 0.35rem;
+            }
 
-    .info-item {
-        font-size: 0.75rem;
-    }
-    .modal {
-        width: 100%;
-        height: 100%;
-        max-height: 100vh;
-        border-radius: 0;
-    }
+            .info-item {
+                font-size: 0.75rem;
+            }
 
-    .modal-body {
-        padding: 1rem;
-    }
-}
+            .modal {
+                width: 100%;
+                height: 100%;
+                max-height: 100vh;
+                border-radius: 0;
+            }
+
+            .modal-body {
+                padding: 1rem;
+            }
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            /* Remove background to allow color classes to work */
+        }
+
+        .badge.available {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .badge.in-use {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
+        .badge.maintenance {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .btn-action.loading {
+            pointer-events: none;
+            opacity: 0.7;
+            position: relative;
+        }
+
+        .btn-action .loading-spinner {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.1em;
+            color: inherit;
+            z-index: 2;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .btn-action .btn-icon-content {
+            opacity: 1;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action.loading .btn-icon-content {
+            opacity: 0.2;
+        }
     </style>
 </head>
+
 <body>
     <div class="container">
         <div class="header">
             <div class="header-content">
-                <h1><i class="fas fa-toolbox"></i> Estoque Itens Da Salinha</h1>
-                <p class="header-subtitle">Sistema de controle e gerenciamento de ferramentas</p>
+                <h1><i class="fas fa-toolbox"></i> Inventory Room Items</h1>
+                <p class="header-subtitle">Tool management and control system</p>
                 <div class="action-buttons">
                     <button class="btn btn-primary" id="addItemBtn">
                         <i class="fas fa-plus"></i>
-                        Adicionar Item
+                        Add Item
                     </button>
                 </div>
             </div>
@@ -810,7 +878,7 @@
             <div class="search-section">
                 <div class="search-bar">
                     <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="searchInput" placeholder="Buscar por nome, categoria, status ou usuário...">
+                    <input type="text" id="searchInput" placeholder="Search by name, category, status or user...">
                 </div>
             </div>
             <div class="equipment-grid" id="equipmentGrid"></div>
@@ -826,55 +894,55 @@
         }
 
         function formatDate(dateStr) {
-            if (!dateStr) return 'Não informado';
+            if (!dateStr) return 'Not informed';
             const date = new Date(dateStr);
-            return date.toLocaleDateString('pt-BR');
+            return date.toLocaleDateString('en-US');
         }
 
         function getStatusInfo(status) {
             const statusMap = {
-                'Disponível': { class: 'disponivel', icon: 'fas fa-check-circle' },
-                'Em uso': { class: 'em-uso', icon: 'fas fa-user-check' },
-                'Manutenção': { class: 'manutencao', icon: 'fas fa-tools' }
+                'Available': { class: 'available', icon: 'fas fa-check-circle' },
+                'In use': { class: 'in-use', icon: 'fas fa-user-check' },
+                'Maintenance': { class: 'maintenance', icon: 'fas fa-tools' }
             };
-            return statusMap[status] || { class: 'disponivel', icon: 'fas fa-question-circle' };
+            return statusMap[status] || { class: 'available', icon: 'fas fa-question-circle' };
         }
 
         function renderSummary() {
             const total = equipments.length;
-            const disponivel = equipments.filter(e => e.status === 'Disponível').length;
-            const emUso = equipments.filter(e => e.status === 'Em uso').length;
-            const manutencao = equipments.filter(e => e.status === 'Manutenção').length;
-            const quantidadeTotal = equipments.reduce((sum, e) => sum + (parseInt(e.quantidade) || 0), 0);
+            const available = equipments.filter(e => e.status === 'Available').length;
+            const inUse = equipments.filter(e => e.status === 'In use').length;
+            const maintenance = equipments.filter(e => e.status === 'Maintenance').length;
+            const totalQuantity = equipments.reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
 
             document.getElementById('summaryPanel').innerHTML = `
                 <div class="summary-card">
                     <div class="summary-header">
                         <i class="fas fa-boxes summary-icon" style="color: var(--primary)"></i>
-                        <div class="summary-value">${quantidadeTotal}</div>
+                        <div class="summary-value">${totalQuantity}</div>
                     </div>
-                    <div class="summary-label">Total de Itens</div>
+                    <div class="summary-label">Total Items</div>
                 </div>
                 <div class="summary-card success">
                     <div class="summary-header">
                         <i class="fas fa-check-circle summary-icon" style="color: var(--success)"></i>
-                        <div class="summary-value">${disponivel}</div>
+                        <div class="summary-value">${available}</div>
                     </div>
-                    <div class="summary-label">Disponíveis</div>
+                    <div class="summary-label">Available</div>
                 </div>
                 <div class="summary-card warning">
                     <div class="summary-header">
                         <i class="fas fa-user-check summary-icon" style="color: var(--warning)"></i>
-                        <div class="summary-value">${emUso}</div>
+                        <div class="summary-value">${inUse}</div>
                     </div>
-                    <div class="summary-label">Em Uso</div>
+                    <div class="summary-label">In Use</div>
                 </div>
                 <div class="summary-card danger">
                     <div class="summary-header">
                         <i class="fas fa-tools summary-icon" style="color: var(--danger)"></i>
-                        <div class="summary-value">${manutencao}</div>
+                        <div class="summary-value">${maintenance}</div>
                     </div>
-                    <div class="summary-label">Manutenção</div>
+                    <div class="summary-label">Maintenance</div>
                 </div>
             `;
         }
@@ -882,12 +950,12 @@
         function renderEquipments(searchTerm = '') {
             renderSummary();
             const grid = document.getElementById('equipmentGrid');
-            
+
             let filtered = equipments.filter(eq =>
-                (eq.nome || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (eq.categoria || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (eq.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+                (eq.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
                 (eq.status || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (eq.ultimoUsuario || '').toLowerCase().includes(searchTerm.toLowerCase())
+                (eq.lastUser || '').toLowerCase().includes(searchTerm.toLowerCase())
             );
 
             if (filtered.length === 0) {
@@ -896,50 +964,50 @@
                         <div class="empty-icon">
                             <i class="fas fa-search"></i>
                         </div>
-                        <div class="empty-title">Nenhum item encontrado</div>
-                        <div class="empty-description">Tente ajustar os termos de busca</div>
+                        <div class="empty-title">No items found</div>
+                        <div class="empty-description">Try adjusting your search terms</div>
                     </div>
                 `;
                 return;
             }
 
-    const DEFAULT_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
+            const DEFAULT_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
     <rect width="200" height="200" fill="#f3f4f6"/>
     <path d="M100 70 C 70 70, 50 85, 50 110 C 50 135, 70 150, 100 150 C 130 150, 150 135, 150 110 C 150 85, 130 70, 100 70" fill="#9ca3af"/>
     <circle cx="82" cy="100" r="8" fill="#f3f4f6"/>
     <circle cx="118" cy="100" r="8" fill="#f3f4f6"/>
     <path d="M75 125 Q 100 140 125 125" stroke="#f3f4f6" stroke-width="4" fill="none"/>
-    <text x="100" y="180" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="14">Sem Imagem</text>
+    <text x="100" y="180" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="14">No Image</text>
 </svg>`)}`;
 
-    grid.innerHTML = filtered.map(eq => {
-    const statusInfo = getStatusInfo(eq.status);
-    return `
+            grid.innerHTML = filtered.map(eq => {
+                const statusInfo = getStatusInfo(eq.status);
+                return `
          <div class="equipment-card">
             <div class="card-image-container">
-                ${eq.imagemId 
-                    ? `<img src="/imagem/${eq.imagemId}" alt="Foto do item" class="equipment-img" onerror="this.src='${DEFAULT_IMAGE}'">`
-                    : `<img src="${DEFAULT_IMAGE}" alt="Imagem padrão" class="equipment-img">`
-                }
+                ${eq.imageId
+                        ? `<img src="/image/${eq.imageId}" alt="Item photo" class="equipment-img" onerror="this.src='${DEFAULT_IMAGE}'">`
+                        : `<img src="${DEFAULT_IMAGE}" alt="Default image" class="equipment-img">`
+                    }
             </div>
             <div class="card-header">
                 <div class="card-title">
                     <div class="status-indicator ${statusInfo.class}"></div>
-                    ${DOMPurify.sanitize(eq.nome || '')}
+                    ${DOMPurify.sanitize(eq.name || '')}
                 </div>
             </div>
             <div class="card-body">
                 <div class="info-grid">
                     <div class="info-item">
                         <i class="fas fa-tags info-icon"></i>
-                        <span class="info-label">Categoria:</span>
-                        <span class="info-value">${capitalizeFirst(eq.categoria)}</span>
+                        <span class="info-label">Category:</span>
+                        <span class="info-value">${capitalizeFirst(eq.category)}</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-sort-numeric-up info-icon"></i>
-                        <span class="info-label">Quantidade:</span>
-                        <span class="info-value">${eq.quantidade || 0}</span>
+                        <span class="info-label">Quantity:</span>
+                        <span class="info-value">${eq.quantity || 0}</span>
                     </div>
                     <div class="info-item">
                         <i class="fas fa-traffic-light info-icon"></i>
@@ -948,77 +1016,138 @@
                     </div>
                     <div class="info-item">
                         <i class="fas fa-calendar-plus info-icon"></i>
-                        <span class="info-label">Entrada:</span>
-                        <span class="info-value">${formatDate(eq.dataEntrada)}</span>
+                        <span class="info-label">Entry:</span>
+                        <span class="info-value">${formatDate(eq.entryDate)}</span>
                     </div>
-                    ${eq.dataretirada ? `
+                    ${eq.withdrawDate ? `
                         <div class="info-item">
                             <i class="fas fa-calendar-minus info-icon"></i>
-                            <span class="info-label">Saída:</span>
-                            <span class="info-value">${formatDate(eq.dataretirada)}</span>
+                            <span class="info-label">Withdraw:</span>
+                            <span class="info-value">${formatDate(eq.withdrawDate)}</span>
                         </div>
                     ` : ''}
-                    ${eq.ultimoUsuario ? `
+                    ${eq.lastUser ? `
                         <div class="info-item">
                             <i class="fas fa-user info-icon"></i>
-                            <span class="info-label">Usuário:</span>
-                            <span class="info-value">${DOMPurify.sanitize(eq.ultimoUsuario)}</span>
+                            <span class="info-label">User:</span>
+                            <span class="info-value">${DOMPurify.sanitize(eq.lastUser)}</span>
                         </div>
                     ` : ''}
-                    ${eq.ultimaquantidade ? `
+                    ${eq.lastQuantity ? `
                         <div class="info-item">
                             <i class="fas fa-cubes info-icon"></i>
-                            <span class="info-label">Última Quantidade:</span>}
+                            <span class="info-label">Last Quantity:</span>}
                         </div>
                     ` : ''}   
-                    ${eq.observacao ? `
+                    ${eq.note ? `
                         <div class="info-item">
                             <i class="fas fa-info-circle info-icon"></i>
-                            <span class="info-label">Obs:</span>
-                            <span class="info-value">${DOMPurify.sanitize(eq.observacao)}</span>
+                            <span class="info-label">Note:</span>
+                            <span class="info-value">${DOMPurify.sanitize(eq.note)}</span>
                         </div>
                     ` : ''}
                 </div>
             </div>
             <div class="card-actions">
-                <button class="btn-action btn-edit" onclick="editItem('${eq.id}')" title="Editar">
-                    <i class="fas fa-edit"></i>
+                <button class="btn-action btn-edit" onclick="editItem('${eq.id}', this)" title="Edit">
+                    <span class="btn-icon-content"><i class="fas fa-edit"></i></span>
                 </button>
-                ${
-                    eq.status === 'Disponível'
-                    ? `<button class="btn-action btn-withdraw" onclick="withdrawItem('${eq.id}')" title="Retirar">
-                            <i class="fas fa-sign-out-alt"></i>
+                ${eq.status === 'Available'
+                        ? `<button class="btn-action btn-withdraw" onclick="withdrawItem('${eq.id}', this)" title="Withdraw">
+                            <span class="btn-icon-content"><i class="fas fa-sign-out-alt"></i></span>
                         </button>`
-                    : eq.status === 'Em uso'
-                    ? `<button class="btn-action btn-edit" onclick="returnItem('${eq.id}')" title="Devolver">
-                            <i class="fas fa-undo"></i>
+                        : eq.status === 'In use'
+                            ? `<button class="btn-action btn-edit" onclick="returnItem('${eq.id}', this)" title="Return">
+                            <span class="btn-icon-content"><i class="fas fa-undo"></i></span>
                         </button>`
-                    : ''
-                }
-                <button class="btn-action btn-delete" onclick="deleteItem('${eq.id}')" title="Excluir">
-                    <i class="fas fa-trash"></i>
+                            : ''
+                    }
+                <button class="btn-action btn-delete" onclick="deleteItem('${eq.id}', this)" title="Delete">
+                    <span class="btn-icon-content"><i class="fas fa-trash"></i></span>
                 </button>
             </div>
         </div>
     `;
-}).join('');
+            }).join('');
         }
 
-        function returnItem(id) {
+        // Função utilitária para mostrar spinner de loading no botão
+        function setButtonLoading(btn, loading = true) {
+            if (!btn) return;
+            if (loading) {
+                btn.classList.add('loading');
+                if (!btn.querySelector('.loading-spinner')) {
+                    const spinner = document.createElement('span');
+                    spinner.className = 'loading-spinner fas fa-spinner fa-spin';
+                    btn.appendChild(spinner);
+                }
+            } else {
+                btn.classList.remove('loading');
+                const spinner = btn.querySelector('.loading-spinner');
+                if (spinner) spinner.remove();
+            }
+        }
+
+        function returnItem(id, btn) {
+            setButtonLoading(btn, true);
             fetch('/return-equipment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id })
             })
-            .then(async res => {
-                if (res.ok) {
-                    await getEquipments();
-                } else {
-                    alert('Erro ao devolver item!');
-                }
-            })
-            .catch(() => alert('Erro ao devolver item!'));
+                .then(async res => {
+                    setButtonLoading(btn, false);
+                    if (res.ok) {
+                        await getEquipments();
+                    } else {
+                        alert('Error returning item!');
+                    }
+                })
+                .catch(() => {
+                    setButtonLoading(btn, false);
+                    alert('Error returning item!');
+                });
         }
+
+        function editItem(id, btn) {
+            setButtonLoading(btn, true);
+            setTimeout(() => {
+                setButtonLoading(btn, false);
+                showModal('edit', id);
+            }, 200);
+        }
+
+        function withdrawItem(id, btn) {
+            setButtonLoading(btn, true);
+            setTimeout(() => {
+                setButtonLoading(btn, false);
+                showModal('withdraw', id);
+            }, 200);
+        }
+
+        function deleteItem(id, btn) {
+            if (!confirm('Are you sure you want to delete this item?')) return;
+            setButtonLoading(btn, true);
+            fetch('/delete-equipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            })
+                .then(async res => {
+                    setButtonLoading(btn, false);
+                    if (res.ok) {
+                        await getEquipments();
+                    } else {
+                        alert('Error deleting item!');
+                    }
+                })
+                .catch(() => {
+                    setButtonLoading(btn, false);
+                    alert('Error deleting item!');
+                });
+        }
+
+        document.getElementById('addItemBtn').onclick = () => showModal('add');
 
         function showModal(type, editId = null) {
             removeExistingModal();
@@ -1032,10 +1161,10 @@
 
             const isWithdraw = type === 'withdraw';
             const isEdit = type === 'edit';
-            
-            let title = 'Adicionar Item';
-            if (isEdit) title = 'Editar Item';
-            else if (isWithdraw) title = 'Retirar Item';
+
+            let title = 'Add Item';
+            if (isEdit) title = 'Edit Item';
+            else if (isWithdraw) title = 'Withdraw Item';
 
             modal.innerHTML = `
                 <div class="modal-header">
@@ -1046,9 +1175,9 @@
                     <form id="itemForm" class="form-grid">
                         ${isWithdraw ? createWithdrawForm() : createItemForm(isEdit)}
                         <div class="form-actions">
-                            <button type="button" class="btn-cancel" onclick="closeModal()">Cancelar</button>
+                            <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                             <button type="submit" class="btn-submit">
-                                ${isEdit ? 'Salvar Alterações' : isWithdraw ? 'Confirmar Retirada' : 'Adicionar Item'}
+                                ${isEdit ? 'Save Changes' : isWithdraw ? 'Confirm Withdraw' : 'Add Item'}
                             </button>
                         </div>
                     </form>
@@ -1059,67 +1188,64 @@
             document.body.appendChild(modalOverlay);
 
             const fileInput = modal.querySelector('input[type="file"]');
-if (fileInput) {
-    fileInput.onchange = function() {
-        const file = this.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const preview = document.createElement('img');
-                preview.src = e.target.result;
-                preview.className = 'equipment-img';
-                preview.style.marginTop = '1rem';
-                const wrapper = fileInput.closest('.file-input-wrapper');
-                const existingPreview = wrapper.querySelector('img');
-                if (existingPreview) {
-                    existingPreview.remove();
-                }
-                wrapper.appendChild(preview);
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-}
-
-if (isEdit || isWithdraw) {
-    setTimeout(() => {
-        // Verifica se o modal ainda existe
-        if (!document.body.contains(modal)) return;
-        
-        const eq = equipments.find(e => e.id == editId);
-        if (!eq) return;
-        
-        const form = modal.querySelector('#itemForm');
-        if (!form || !document.body.contains(form)) return;
-        
-        Object.keys(eq).forEach(key => {
-            try {
-                const input = form.querySelector(`[name="${key}"]`);
-                if (input && document.body.contains(input)) {
-                    if (input.type === 'checkbox') {
-                        input.checked = !!eq[key];
-                    } else if (input.tagName === 'SELECT') {
-                        // Verificação mais segura para select
-                        const options = Array.from(input.options);
-                        options.forEach(opt => {
-                            if (opt && opt.parentNode) {
-                                opt.selected = opt.value == eq[key];
+            if (fileInput) {
+                fileInput.onchange = function () {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const preview = document.createElement('img');
+                            preview.src = e.target.result;
+                            preview.className = 'equipment-img';
+                            preview.style.marginTop = '1rem';
+                            const wrapper = fileInput.closest('.file-input-wrapper');
+                            const existingPreview = wrapper.querySelector('img');
+                            if (existingPreview) {
+                                existingPreview.remove();
                             }
-                        });
-                    } else if (input.tagName === 'TEXTAREA') {
-                        input.value = eq[key] || '';
-                    } else {
-                        input.value = eq[key] ?? '';
+                            wrapper.appendChild(preview);
+                        };
+                        reader.readAsDataURL(file);
                     }
-                }
-            } catch (error) {
-                console.warn('Erro ao preencher campo:', key, error);
+                };
             }
-        });
-    }, 100);
-}
 
-            // Submit do formulário
+            if (isEdit || isWithdraw) {
+                setTimeout(() => {
+                    if (!document.body.contains(modal)) return;
+
+                    const eq = equipments.find(e => e.id == editId);
+                    if (!eq) return;
+
+                    const form = modal.querySelector('#itemForm');
+                    if (!form || !document.body.contains(form)) return;
+
+                    Object.keys(eq).forEach(key => {
+                        try {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input && document.body.contains(input)) {
+                                if (input.type === 'checkbox') {
+                                    input.checked = !!eq[key];
+                                } else if (input.tagName === 'SELECT') {
+                                    const options = Array.from(input.options);
+                                    options.forEach(opt => {
+                                        if (opt && opt.parentNode) {
+                                            opt.selected = opt.value == eq[key];
+                                        }
+                                    });
+                                } else if (input.tagName === 'TEXTAREA') {
+                                    input.value = eq[key] || '';
+                                } else {
+                                    input.value = eq[key] ?? '';
+                                }
+                            }
+                        } catch (error) {
+                            console.warn('Error filling field:', key, error);
+                        }
+                    });
+                }, 100);
+            }
+
             modal.querySelector('#itemForm').onsubmit = async function (e) {
                 e.preventDefault();
                 const formData = new FormData(this);
@@ -1128,26 +1254,26 @@ if (isEdit || isWithdraw) {
                     data[key] = value;
                 }
 
-let imagemId = null;
-const imagemFile = formData.get('imagem');
-if (imagemFile && imagemFile.size > 0) {
-    if (imagemFile.size > 5 * 1024 * 1024) {
-        alert('A imagem deve ter no máximo 5MB');
-        return;
-    }
-    if (!['image/png', 'image/jpeg'].includes(imagemFile.type)) {
-        alert('Apenas imagens PNG ou JPEG são permitidas');
-        return;
-    }
-    const imgForm = new FormData();
-    imgForm.append('imagem', imagemFile);
-    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
-    if (!imgRes.ok) {
-        throw new Error('Erro ao fazer upload da imagem');
-    }
-    const imgData = await imgRes.json();
-    imagemId = imgData.fileId;
-}
+                let imageId = null;
+                const imageFile = formData.get('image');
+                if (imageFile && imageFile.size > 0) {
+                    if (imageFile.size > 5 * 1024 * 1024) {
+                        alert('The image must be at most 5MB');
+                        return;
+                    }
+                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
+                        alert('Only PNG or JPEG images are allowed');
+                        return;
+                    }
+                    const imgForm = new FormData();
+                    imgForm.append('image', imageFile);
+                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
+                    if (!imgRes.ok) {
+                        throw new Error('Error uploading image');
+                    }
+                    const imgData = await imgRes.json();
+                    imageId = imgData.fileId;
+                }
 
                 try {
                     if (isEdit) {
@@ -1165,10 +1291,10 @@ if (imagemFile && imagemFile.size > 0) {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 id: editId,
-                                dataretirada: new Date().toISOString().slice(0,10),
-                                ultimoUsuario: data.ultimoUsuario,
-                                quantidade: data.quantidade || 1,
-                                observacao: data.observacao || ''
+                                withdrawDate: new Date().toISOString().slice(0, 10),
+                                lastUser: data.lastUser,
+                                quantity: data.quantity || 1,
+                                note: data.note || ''
                             })
                         });
                     } else {
@@ -1177,18 +1303,18 @@ if (imagemFile && imagemFile.size > 0) {
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 ...data,
-                                status: 'Disponível',
-                                dataEntrada: new Date().toISOString().slice(0,10),
-                                ...(imagemId ? { imagemId } : {})
+                                status: 'Available',
+                                entryDate: new Date().toISOString().slice(0, 10),
+                                ...(imageId ? { imageId } : {})
                             })
                         });
                     }
-                    
+
                     closeModal();
                     await getEquipments();
-                    
+
                 } catch (err) {
-                    alert('Erro ao salvar no banco de dados: ' + err.message);
+                    alert('Error saving to database: ' + err.message);
                 }
             };
 
@@ -1198,60 +1324,60 @@ if (imagemFile && imagemFile.size > 0) {
         function createItemForm(isEdit) {
             return `
         <div class="form-group">
-            <label class="form-label" for="nome">Nome do Item</label>
-            <input class="form-input" type="text" name="nome" id="nome" required>
+            <label class="form-label" for="name">Item Name</label>
+            <input class="form-input" type="text" name="name" id="name" required>
         </div>
         <div class="form-group">
-            <label class="form-label">Imagem do Item</label>
+            <label class="form-label">Item Image</label>
             <div class="file-input-wrapper">
-                <input type="file" name="imagem" id="imagem" accept="image/png,image/jpeg">
+                <input type="file" name="image" id="image" accept="image/png,image/jpeg">
                 <div class="file-input-label">
                     <i class="fas fa-cloud-upload-alt file-input-icon"></i>
-                    <span>Clique ou arraste uma imagem aqui</span>
-                    <small>PNG ou JPEG até 5MB</small>
+                    <span>Click or drag an image here</span>
+                    <small>PNG or JPEG up to 5MB</small>
                 </div>
             </div>
-            ${isEdit ? '<small>Deixe em branco para manter a imagem atual</small>' : ''}
+            ${isEdit ? '<small>Leave blank to keep the current image</small>' : ''}
         </div>
                 <div class="form-group">
-                    <label class="form-label" for="categoria">Categoria</label>
-                    <input class="form-input" type="text" name="categoria" id="categoria" required>
+                    <label class="form-label" for="category">Category</label>
+                    <input class="form-input" type="text" name="category" id="category" required>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="quantidade">Quantidade</label>
-                    <input class="form-input" type="number" name="quantidade" id="quantidade" min="0" required>
+                    <label class="form-label" for="quantity">Quantity</label>
+                    <input class="form-input" type="number" name="quantity" id="quantity" min="0" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="status">Status</label>
                     <select class="form-select" name="status" id="status" required>
-                        <option value="Disponível">Disponível</option>
-                        <option value="Em uso">Em uso</option>
-                        <option value="Manutenção">Manutenção</option>
+                        <option value="Available">Available</option>
+                        <option value="In use">In use</option>
+                        <option value="Maintenance">Maintenance</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="observacao">Observação</label>
-                    <textarea class="form-textarea" name="observacao" id="observacao"></textarea>
+                    <label class="form-label" for="note">Note</label>
+                    <textarea class="form-textarea" name="note" id="note"></textarea>
                 </div>
             `;
         }
 
         function createWithdrawForm() {
-            const usuarios = ["test"];
+            const users = ["test"];
             return `
                 <div class="form-group">
-                    <label class="form-label" for="ultimoUsuario">Usuário que Retirou</label>
-                    <select class="form-select" name="ultimoUsuario" id="ultimoUsuario" required>
-                        ${usuarios.map(usuario => `<option value="${usuario}">${usuario}</option>`).join('')}
+                    <label class="form-label" for="lastUser">User who withdrew</label>
+                    <select class="form-select" name="lastUser" id="lastUser" required>
+                        ${users.map(user => `<option value="${user}">${user}</option>`).join('')}
                     </select>
                 </div>
         <div class="form-group">
-            <label class="form-label" for="quantidade">Quantidade</label>
-            <input class="form-input" type="number" name="quantidade" id="quantidade" min="1" required>
+            <label class="form-label" for="quantity">Quantity</label>
+            <input class="form-input" type="number" name="quantity" id="quantity" min="1" required>
         </div>
                 <div class="form-group">
-                    <label class="form-label" for="observacao">Observação</label>
-                    <textarea class="form-textarea" name="observacao" id="observacao"></textarea>
+                    <label class="form-label" for="note">Note</label>
+                    <textarea class="form-textarea" name="note" id="note"></textarea>
                 </div>
             `;
         }
@@ -1276,47 +1402,49 @@ if (imagemFile && imagemFile.size > 0) {
         }
 
         function deleteItem(id) {
-            if (!confirm('Tem certeza que deseja excluir este item?')) return;
+            if (!confirm('Are you sure you want to delete this item?')) return;
             fetch('/delete-equipment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ id })
             })
-            .then(async res => {
-                if (res.ok) {
-                    await getEquipments();
-                } else {
-                    alert('Erro ao excluir item!');
-                }
-            })
-            .catch(() => alert('Erro ao excluir item!'));
+                .then(async res => {
+                    if (res.ok) {
+                        await getEquipments();
+                    } else {
+                        alert('Error deleting item!');
+                    }
+                })
+                .catch(() => alert('Error deleting item!'));
         }
 
-        document.getElementById('searchInput').addEventListener('input', function() {
+        document.getElementById('searchInput').addEventListener('input', function () {
             renderEquipments(this.value);
         });
 
         async function getEquipments() {
             try {
-                const response = await fetch('/get_all_equipaments', {
+                const response = await fetch('/get_all_equipments', {
                     method: 'GET',
                     headers: { 'Content-Type': 'application/json' }
                 });
                 if (response.ok) {
                     const data = await response.json();
-equipments = data.map(item => ({
-    ...item,
-    id: item._id || item.id || Date.now() + Math.floor(Math.random() * 10000)
-}));
+                    equipments = data.map(item => ({
+                        ...item,
+                        id: item._id || item.id || Date.now() + Math.floor(Math.random() * 10000)
+                    }));
                     renderEquipments();
                 } else {
-                    alert('Erro ao buscar itens do estoque.');
+                    alert('Error fetching inventory items.');
                 }
             } catch (err) {
-                alert('Erro ao conectar ao servidor.');
+                alert('Error connecting to server.');
             }
         }
         getEquipments();
         renderEquipments();
     </script>
 </body>
+
+</html>
