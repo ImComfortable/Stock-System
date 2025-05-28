@@ -10,9 +10,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #a5b4fc;
+            --primary: #424242;
+            --primary-dark: #2b2b2b;
+            --primary-light: #4b599b;
             --success: #10b981;
             --success-light: #d1fae5;
             --warning: #f59e0b;
@@ -42,7 +42,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #303755 0%, rgb(44, 35, 54) 100%);
             font-family: 'Inter', sans-serif;
             margin: 0;
             min-height: 100vh;
@@ -148,17 +148,6 @@
             box-shadow: var(--shadow-lg);
         }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.2);
-            color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-
         .main-content {
             padding: 2rem;
         }
@@ -178,6 +167,16 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+        }
+
+        .btn-secondary {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-200);
+            color: var(--gray-900);
         }
 
         .summary-card::before {
@@ -412,14 +411,14 @@
         }
 
         .info-icon {
-            width: 16px;
+            width: 12px;
             color: var(--gray-500);
             text-align: center;
         }
 
         .info-label {
             font-weight: 500;
-            min-width: 80px;
+            min-width: 50px;
         }
 
         .info-value {
@@ -434,7 +433,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.025em;
-            /* Remove background to allow color classes to work */
         }
 
         .badge.available {
@@ -794,6 +792,11 @@
             }
         }
 
+        @media (min-width: 1024px) {
+    .modal {
+        max-width: 700px;
+    }
+}
         .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -802,7 +805,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.025em;
-            /* Remove background to allow color classes to work */
         }
 
         .badge.available {
@@ -855,6 +857,105 @@
         .btn-action.loading .btn-icon-content {
             opacity: 0.2;
         }
+
+        .dynamic-fields-wrapper {
+            border: 1.5px dashed var(--gray-200);
+            border-radius: var(--radius);
+            padding: 0.75rem;
+            background: var(--gray-50);
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dynamic-field-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+        }
+
+        .dynamic-field-row input {
+            min-width: 0;
+        }
+
+        .dynamic-field-row .form-input {
+            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .dynamic-field-row .btn-delete {
+            background: var(--danger-light);
+            color: var(--danger);
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: background 0.2s;
+        }
+
+        .dynamic-field-row .btn-delete:hover {
+            background: var(--danger);
+            color: var(--white);
+        }
+
+        .add-dynamic-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: none;
+            border-radius: var(--radius);
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: background 0.2s;
+        }
+
+        .add-dynamic-btn:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        @media (max-width: 768px) {
+            .dynamic-fields-wrapper {
+                padding: 0.5rem;
+                gap: 0.35rem;
+            }
+
+            .dynamic-field-row {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.35rem;
+                padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+            }
+
+            .add-dynamic-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .dynamic-fields-wrapper {
+                padding: 0.3rem;
+            }
+
+            .dynamic-field-row {
+                padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+            }
+        }
     </style>
 </head>
 
@@ -889,10 +990,12 @@
     <script>
         let equipments = [];
 
+        // Utilitário para capitalizar
         function capitalizeFirst(str) {
             return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
         }
 
+        // Utilitário para formatar datas
         function formatDate(dateStr) {
             if (!dateStr) return 'Not informed';
             const date = new Date(dateStr);
@@ -908,45 +1011,413 @@
             return statusMap[status] || { class: 'available', icon: 'fas fa-question-circle' };
         }
 
-        function renderSummary() {
-            const total = equipments.length;
-            const available = equipments.filter(e => e.status === 'Available').length;
-            const inUse = equipments.filter(e => e.status === 'In use').length;
-            const maintenance = equipments.filter(e => e.status === 'Maintenance').length;
-            const totalQuantity = equipments.reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+        // --- NOVO: Função para abrir modal de detalhes (agora com ícone para cada campo) ---
+        function showDetailsModal(itemId) {
+            removeExistingModal();
+            const eq = equipments.find(e => e.id == itemId);
+            if (!eq) return;
 
-            document.getElementById('summaryPanel').innerHTML = `
-                <div class="summary-card">
-                    <div class="summary-header">
-                        <i class="fas fa-boxes summary-icon" style="color: var(--primary)"></i>
-                        <div class="summary-value">${totalQuantity}</div>
-                    </div>
-                    <div class="summary-label">Total Items</div>
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.id = 'modalOverlay';
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+
+            // Mapeamento de ícones para campos conhecidos
+            // Na função showDetailsModal, substitua:
+            const iconMap = {
+                name: 'fas fa-tag',
+                category: 'fas fa-tags',
+                quantity: 'fas fa-sort-numeric-up',
+                status: 'fas fa-check-circle',  // Trocando fa-traffic-light por fa-check-circle
+                note: 'fas fa-info-circle',
+                details: 'fas fa-info',
+                entryDate: 'fas fa-calendar-plus',
+                withdrawDate: 'fas fa-calendar-minus',
+                lastUser: 'fas fa-user',
+                lastQuantity: 'fas fa-cubes',
+                originId: 'fas fa-link'
+            };
+
+            let detailsHtml = '';
+            Object.keys(eq).forEach(key => {
+                if (['_id', 'id', 'imageId'].includes(key)) return;
+                let value = eq[key];
+                if (key === 'entryDate' || key === 'withdrawDate') value = formatDate(value);
+                if (typeof value === 'string' && value.length === 0) return;
+                // Escolhe ícone ou padrão
+                const icon = iconMap[key] ? `${iconMap[key]} info-icon` : 'fas fa-info info-icon';
+                detailsHtml += `
+                <div class="info-item">
+                    <i class="${icon}"></i>
+                    <span class="info-label">${capitalizeFirst(key)}:</span>
+                    <span class="info-value">${DOMPurify.sanitize(String(value))}</span>
                 </div>
-                <div class="summary-card success">
-                    <div class="summary-header">
-                        <i class="fas fa-check-circle summary-icon" style="color: var(--success)"></i>
-                        <div class="summary-value">${available}</div>
-                    </div>
-                    <div class="summary-label">Available</div>
+            `;
+            });
+
+            modal.innerHTML = `
+            <div class="modal-header">
+                <h2 class="modal-title">Item Details</h2>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="info-grid">
+                    ${detailsHtml}
                 </div>
-                <div class="summary-card warning">
-                    <div class="summary-header">
-                        <i class="fas fa-user-check summary-icon" style="color: var(--warning)"></i>
-                        <div class="summary-value">${inUse}</div>
-                    </div>
-                    <div class="summary-label">In Use</div>
+            </div>
+        `;
+            modalOverlay.appendChild(modal);
+            document.body.appendChild(modalOverlay);
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+        }
+
+        // --- NOVO: Função para adicionar/remover campos dinâmicos no form ---
+        function addDynamicField(container, key = '', value = '') {
+            const div = document.createElement('div');
+            div.className = 'dynamic-field-row';
+            div.innerHTML = `
+            <input class="form-input" type="text" name="dyn_key[]" placeholder="Field name" value="${DOMPurify.sanitize(key)}" style="flex:1;" autocomplete="off">
+            <input class="form-input" type="text" name="dyn_value[]" placeholder="Value" value="${DOMPurify.sanitize(value)}" style="flex:2;" autocomplete="off">
+            <button type="button" class="btn-delete" title="Remove" tabindex="-1">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+            div.querySelector('.btn-delete').onclick = function () {
+                div.remove();
+            };
+            container.appendChild(div);
+        }
+
+
+        function createItemForm(isEdit) {
+            return `
+        <div class="form-group">
+            <label class="form-label" for="name">Item Name</label>
+            <input class="form-input" type="text" name="name" id="name" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Item Image</label>
+            <div class="file-input-wrapper">
+                <input type="file" name="image" id="image" accept="image/png,image/jpeg">
+                <div class="file-input-label">
+                    <i class="fas fa-cloud-upload-alt file-input-icon"></i>
+                    <span>Click or drag an image here</span>
+                    <small>PNG or JPEG up to 5MB</small>
                 </div>
-                <div class="summary-card danger">
-                    <div class="summary-header">
-                        <i class="fas fa-tools summary-icon" style="color: var(--danger)"></i>
-                        <div class="summary-value">${maintenance}</div>
-                    </div>
-                    <div class="summary-label">Maintenance</div>
+            </div>
+            ${isEdit ? '<small>Leave blank to keep the current image</small>' : ''}
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="category">Category</label>
+            <input class="form-input" type="text" name="category" id="category" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="quantity">Quantity</label>
+            <input class="form-input" type="number" name="quantity" id="quantity" min="0" required>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="status">Status</label>
+            <select class="form-select" name="status" id="status" required>
+                <option value="Available">Available</option>
+                <option value="In use">In use</option>
+                <option value="Maintenance">Maintenance</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="note">Note</label>
+            <textarea class="form-textarea" name="note" id="note"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Additional Fields</label>
+            <div class="dynamic-fields-wrapper" id="dynamicFields"></div>
+            <button type="button" class="add-dynamic-btn" id="addFieldBtn">
+                <i class="fas fa-plus"></i> Add Field
+            </button>
+        </div>
+        `;
+        }
+
+        function createWithdrawForm() {
+            const users = ["test"];
+            return `
+                <div class="form-group">
+                    <label class="form-label" for="lastUser">User who withdrew</label>
+                    <select class="form-select" name="lastUser" id="lastUser" required>
+                        ${users.map(user => `<option value="${user}">${user}</option>`).join('')}
+                    </select>
+                </div>
+        <div class="form-group">
+            <label class="form-label" for="quantity">Quantity</label>
+            <input class="form-input" type="number" name="quantity" id="quantity" min="1" required>
+        </div>
+                <div class="form-group">
+                    <label class="form-label" for="note">Note</label>
+                    <textarea class="form-textarea" name="note" id="note"></textarea>
                 </div>
             `;
         }
 
+        function closeModal() {
+            const modal = document.getElementById('modalOverlay');
+            if (modal) modal.remove();
+        }
+
+        function removeExistingModal() {
+            closeModal();
+        }
+
+        document.getElementById('addItemBtn').onclick = () => showModal('add');
+
+        function editItem(id, btn) {
+            setButtonLoading(btn, true);
+            setTimeout(() => {
+                setButtonLoading(btn, false);
+                showModal('edit', id);
+            }, 200);
+        }
+
+        function withdrawItem(id, btn) {
+            setButtonLoading(btn, true);
+            setTimeout(() => {
+                setButtonLoading(btn, false);
+                showModal('withdraw', id);
+            }, 200);
+        }
+
+        function deleteItem(id, btn) {
+            if (!confirm('Are you sure you want to delete this item?')) return;
+            setButtonLoading(btn, true);
+            fetch('/delete-equipment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id })
+            })
+                .then(async res => {
+                    setButtonLoading(btn, false);
+                    if (res.ok) {
+                        await getEquipments();
+                    } else {
+                        alert('Error deleting item!');
+                    }
+                })
+                .catch(() => {
+                    setButtonLoading(btn, false);
+                    alert('Error deleting item!');
+                });
+        }
+
+        document.getElementById('addItemBtn').onclick = () => showModal('add');
+
+        function showModal(type, editId = null) {
+            removeExistingModal();
+
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.id = 'modalOverlay';
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+
+            const isWithdraw = type === 'withdraw';
+            const isEdit = type === 'edit';
+
+            let title = 'Add Item';
+            if (isEdit) title = 'Edit Item';
+            else if (isWithdraw) title = 'Withdraw Item';
+
+            modal.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">${title}</h2>
+                    <button class="modal-close" onclick="closeModal()">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="itemForm" class="form-grid">
+                        ${isWithdraw ? createWithdrawForm() : createItemForm(isEdit)}
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                            <button type="submit" class="btn-submit">
+                                ${isEdit ? 'Save Changes' : isWithdraw ? 'Confirm Withdraw' : 'Add Item'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            modalOverlay.appendChild(modal);
+            document.body.appendChild(modalOverlay);
+
+            // --- NOVO: Adicionar/remover campos dinâmicos ---
+            if (!isWithdraw) {
+                const dynFieldsContainer = modal.querySelector('#dynamicFields');
+                modal.querySelector('#addFieldBtn').onclick = function (e) {
+                    e.preventDefault();
+                    addDynamicField(dynFieldsContainer);
+                };
+                // Se for edição, preencher campos dinâmicos existentes
+                if (isEdit && editId) {
+                    setTimeout(() => {
+                        const eq = equipments.find(e => e.id == editId);
+                        if (!eq) return;
+                        const exclude = ['_id', 'id', 'name', 'imageId', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
+                        Object.keys(eq).forEach(key => {
+                            if (!exclude.includes(key)) {
+                                addDynamicField(dynFieldsContainer, key, eq[key]);
+                            }
+                        });
+                    }, 100);
+                }
+            }
+
+            const fileInput = modal.querySelector('input[type="file"]');
+            if (fileInput) {
+                fileInput.onchange = function () {
+                    const file = this.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function (e) {
+                            const preview = document.createElement('img');
+                            preview.src = e.target.result;
+                            preview.className = 'equipment-img';
+                            preview.style.marginTop = '1rem';
+                            const wrapper = fileInput.closest('.file-input-wrapper');
+                            const existingPreview = wrapper.querySelector('img');
+                            if (existingPreview) {
+                                existingPreview.remove();
+                            }
+                            wrapper.appendChild(preview);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                };
+            }
+
+            if (isEdit || isWithdraw) {
+                setTimeout(() => {
+                    if (!document.body.contains(modal)) return;
+
+                    const eq = equipments.find(e => e.id == editId);
+                    if (!eq) return;
+
+                    const form = modal.querySelector('#itemForm');
+                    if (!form || !document.body.contains(form)) return;
+
+                    Object.keys(eq).forEach(key => {
+                        try {
+                            const input = form.querySelector(`[name="${key}"]`);
+                            if (input && document.body.contains(input)) {
+                                if (input.type === 'checkbox') {
+                                    input.checked = !!eq[key];
+                                } else if (input.tagName === 'SELECT') {
+                                    const options = Array.from(input.options);
+                                    options.forEach(opt => {
+                                        if (opt && opt.parentNode) {
+                                            opt.selected = opt.value == eq[key];
+                                        }
+                                    });
+                                } else if (input.tagName === 'TEXTAREA') {
+                                    input.value = eq[key] || '';
+                                } else {
+                                    input.value = eq[key] ?? '';
+                                }
+                            }
+                        } catch (error) {
+                            console.warn('Error filling field:', key, error);
+                        }
+                    });
+                }, 100);
+            }
+
+            modal.querySelector('#itemForm').onsubmit = async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                // --- CORRIGIDO: Pega campos dinâmicos corretamente ---
+                if (!isWithdraw) {
+                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
+                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
+                    for (let i = 0; i < dynKeys.length; i++) {
+                        const key = dynKeys[i].value.trim();
+                        if (key) {
+                            data[key] = dynVals[i] ? dynVals[i].value : '';
+                        }
+                    }
+                }
+
+                let imageId = null;
+                const imageFile = formData.get('image');
+                if (imageFile && imageFile.size > 0) {
+                    if (imageFile.size > 5 * 1024 * 1024) {
+                        alert('The image must be at most 5MB');
+                        return;
+                    }
+                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
+                        alert('Only PNG or JPEG images are allowed');
+                        return;
+                    }
+                    const imgForm = new FormData();
+                    imgForm.append('image', imageFile);
+                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
+                    if (!imgRes.ok) {
+                        throw new Error('Error uploading image');
+                    }
+                    const imgData = await imgRes.json();
+                    imageId = imgData.fileId;
+                }
+
+                try {
+                    if (isEdit) {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                id: editId,
+                                ...(imageId ? { imageId } : {})
+                            })
+                        });
+                    } else if (isWithdraw) {
+                        await fetch('/withdraw-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id: editId,
+                                withdrawDate: new Date().toISOString().slice(0, 10),
+                                lastUser: data.lastUser,
+                                quantity: data.quantity || 1,
+                                note: data.note || ''
+                            })
+                        });
+                    } else {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                status: 'Available',
+                                entryDate: new Date().toISOString().slice(0, 10),
+                                ...(imageId ? { imageId } : {})
+                            })
+                        });
+                    }
+
+                    closeModal();
+                    await getEquipments();
+
+                } catch (err) {
+                    alert('Error saving to database: ' + err.message);
+                }
+            };
+
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+        }
+
+        // --- MODIFICADO: renderEquipments exibe só os campos principais e botão de detalhes ---
         function renderEquipments(searchTerm = '') {
             renderSummary();
             const grid = document.getElementById('equipmentGrid');
@@ -960,14 +1431,14 @@
 
             if (filtered.length === 0) {
                 grid.innerHTML = `
-                    <div class="empty-state" style="grid-column: 1 / -1;">
-                        <div class="empty-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
-                        <div class="empty-title">No items found</div>
-                        <div class="empty-description">Try adjusting your search terms</div>
+                <div class="empty-state" style="grid-column: 1 / -1;">
+                    <div class="empty-icon">
+                        <i class="fas fa-search"></i>
                     </div>
-                `;
+                    <div class="empty-title">No items found</div>
+                    <div class="empty-description">Try adjusting your search terms</div>
+                </div>
+            `;
                 return;
             }
 
@@ -1009,46 +1480,22 @@
                         <span class="info-label">Quantity:</span>
                         <span class="info-value">${eq.quantity || 0}</span>
                     </div>
-                    <div class="info-item">
-                        <i class="fas fa-traffic-light info-icon"></i>
-                        <span class="info-label">Status:</span>
-                        <span class="badge ${statusInfo.class}">${eq.status}</span>
+<div class="info-item">
+    <i class="fas fa-check-circle info-icon"></i>
+    <span class="info-label">Status:</span>
+    <span class="badge ${statusInfo.class}">${eq.status}</span>
+</div>
+                             <div class="info-item">
+                        <i class="fas fa-info-circle info-icon"></i>
+                        <span class="info-label">Note:</span>
+                        <span class="info-value">${DOMPurify.sanitize(eq.note || '')}</span>
                     </div>
-                    <div class="info-item">
-                        <i class="fas fa-calendar-plus info-icon"></i>
-                        <span class="info-label">Entry:</span>
-                        <span class="info-value">${formatDate(eq.entryDate)}</span>
-                    </div>
-                    ${eq.withdrawDate ? `
-                        <div class="info-item">
-                            <i class="fas fa-calendar-minus info-icon"></i>
-                            <span class="info-label">Withdraw:</span>
-                            <span class="info-value">${formatDate(eq.withdrawDate)}</span>
-                        </div>
-                    ` : ''}
-                    ${eq.lastUser ? `
-                        <div class="info-item">
-                            <i class="fas fa-user info-icon"></i>
-                            <span class="info-label">User:</span>
-                            <span class="info-value">${DOMPurify.sanitize(eq.lastUser)}</span>
-                        </div>
-                    ` : ''}
-                    ${eq.lastQuantity ? `
-                        <div class="info-item">
-                            <i class="fas fa-cubes info-icon"></i>
-                            <span class="info-label">Last Quantity:</span>}
-                        </div>
-                    ` : ''}   
-                    ${eq.note ? `
-                        <div class="info-item">
-                            <i class="fas fa-info-circle info-icon"></i>
-                            <span class="info-label">Note:</span>
-                            <span class="info-value">${DOMPurify.sanitize(eq.note)}</span>
-                        </div>
-                    ` : ''}
                 </div>
             </div>
             <div class="card-actions">
+                <button class="btn-action btn-secondary" onclick="showDetailsModal('${eq.id}')" title="Details">
+                    <span class="btn-icon-content"><i class="fas fa-eye"></i></span>
+                </button>
                 <button class="btn-action btn-edit" onclick="editItem('${eq.id}', this)" title="Edit">
                     <span class="btn-icon-content"><i class="fas fa-edit"></i></span>
                 </button>
@@ -1187,6 +1634,28 @@
             modalOverlay.appendChild(modal);
             document.body.appendChild(modalOverlay);
 
+            // --- NOVO: Adicionar/remover campos dinâmicos ---
+            if (!isWithdraw) {
+                const dynFieldsContainer = modal.querySelector('#dynamicFields');
+                modal.querySelector('#addFieldBtn').onclick = function (e) {
+                    e.preventDefault();
+                    addDynamicField(dynFieldsContainer);
+                };
+                // Se for edição, preencher campos dinâmicos existentes
+                if (isEdit && editId) {
+                    setTimeout(() => {
+                        const eq = equipments.find(e => e.id == editId);
+                        if (!eq) return;
+                        const exclude = ['_id', 'id', 'name', 'imageId', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
+                        Object.keys(eq).forEach(key => {
+                            if (!exclude.includes(key)) {
+                                addDynamicField(dynFieldsContainer, key, eq[key]);
+                            }
+                        });
+                    }, 100);
+                }
+            }
+
             const fileInput = modal.querySelector('input[type="file"]');
             if (fileInput) {
                 fileInput.onchange = function () {
@@ -1254,6 +1723,18 @@
                     data[key] = value;
                 }
 
+                // --- CORRIGIDO: Pega campos dinâmicos corretamente ---
+                if (!isWithdraw) {
+                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
+                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
+                    for (let i = 0; i < dynKeys.length; i++) {
+                        const key = dynKeys[i].value.trim();
+                        if (key) {
+                            data[key] = dynVals[i] ? dynVals[i].value : '';
+                        }
+                    }
+                }
+
                 let imageId = null;
                 const imageFile = formData.get('image');
                 if (imageFile && imageFile.size > 0) {
@@ -1282,7 +1763,8 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
                                 ...data,
-                                id: editId
+                                id: editId,
+                                ...(imageId ? { imageId } : {})
                             })
                         });
                     } else if (isWithdraw) {
@@ -1321,129 +1803,62 @@
             modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
         }
 
-        function createItemForm(isEdit) {
-            return `
-        <div class="form-group">
-            <label class="form-label" for="name">Item Name</label>
-            <input class="form-input" type="text" name="name" id="name" required>
-        </div>
-        <div class="form-group">
-            <label class="form-label">Item Image</label>
-            <div class="file-input-wrapper">
-                <input type="file" name="image" id="image" accept="image/png,image/jpeg">
-                <div class="file-input-label">
-                    <i class="fas fa-cloud-upload-alt file-input-icon"></i>
-                    <span>Click or drag an image here</span>
-                    <small>PNG or JPEG up to 5MB</small>
-                </div>
-            </div>
-            ${isEdit ? '<small>Leave blank to keep the current image</small>' : ''}
-        </div>
-                <div class="form-group">
-                    <label class="form-label" for="category">Category</label>
-                    <input class="form-input" type="text" name="category" id="category" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="quantity">Quantity</label>
-                    <input class="form-input" type="number" name="quantity" id="quantity" min="0" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="status">Status</label>
-                    <select class="form-select" name="status" id="status" required>
-                        <option value="Available">Available</option>
-                        <option value="In use">In use</option>
-                        <option value="Maintenance">Maintenance</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="note">Note</label>
-                    <textarea class="form-textarea" name="note" id="note"></textarea>
-                </div>
-            `;
-        }
+        // Adicione a função renderSummary aqui (ela foi removida no último patch por engano)
+        function renderSummary() {
+            const totalQuantity = equipments.reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+            const available = equipments
+                .filter(e => e.status === 'Available')
+                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+            const inUse = equipments
+                .filter(e => e.status === 'In use')
+                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+            const maintenance = equipments
+                .filter(e => e.status === 'Maintenance')
+                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
 
-        function createWithdrawForm() {
-            const users = ["test"];
-            return `
-                <div class="form-group">
-                    <label class="form-label" for="lastUser">User who withdrew</label>
-                    <select class="form-select" name="lastUser" id="lastUser" required>
-                        ${users.map(user => `<option value="${user}">${user}</option>`).join('')}
-                    </select>
+            document.getElementById('summaryPanel').innerHTML = `
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <i class="fas fa-boxes summary-icon" style="color: var(--primary)"></i>
+                        <div class="summary-value">${totalQuantity}</div>
+                    </div>
+                    <div class="summary-label">Total Items</div>
                 </div>
-        <div class="form-group">
-            <label class="form-label" for="quantity">Quantity</label>
-            <input class="form-input" type="number" name="quantity" id="quantity" min="1" required>
-        </div>
-                <div class="form-group">
-                    <label class="form-label" for="note">Note</label>
-                    <textarea class="form-textarea" name="note" id="note"></textarea>
+                <div class="summary-card success">
+                    <div class="summary-header">
+                        <i class="fas fa-check-circle summary-icon" style="color: var(--success)"></i>
+                        <div class="summary-value">${available}</div>
+                    </div>
+                    <div class="summary-label">Available</div>
+                </div>
+                <div class="summary-card warning">
+                    <div class="summary-header">
+                        <i class="fas fa-user-check summary-icon" style="color: var(--warning)"></i>
+                        <div class="summary-value">${inUse}</div>
+                    </div>
+                    <div class="summary-label">In Use</div>
+                </div>
+                <div class="summary-card danger">
+                    <div class="summary-header">
+                        <i class="fas fa-tools summary-icon" style="color: var(--danger)"></i>
+                        <div class="summary-value">${maintenance}</div>
+                    </div>
+                    <div class="summary-label">Maintenance</div>
                 </div>
             `;
         }
 
-        function closeModal() {
-            const modal = document.getElementById('modalOverlay');
-            if (modal) modal.remove();
-        }
-
-        function removeExistingModal() {
-            closeModal();
-        }
-
-        document.getElementById('addItemBtn').onclick = () => showModal('add');
-
-        function editItem(id) {
-            showModal('edit', id);
-        }
-
-        function withdrawItem(id) {
-            showModal('withdraw', id);
-        }
-
-        function deleteItem(id) {
-            if (!confirm('Are you sure you want to delete this item?')) return;
-            fetch('/delete-equipment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            })
-                .then(async res => {
-                    if (res.ok) {
-                        await getEquipments();
-                    } else {
-                        alert('Error deleting item!');
-                    }
-                })
-                .catch(() => alert('Error deleting item!'));
-        }
-
-        document.getElementById('searchInput').addEventListener('input', function () {
-            renderEquipments(this.value);
-        });
-
-        async function getEquipments() {
-            try {
-                const response = await fetch('/get_all_equipments', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    equipments = data.map(item => ({
-                        ...item,
-                        id: item._id || item.id || Date.now() + Math.floor(Math.random() * 10000)
-                    }));
+        function getEquipments() {
+            fetch('/get_all_equipments')
+                .then(res => res.json())
+                .then(data => {
+                    equipments = data;
                     renderEquipments();
-                } else {
-                    alert('Error fetching inventory items.');
-                }
-            } catch (err) {
-                alert('Error connecting to server.');
-            }
+                })
+                .catch(err => console.error('Error fetching equipments:', err));
         }
+
         getEquipments();
-        renderEquipments();
     </script>
 </body>
 

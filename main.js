@@ -6,8 +6,8 @@ const multer = require('multer');
 const { GridFsStorage } = require('multer-gridfs-storage');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || 'localhost';
+const PORT = 8080;
+const HOST = "192.168.22.66";
 
 app.use(express.json());
 app.use(express.static('static'));
@@ -289,5 +289,4 @@ async function startServer() {
         process.exit(1);
     }
 }
-
 startServer();
