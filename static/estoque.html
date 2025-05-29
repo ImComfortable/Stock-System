@@ -10,8 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #424242;
-            --primary-dark: #2b2b2b;
+            --primary: #007fff;
+            --primary-dark: #007fff;
             --primary-light: #4b599b;
             --success: #10b981;
             --success-light: #d1fae5;
@@ -1253,7 +1253,7 @@
                     setTimeout(() => {
                         const eq = equipments.find(e => e.id == editId);
                         if (!eq) return;
-                        const exclude = ['_id', 'id', 'name', 'imageId', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
+                        const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
                         Object.keys(eq).forEach(key => {
                             if (!exclude.includes(key)) {
                                 addDynamicField(dynFieldsContainer, key, eq[key]);
@@ -1321,93 +1321,8 @@
                     });
                 }, 100);
             }
-
-            modal.querySelector('#itemForm').onsubmit = async function (e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const data = {};
-                for (let [key, value] of formData.entries()) {
-                    data[key] = value;
-                }
-
-                if (!isWithdraw) {
-                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
-                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
-                    for (let i = 0; i < dynKeys.length; i++) {
-                        const key = dynKeys[i].value.trim();
-                        if (key) {
-                            data[key] = dynVals[i] ? dynVals[i].value : '';
-                        }
-                    }
-                }
-
-                let imageId = null;
-                const imageFile = formData.get('image');
-                if (imageFile && imageFile.size > 0) {
-                    if (imageFile.size > 5 * 1024 * 1024) {
-                        alert('The image must be at most 5MB');
-                        return;
-                    }
-                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
-                        alert('Only PNG or JPEG images are allowed');
-                        return;
-                    }
-                    const imgForm = new FormData();
-                    imgForm.append('image', imageFile);
-                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
-                    if (!imgRes.ok) {
-                        throw new Error('Error uploading image');
-                    }
-                    const imgData = await imgRes.json();
-                    imageId = imgData.fileId;
-                }
-
-                try {
-                    if (isEdit) {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                id: editId,
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    } else if (isWithdraw) {
-                        await fetch('/withdraw-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                id: editId,
-                                withdrawDate: new Date().toISOString().slice(0, 10),
-                                lastUser: data.lastUser,
-                                quantity: data.quantity || 1,
-                                note: data.note || ''
-                            })
-                        });
-                    } else {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                status: 'Available',
-                                entryDate: new Date().toISOString().slice(0, 10),
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    }
-
-                    closeModal();
-                    await getEquipments();
-
-                } catch (err) {
-                    alert('Error saving to database: ' + err.message);
-                }
-            };
-
-            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
         }
+
 
         function renderEquipments(searchTerm = '') {
             renderSummary();
@@ -1635,7 +1550,7 @@
                     setTimeout(() => {
                         const eq = equipments.find(e => e.id == editId);
                         if (!eq) return;
-                        const exclude = ['_id', 'id', 'name', 'imageId', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
+                        const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
                         Object.keys(eq).forEach(key => {
                             if (!exclude.includes(key)) {
                                 addDynamicField(dynFieldsContainer, key, eq[key]);
