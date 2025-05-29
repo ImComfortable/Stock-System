@@ -793,10 +793,11 @@
         }
 
         @media (min-width: 1024px) {
-    .modal {
-        max-width: 700px;
-    }
-}
+            .modal {
+                max-width: 700px;
+            }
+        }
+
         .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -912,7 +913,7 @@
             align-items: center;
             gap: 0.5rem;
             background: var(--primary-light);
-            color: var(--primary-dark);
+            color: white;
             border: none;
             border-radius: var(--radius);
             padding: 0.5rem 1rem;
@@ -990,12 +991,10 @@
     <script>
         let equipments = [];
 
-        // Utilitário para capitalizar
         function capitalizeFirst(str) {
             return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
         }
 
-        // Utilitário para formatar datas
         function formatDate(dateStr) {
             if (!dateStr) return 'Not informed';
             const date = new Date(dateStr);
@@ -1027,7 +1026,7 @@
                 name: 'fas fa-tag',
                 category: 'fas fa-tags',
                 quantity: 'fas fa-sort-numeric-up',
-                status: 'fas fa-check-circle', 
+                status: 'fas fa-check-circle',
                 note: 'fas fa-info-circle',
                 details: 'fas fa-info',
                 entryDate: 'fas fa-calendar-plus',
@@ -1181,26 +1180,70 @@
             }, 200);
         }
 
-        function deleteItem(id, btn) {
-            if (!confirm('Are you sure you want to delete this item?')) return;
-            setButtonLoading(btn, true);
-            fetch('/delete-equipment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            })
-                .then(async res => {
-                    setButtonLoading(btn, false);
-                    if (res.ok) {
+        function showDeleteModal(itemId) {
+            removeExistingModal();
+
+            const modalOverlay = document.createElement('div');
+            modalOverlay.className = 'modal-overlay';
+            modalOverlay.id = 'modalOverlay';
+
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+
+            modal.innerHTML = `
+        <div class="modal-header">
+            <h2 class="modal-title">Delete Item</h2>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form id="deleteForm" class="form-grid">
+                <div class="form-group">
+                    <label class="form-label" for="deleteQuantity">Quantity to delete</label>
+                    <input class="form-input" type="number" name="deleteQuantity" id="deleteQuantity" min="1" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn-submit">Confirm Delete</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+            modalOverlay.appendChild(modal);
+            document.body.appendChild(modalOverlay);
+
+            modal.querySelector('#deleteForm').onsubmit = async function (e) {
+                e.preventDefault();
+                const quantity = parseInt(document.getElementById('deleteQuantity').value, 10);
+                if (isNaN(quantity) || quantity <= 0) {
+                    alert('Please enter a valid quantity.');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/delete-equipment', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id: itemId, quantity })
+                    });
+
+                    if (response.ok) {
+                        closeModal();
                         await getEquipments();
                     } else {
-                        alert('Error deleting item!');
+                        const error = await response.json();
+                        alert(error.error || 'Error deleting item.');
                     }
-                })
-                .catch(() => {
-                    setButtonLoading(btn, false);
-                    alert('Error deleting item!');
-                });
+                } catch (err) {
+                    alert('Error deleting item: ' + err.message);
+                }
+            };
+
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+        }
+
+        function deleteItem(id, btn) {
+            showDeleteModal(id);
         }
 
         document.getElementById('addItemBtn').onclick = () => showModal('add');
@@ -1321,8 +1364,93 @@
                     });
                 }, 100);
             }
-        }
 
+            modal.querySelector('#itemForm').onsubmit = async function (e) {
+                e.preventDefault();
+                const formData = new FormData(this);
+                const data = {};
+                for (let [key, value] of formData.entries()) {
+                    data[key] = value;
+                }
+
+                if (!isWithdraw) {
+                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
+                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
+                    for (let i = 0; i < dynKeys.length; i++) {
+                        const key = dynKeys[i].value.trim();
+                        if (key) {
+                            data[key] = dynVals[i] ? dynVals[i].value : '';
+                        }
+                    }
+                }
+
+                let imageId = null;
+                const imageFile = formData.get('image');
+                if (imageFile && imageFile.size > 0) {
+                    if (imageFile.size > 5 * 1024 * 1024) {
+                        alert('The image must be at most 5MB');
+                        return;
+                    }
+                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
+                        alert('Only PNG or JPEG images are allowed');
+                        return;
+                    }
+                    const imgForm = new FormData();
+                    imgForm.append('image', imageFile);
+                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
+                    if (!imgRes.ok) {
+                        throw new Error('Error uploading image');
+                    }
+                    const imgData = await imgRes.json();
+                    imageId = imgData.fileId;
+                }
+
+                try {
+                    if (isEdit) {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                id: editId,
+                                ...(imageId ? { imageId } : {})
+                            })
+                        });
+                    } else if (isWithdraw) {
+                        await fetch('/withdraw-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                id: editId,
+                                withdrawDate: new Date().toISOString().slice(0, 10),
+                                lastUser: data.lastUser,
+                                quantity: data.quantity || 1,
+                                note: data.note || ''
+                            })
+                        });
+                    } else {
+                        await fetch('/add-equipment', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                ...data,
+                                status: 'Available',
+                                entryDate: new Date().toISOString().slice(0, 10),
+                                ...(imageId ? { imageId } : {})
+                            })
+                        });
+                    }
+
+                    closeModal();
+                    await getEquipments();
+
+                } catch (err) {
+                    alert('Error saving to database: ' + err.message);
+                }
+            };
+
+            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
+        }
 
         function renderEquipments(searchTerm = '') {
             renderSummary();
@@ -1478,25 +1606,7 @@
         }
 
         function deleteItem(id, btn) {
-            if (!confirm('Are you sure you want to delete this item?')) return;
-            setButtonLoading(btn, true);
-            fetch('/delete-equipment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            })
-                .then(async res => {
-                    setButtonLoading(btn, false);
-                    if (res.ok) {
-                        await getEquipments();
-                    } else {
-                        alert('Error deleting item!');
-                    }
-                })
-                .catch(() => {
-                    setButtonLoading(btn, false);
-                    alert('Error deleting item!');
-                });
+            showDeleteModal(id);
         }
 
         document.getElementById('addItemBtn').onclick = () => showModal('add');
@@ -1545,7 +1655,6 @@
                     e.preventDefault();
                     addDynamicField(dynFieldsContainer);
                 };
-                // Se for edição, preencher campos dinâmicos existentes
                 if (isEdit && editId) {
                     setTimeout(() => {
                         const eq = equipments.find(e => e.id == editId);

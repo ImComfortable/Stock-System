@@ -279,13 +279,35 @@ app.post('/return-equipment', async (req, res) => {
 
 app.post('/delete-equipment', async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id, quantity } = req.body;
         const collection = db.collection('equipments');
-        const result = await collection.deleteOne({ _id: new ObjectId(id) });
-        if (result.deletedCount === 0) {
+        const equipment = await collection.findOne({ _id: new ObjectId(id) });
+
+        if (!equipment) {
             return res.status(404).json({ error: 'Equipment not found for deletion.' });
         }
-        res.json({ success: true });
+
+        const currentStock = parseInt(equipment.quantity, 10) || 0;
+        const deleteQuantity = parseInt(quantity, 10);
+
+        if (deleteQuantity > currentStock) {
+            return res.status(400).json({ error: 'Deletion quantity exceeds available stock.' });
+        }
+
+        if (deleteQuantity === currentStock) {
+            const result = await collection.deleteOne({ _id: new ObjectId(id) });
+            if (result.deletedCount === 0) {
+                return res.status(404).json({ error: 'Equipment not found for deletion.' });
+            }
+            res.json({ success: true, message: 'Equipment deleted completely.' });
+        } else {
+            const newStock = currentStock - deleteQuantity;
+            await collection.updateOne(
+                { _id: new ObjectId(id) },
+                { $set: { quantity: newStock } }
+            );
+            res.json({ success: true, message: `Equipment stock updated. Remaining quantity: ${newStock}` });
+        }
     } catch (error) {
         console.error('Error deleting equipment:', error);
         res.status(500).json({ error: 'Error deleting equipment' });
