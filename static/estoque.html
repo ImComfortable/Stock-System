@@ -1298,7 +1298,7 @@
                         if (!eq) return;
                         const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
                         Object.keys(eq).forEach(key => {
-                            if (!exclude.includes(key)) {
+                            if (!exclude.includes(key) && !key.startsWith('dyn_')) { 
                                 addDynamicField(dynFieldsContainer, key, eq[key]);
                             }
                         });
@@ -1661,7 +1661,7 @@
                         if (!eq) return;
                         const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
                         Object.keys(eq).forEach(key => {
-                            if (!exclude.includes(key)) {
+                            if (!exclude.includes(key) && !key.startsWith('dyn_')) {
                                 addDynamicField(dynFieldsContainer, key, eq[key]);
                             }
                         });
