@@ -1011,7 +1011,6 @@
             return statusMap[status] || { class: 'available', icon: 'fas fa-question-circle' };
         }
 
-        // --- NOVO: Função para abrir modal de detalhes (agora com ícone para cada campo) ---
         function showDetailsModal(itemId) {
             removeExistingModal();
             const eq = equipments.find(e => e.id == itemId);
@@ -1024,13 +1023,11 @@
             const modal = document.createElement('div');
             modal.className = 'modal';
 
-            // Mapeamento de ícones para campos conhecidos
-            // Na função showDetailsModal, substitua:
             const iconMap = {
                 name: 'fas fa-tag',
                 category: 'fas fa-tags',
                 quantity: 'fas fa-sort-numeric-up',
-                status: 'fas fa-check-circle',  // Trocando fa-traffic-light por fa-check-circle
+                status: 'fas fa-check-circle', 
                 note: 'fas fa-info-circle',
                 details: 'fas fa-info',
                 entryDate: 'fas fa-calendar-plus',
@@ -1046,7 +1043,6 @@
                 let value = eq[key];
                 if (key === 'entryDate' || key === 'withdrawDate') value = formatDate(value);
                 if (typeof value === 'string' && value.length === 0) return;
-                // Escolhe ícone ou padrão
                 const icon = iconMap[key] ? `${iconMap[key]} info-icon` : 'fas fa-info info-icon';
                 detailsHtml += `
                 <div class="info-item">
@@ -1073,7 +1069,6 @@
             modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
         }
 
-        // --- NOVO: Função para adicionar/remover campos dinâmicos no form ---
         function addDynamicField(container, key = '', value = '') {
             const div = document.createElement('div');
             div.className = 'dynamic-field-row';
@@ -1248,14 +1243,12 @@
             modalOverlay.appendChild(modal);
             document.body.appendChild(modalOverlay);
 
-            // --- NOVO: Adicionar/remover campos dinâmicos ---
             if (!isWithdraw) {
                 const dynFieldsContainer = modal.querySelector('#dynamicFields');
                 modal.querySelector('#addFieldBtn').onclick = function (e) {
                     e.preventDefault();
                     addDynamicField(dynFieldsContainer);
                 };
-                // Se for edição, preencher campos dinâmicos existentes
                 if (isEdit && editId) {
                     setTimeout(() => {
                         const eq = equipments.find(e => e.id == editId);
@@ -1337,7 +1330,6 @@
                     data[key] = value;
                 }
 
-                // --- CORRIGIDO: Pega campos dinâmicos corretamente ---
                 if (!isWithdraw) {
                     const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
                     const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
@@ -1417,7 +1409,6 @@
             modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
         }
 
-        // --- MODIFICADO: renderEquipments exibe só os campos principais e botão de detalhes ---
         function renderEquipments(searchTerm = '') {
             renderSummary();
             const grid = document.getElementById('equipmentGrid');
@@ -1518,7 +1509,6 @@
             }).join('');
         }
 
-        // Função utilitária para mostrar spinner de loading no botão
         function setButtonLoading(btn, loading = true) {
             if (!btn) return;
             if (loading) {
@@ -1634,7 +1624,6 @@
             modalOverlay.appendChild(modal);
             document.body.appendChild(modalOverlay);
 
-            // --- NOVO: Adicionar/remover campos dinâmicos ---
             if (!isWithdraw) {
                 const dynFieldsContainer = modal.querySelector('#dynamicFields');
                 modal.querySelector('#addFieldBtn').onclick = function (e) {
@@ -1723,7 +1712,6 @@
                     data[key] = value;
                 }
 
-                // --- CORRIGIDO: Pega campos dinâmicos corretamente ---
                 if (!isWithdraw) {
                     const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
                     const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
@@ -1803,7 +1791,6 @@
             modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
         }
 
-        // Adicione a função renderSummary aqui (ela foi removida no último patch por engano)
         function renderSummary() {
             const totalQuantity = equipments.reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
             const available = equipments
