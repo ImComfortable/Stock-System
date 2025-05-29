@@ -170,13 +170,14 @@
         }
 
         .btn-secondary {
-            background: var(--gray-100);
-            color: var(--gray-700);
+            background: #bbbbb8d0;
+            color: black;
         }
 
         .btn-secondary:hover {
-            background: var(--gray-200);
-            color: var(--gray-900);
+            background: #646463d0;
+            color: white;
+;
         }
 
         .summary-card::before {
@@ -462,7 +463,7 @@
 
         .btn-action {
             padding: 0.5rem;
-            border: none;
+            border: 5px;
             border-radius: var(--radius);
             cursor: pointer;
             transition: all 0.2s ease;
@@ -945,6 +946,7 @@
             .add-dynamic-btn {
                 width: 100%;
                 justify-content: center;
+                color: white;
             }
         }
 
@@ -1298,7 +1300,7 @@
                         if (!eq) return;
                         const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
                         Object.keys(eq).forEach(key => {
-                            if (!exclude.includes(key) && !key.startsWith('dyn_')) { 
+                            if (!exclude.includes(key) && !key.startsWith('dyn_')) {
                                 addDynamicField(dynFieldsContainer, key, eq[key]);
                             }
                         });
@@ -1490,12 +1492,11 @@
                 const statusInfo = getStatusInfo(eq.status);
                 return `
          <div class="equipment-card">
-            <div class="card-image-container">
-                ${eq.imageId
-                        ? `<img src="/image/${eq.imageId}" alt="Item photo" class="equipment-img" onerror="this.src='${DEFAULT_IMAGE}'">`
-                        : `<img src="${DEFAULT_IMAGE}" alt="Default image" class="equipment-img">`
-                    }
-            </div>
+<div class="card-image-container">
+    <a href="/image/${eq.imageId}" target="_blank">
+        <img src="/image/${eq.imageId}" alt="Item photo" class="equipment-img" onerror="this.src='${DEFAULT_IMAGE}'">
+    </a>
+</div>
             <div class="card-header">
                 <div class="card-title">
                     <div class="status-indicator ${statusInfo.class}"></div>
