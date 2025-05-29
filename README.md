@@ -1,5 +1,3 @@
-# Simple Stock Internal Web App
-
 # HomePage
 On this page, you'll see an overview of every item in your stock, with information such as name, type, and quantity. You can also add new items using the "Add Items" button.
 
