@@ -83,7 +83,7 @@ app.post('/upload-image', upload.single('image'), (req, res) => {
 });
 
 app.get('/', (req, res) => {
-    res.redirect('Static/estoque.html');
+    res.redirect('/estoque.html');
 });
 
 app.get('/image/:id', async (req, res) => {
@@ -107,6 +107,35 @@ app.get('/image/:id', async (req, res) => {
     } catch (err) {
         console.error('Error fetching image:', err);
         res.status(500).json({ error: 'Error fetching image' });
+    }
+});
+
+app.post('/cleanup-unused-images', async (req, res) => {
+    try {
+        const equipmentCollection = db.collection('equipments');
+        const imageCollection = mongoose.connection.db.collection('uploads.files');
+        const equipments = await equipmentCollection.find({}).toArray();
+        const usedImageIds = new Set(equipments.map(e => e.imageId).filter(id => id));
+        const allImages = await imageCollection.find({}).toArray();
+
+        let deletedCount = 0;
+
+        for (const image of allImages) {
+            const imageId = image._id.toString();
+            if (!usedImageIds.has(imageId)) {
+                const bucket = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+                    bucketName: 'uploads'
+                });
+                await bucket.delete(image._id);
+                deletedCount++;
+                console.log(`Deleted unused image: ${imageId}`);
+            }
+        }
+
+        res.json({ message: `Cleanup completed. Deleted ${deletedCount} unused images.` });
+    } catch (error) {
+        console.error('Error cleaning up unused images:', error);
+        res.status(500).json({ error: 'Error cleaning up unused images' });
     }
 });
 
