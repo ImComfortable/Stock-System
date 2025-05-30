@@ -1553,6 +1553,11 @@
             }).join('');
         }
 
+      document.getElementById('searchInput').addEventListener('input', function () {
+            const query = this.value.toLowerCase();
+            renderEquipments(query);
+        });
+
         function setButtonLoading(btn, loading = true) {
             if (!btn) return;
             if (loading) {
