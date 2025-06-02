@@ -10,8 +10,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #007fff;
-            --primary-dark: #007fff;
+            --primary: #4b599b;
+            --primary-dark: #4b599b;
             --primary-light: #4b599b;
             --success: #10b981;
             --success-light: #d1fae5;
@@ -363,9 +363,8 @@
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--gray-900);
-            margin: 0 0 0.5rem 0;
             display: flex;
-            align-items: center;
+            justify-content: left;
             gap: 0.75rem;
         }
 
@@ -401,6 +400,14 @@
             display: grid;
             gap: 0.75rem;
             height: 100%;
+            padding: 10px;
+            font-weight: bold;
+        }
+
+        .info-grid-details .info-item {
+            padding: 10px;
+            border-bottom : 1px solid var(--gray-200);
+            font-weight: bold;
         }
 
         .info-item {
@@ -520,8 +527,8 @@
 
         .modal {
             background: var(--white);
-            border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
+            border-radius: 0px 0px 15px 15px; 
             max-width: 500px;
             width: 90vw;
             max-height: 90vh;
@@ -548,6 +555,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 0px;
+            width: 100%;
         }
 
         .modal-title {
@@ -1039,19 +1048,22 @@
             };
 
             let detailsHtml = '';
+            let exclude = ['id', 'image', '_id', 'imageId'];
+
             Object.keys(eq).forEach(key => {
-                if (['_id', 'id', 'imageId'].includes(key)) return;
-                let value = eq[key];
-                if (key === 'entryDate' || key === 'withdrawDate') value = formatDate(value);
-                if (typeof value === 'string' && value.length === 0) return;
-                const icon = iconMap[key] ? `${iconMap[key]} info-icon` : 'fas fa-info info-icon';
-                detailsHtml += `
-                <div class="info-item">
-                    <i class="${icon}"></i>
-                    <span class="info-label">${capitalizeFirst(key)}:</span>
-                    <span class="info-value">${DOMPurify.sanitize(String(value))}</span>
-                </div>
-            `;
+                if (!exclude.includes(key) && !key.startsWith('dyn_')) {
+                    let value = eq[key];
+                    if (key === 'entryDate' || key === 'withdrawDate') value = formatDate(value);
+                    if (typeof value === 'string' && value.length === 0) return;
+                    const icon = iconMap[key] ? `${iconMap[key]} info-icon` : 'fas fa-info info-icon';
+                    detailsHtml += `
+        <div class="info-item">
+            <i class="${icon}"></i>
+            <span class="info-label">${capitalizeFirst(key)}:</span>
+            <span class="info-value">${DOMPurify.sanitize(String(value))}</span>
+        </div>
+        `;
+                }
             });
 
             modal.innerHTML = `
@@ -1060,7 +1072,7 @@
                 <button class="modal-close" onclick="closeModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <div class="info-grid">
+                <div class="info-grid-details">
                     ${detailsHtml}
                 </div>
             </div>
@@ -1136,7 +1148,7 @@
         }
 
         function createWithdrawForm() {
-            const users = ["test"];
+            const users = ["Carlinhos", "Henrique", "William"];
             return `
                 <div class="form-group">
                     <label class="form-label" for="lastUser">User who withdrew</label>
