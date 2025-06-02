@@ -327,6 +327,7 @@ app.get('/get_all_equipments', async (req, res) => {
         res.status(500).json({ error: 'Error fetching audit data' });
     }
 });
+
 async function startServer() {
     try {
         await connectToMongo();
