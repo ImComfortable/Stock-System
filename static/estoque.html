@@ -1,1072 +1,1226 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Estoque de Ferramentas</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #4b599b;
-            --primary-dark: #4b599b;
-            --primary-light: #4b599b;
-            --success: #10b981;
-            --success-light: #d1fae5;
-            --warning: #f59e0b;
-            --warning-light: #fef3c7;
-            --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --info: #3b82f6;
-            --info-light: #dbeafe;
-            --gray-50: #f9fafb;
-            --gray-100: #f3f4f6;
-            --gray-200: #e5e7eb;
-            --gray-300: #d1d5db;
-            --gray-500: #6b7280;
-            --gray-700: #374151;
-            --gray-900: #111827;
-            --white: #ffffff;
-            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-            --radius: 12px;
-            --radius-lg: 16px;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            background: linear-gradient(135deg, #303755 0%, rgb(44, 35, 54) 100%);
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            min-height: 100vh;
-            color: var(--gray-900);
-            font-weight: 400;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 2rem auto;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-xl);
-            overflow: hidden;
-        }
-
-        .header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 2.5rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-            opacity: 0.3;
-        }
-
-        .header-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin: 0 0 0.5rem 0;
-            letter-spacing: -1px;
-        }
-
-        .header-subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-weight: 300;
-            margin: 0;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.875rem 1.5rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn:hover::before {
-            left: 100%;
-        }
-
-        .btn-primary {
-            background: var(--white);
-            color: var(--primary);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .main-content {
-            padding: 2rem;
-        }
-
-        .summary-panel {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .summary-card {
-            background: var(--gray-50);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            border-left: 4px solid var(--primary);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-secondary {
-            background: #bbbbb8d0;
-            color: black;
-        }
-
-        .btn-secondary:hover {
-            background: #646463d0;
-            color: white;
-;
-        }
-
-        .summary-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--primary-light), transparent);
-            opacity: 0.1;
-            border-radius: 0 var(--radius) 0 60px;
-        }
-
-        .summary-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .summary-card.success {
-            border-left-color: var(--success);
-        }
-
-        .summary-card.warning {
-            border-left-color: var(--warning);
-        }
-
-        .summary-card.danger {
-            border-left-color: var(--danger);
-        }
-
-        .summary-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .summary-icon {
-            font-size: 1.5rem;
-            opacity: 0.8;
-        }
-
-        .summary-value {
-            font-size: 2.25rem;
-            font-weight: 800;
-            color: var(--gray-900);
-            line-height: 1;
-        }
-
-        .summary-label {
-            font-size: 0.875rem;
-            color: var(--gray-500);
-            font-weight: 500;
-            margin-top: 0.25rem;
-        }
-
-        .search-section {
-            margin-bottom: 2rem;
-        }
-
-        .search-bar {
-            position: relative;
-            max-width: 400px;
-        }
-
-        .search-bar input {
-            width: 100%;
-            padding: 0.875rem 1rem 0.875rem 3rem;
-            border-radius: var(--radius);
-            border: 2px solid var(--gray-200);
-            font-size: 1rem;
-            background: var(--white);
-            transition: all 0.3s ease;
-        }
-
-        .search-bar input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .search-icon {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--gray-500);
-            font-size: 1.125rem;
-        }
-
-        .equipment-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
-
-        .equipment-card {
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid var(--gray-200);
-            overflow: hidden;
-            transition: all 0.3s ease;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-            min-height: 420px;
-            max-height: 520px;
-        }
-
-        .equipment-img {
-            max-width: 100%;
-            max-height: 160px;
-            object-fit: contain;
-            border-radius: 8px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            width: 100%;
-            padding: 1rem;
-            border: 2px dashed var(--gray-200);
-            border-radius: var(--radius);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-wrapper:hover {
-            border-color: var(--primary);
-            background: var(--gray-50);
-        }
-
-        .file-input-wrapper input[type="file"] {
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            cursor: pointer;
-        }
-
-        .file-input-label {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--gray-500);
-        }
-
-        .file-input-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
-        .card-image-container {
-            width: 100%;
-            height: 180px;
-            padding: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .equipment-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .card-header {
-            padding: 1.5rem 1.5rem 1rem 1.5rem;
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--gray-900);
-            display: flex;
-            justify-content: left;
-            gap: 0.75rem;
-        }
-
-        .status-indicator {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-
-        .status-indicator.disponivel {
-            background: var(--success);
-            box-shadow: 0 0 0 2px var(--success-light);
-        }
-
-        .status-indicator.em-uso {
-            background: var(--warning);
-            box-shadow: 0 0 0 2px var(--warning-light);
-        }
-
-        .status-indicator.manutencao {
-            background: var(--danger);
-            box-shadow: 0 0 0 2px var(--danger-light);
-        }
-
-        .card-body {
-            padding: 1rem 1.5rem 1.5rem 1.5rem;
-            flex: 1;
-            overflow-y: auto;
-        }
-
-        .info-grid {
-            display: grid;
-            gap: 0.75rem;
-            height: 100%;
-            padding: 10px;
-            font-weight: bold;
-        }
-
-        .info-grid-details .info-item {
-            padding: 10px;
-            border-bottom : 1px solid var(--gray-200);
-            font-weight: bold;
-        }
-
-        .info-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--gray-700);
-        }
-
-        .info-icon {
-            width: 12px;
-            color: var(--gray-500);
-            text-align: center;
-        }
-
-        .info-label {
-            font-weight: 500;
-            min-width: 50px;
-        }
-
-        .info-value {
-            flex: 1;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-        }
-
-        .badge.available {
-            background: var(--success-light);
-            color: var(--success);
-        }
-
-        .badge.in-use {
-            background: var(--warning-light);
-            color: var(--warning);
-        }
-
-        .badge.maintenance {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
-
-        .card-actions {
-            padding: 1rem 1.5rem;
-            background: var(--gray-50);
-            border-top: 1px solid var(--gray-100);
-            display: flex;
-            gap: 0.5rem;
-            justify-content: flex-end;
-            margin-top: auto;
-        }
-
-        .btn-action {
-            padding: 0.5rem;
-            border: 5px;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-        }
-
-        .btn-edit {
-            background: var(--info-light);
-            color: var(--info);
-        }
-
-        .btn-edit:hover {
-            background: var(--info);
-            color: var(--white);
-        }
-
-        .btn-withdraw {
-            background: var(--warning-light);
-            color: var(--warning);
-        }
-
-        .btn-withdraw:hover {
-            background: var(--warning);
-            color: var(--white);
-        }
-
-        .btn-delete {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
-
-        .btn-delete:hover {
-            background: var(--danger);
-            color: var(--white);
-        }
-
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.6);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1000;
-            backdrop-filter: blur(4px);
-        }
-
-        .modal {
-            background: var(--white);
-            box-shadow: var(--shadow-xl);
-            border-radius: 0px 0px 15px 15px; 
-            max-width: 500px;
-            width: 90vw;
-            max-height: 90vh;
-            overflow-y: auto;
-            animation: modalFadeIn 0.3s ease;
-        }
-
-        @keyframes modalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(-20px);
+    <head>
+        <meta charset="UTF-8" />
+        <title>Estoque de Ferramentas</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --primary: #4b599b;
+                --primary-dark: #4b599b;
+                --primary-light: #4b599b;
+                --success: #10b981;
+                --success-light: #d1fae5;
+                --warning: #f59e0b;
+                --warning-light: #fef3c7;
+                --danger: #ef4444;
+                --danger-light: #fee2e2;
+                --info: #3b82f6;
+                --info-light: #dbeafe;
+                --gray-50: #f9fafb;
+                --gray-100: #f3f4f6;
+                --gray-200: #e5e7eb;
+                --gray-300: #d1d5db;
+                --gray-500: #6b7280;
+                --gray-700: #374151;
+                --gray-900: #111827;
+                --white: #ffffff;
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+                --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+                --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+                --radius: 12px;
+                --radius-lg: 16px;
             }
 
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
+            * {
+                box-sizing: border-box;
             }
-        }
 
-        .modal-header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: 0px;
-            width: 100%;
-        }
+            body {
+                background: linear-gradient(
+                    135deg,
+                    #303755 0%,
+                    rgb(44, 35, 54) 100%
+                );
+                font-family: "Inter", sans-serif;
+                margin: 0;
+                min-height: 100vh;
+                color: var(--gray-900);
+                font-weight: 400;
+            }
 
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin: 0;
-        }
-
-        .modal-close {
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 0.25rem;
-            border-radius: 50%;
-            transition: background 0.2s ease;
-        }
-
-        .modal-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .form-label {
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: var(--gray-700);
-        }
-
-        .form-input {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: var(--white);
-        }
-
-        .form-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .form-select {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            background: var(--white);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .form-select:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .form-textarea {
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--gray-200);
-            border-radius: var(--radius);
-            font-size: 1rem;
-            min-height: 80px;
-            resize: vertical;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .form-actions {
-            margin-top: 2rem;
-            display: flex;
-            gap: 1rem;
-            justify-content: flex-end;
-        }
-
-        .btn-submit {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: var(--white);
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.875rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-submit:hover {
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-cancel {
-            background: var(--gray-100);
-            color: var(--gray-700);
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.875rem 2rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .btn-cancel:hover {
-            background: var(--gray-200);
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: var(--gray-500);
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            opacity: 0.3;
-        }
-
-        .empty-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .empty-description {
-            font-size: 1rem;
-        }
-
-        @media (max-width: 768px) {
             .container {
-                margin: 0.5rem;
-                max-width: 100%;
-            }
-
-            .equipment-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-                padding: 0.5rem;
-            }
-
-            .main-content {
-                padding: 1rem;
+                max-width: 1200px;
+                margin: 2rem auto;
+                background: var(--white);
+                border-radius: var(--radius-lg);
+                box-shadow: var(--shadow-xl);
+                overflow: hidden;
             }
 
             .header {
-                padding: 1.5rem 1rem;
+                background: linear-gradient(
+                    135deg,
+                    var(--primary) 0%,
+                    var(--primary-dark) 100%
+                );
+                color: var(--white);
+                padding: 2.5rem 2rem;
+                text-align: center;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .header::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+                opacity: 0.3;
+            }
+
+            .header-content {
+                position: relative;
+                z-index: 1;
             }
 
             .header h1 {
-                font-size: 1.75rem;
+                font-size: 2.5rem;
+                font-weight: 800;
+                margin: 0 0 0.5rem 0;
+                letter-spacing: -1px;
             }
 
             .header-subtitle {
-                font-size: 0.875rem;
+                font-size: 1.1rem;
+                opacity: 0.9;
+                font-weight: 300;
+                margin: 0;
             }
 
-            .equipment-card {
-                min-height: auto;
-                max-height: none;
-                margin: 0;
+            .action-buttons {
+                display: flex;
+                gap: 1rem;
+                justify-content: center;
+                margin-top: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .btn {
+                border: none;
+                border-radius: var(--radius);
+                padding: 0.875rem 1.5rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                text-decoration: none;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: -100%;
                 width: 100%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.2),
+                    transparent
+                );
+                transition: left 0.5s;
+            }
+
+            .btn:hover::before {
+                left: 100%;
+            }
+
+            .btn-primary {
+                background: var(--white);
+                color: var(--primary);
+                box-shadow: var(--shadow);
+            }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .main-content {
+                padding: 2rem;
             }
 
             .summary-panel {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 0.75rem;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1.5rem;
+                margin-bottom: 2rem;
             }
 
             .summary-card {
-                padding: 1rem;
+                background: var(--gray-50);
+                border-radius: var(--radius);
+                padding: 1.5rem;
+                border-left: 4px solid var(--primary);
+                transition: all 0.3s ease;
+                position: relative;
+                overflow: hidden;
+            }
+
+            .btn-secondary {
+                background: #bbbbb8d0;
+                color: black;
+            }
+
+            .btn-secondary:hover {
+                background: #646463d0;
+                color: white;
+            }
+
+            .summary-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                right: 0;
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(
+                    135deg,
+                    var(--primary-light),
+                    transparent
+                );
+                opacity: 0.1;
+                border-radius: 0 var(--radius) 0 60px;
+            }
+
+            .summary-card:hover {
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .summary-card.success {
+                border-left-color: var(--success);
+            }
+
+            .summary-card.warning {
+                border-left-color: var(--warning);
+            }
+
+            .summary-card.danger {
+                border-left-color: var(--danger);
+            }
+
+            .summary-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .summary-icon {
+                font-size: 1.5rem;
+                opacity: 0.8;
             }
 
             .summary-value {
-                font-size: 1.5rem;
+                font-size: 2.25rem;
+                font-weight: 800;
+                color: var(--gray-900);
+                line-height: 1;
+            }
+
+            .summary-label {
+                font-size: 0.875rem;
+                color: var(--gray-500);
+                font-weight: 500;
+                margin-top: 0.25rem;
             }
 
             .search-section {
-                margin-bottom: 1rem;
+                margin-bottom: 2rem;
             }
 
             .search-bar {
+                position: relative;
+                max-width: 400px;
+            }
+
+            .search-bar input {
+                width: 100%;
+                padding: 0.875rem 1rem 0.875rem 3rem;
+                border-radius: var(--radius);
+                border: 2px solid var(--gray-200);
+                font-size: 1rem;
+                background: var(--white);
+                transition: all 0.3s ease;
+            }
+
+            .search-bar input:focus {
+                border-color: var(--primary);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
+
+            .search-icon {
+                position: absolute;
+                left: 1rem;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--gray-500);
+                font-size: 1.125rem;
+            }
+
+            .equipment-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+                gap: 1.5rem;
+                padding: 1rem;
+            }
+
+            .equipment-card {
+                background: var(--white);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow);
+                border: 1px solid var(--gray-200);
+                overflow: hidden;
+                transition: all 0.3s ease;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                min-height: 420px;
+                max-height: 520px;
+            }
+
+            .equipment-img {
                 max-width: 100%;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                margin: 0;
-                border-radius: 0;
+                max-height: 160px;
+                object-fit: contain;
+                border-radius: 8px;
+                box-shadow: var(--shadow-sm);
             }
 
-            .summary-panel {
-                grid-template-columns: 1fr;
+            .file-input-wrapper {
+                position: relative;
+                width: 100%;
+                padding: 1rem;
+                border: 2px dashed var(--gray-200);
+                border-radius: var(--radius);
+                text-align: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .file-input-wrapper:hover {
+                border-color: var(--primary);
+                background: var(--gray-50);
+            }
+
+            .file-input-wrapper input[type="file"] {
+                opacity: 0;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+            }
+
+            .file-input-label {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+                color: var(--gray-500);
+            }
+
+            .file-input-icon {
+                font-size: 1.5rem;
+                color: var(--primary);
+            }
+
+            .card-image-container {
+                width: 100%;
+                height: 180px;
+                padding: 1rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--gray-50);
+                border-bottom: 1px solid var(--gray-200);
+            }
+
+            .equipment-card:hover {
+                transform: translateY(-4px);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .card-header {
+                padding: 1.5rem 1.5rem 1rem 1.5rem;
+                border-bottom: 1px solid var(--gray-100);
+            }
+
+            .card-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: var(--gray-900);
+                display: flex;
+                justify-content: left;
+                gap: 0.75rem;
+            }
+
+            .status-indicator {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                display: inline-block;
+            }
+
+            .status-indicator.disponivel {
+                background: var(--success);
+                box-shadow: 0 0 0 2px var(--success-light);
+            }
+
+            .status-indicator.em-uso {
+                background: var(--warning);
+                box-shadow: 0 0 0 2px var(--warning-light);
+            }
+
+            .status-indicator.manutencao {
+                background: var(--danger);
+                box-shadow: 0 0 0 2px var(--danger-light);
             }
 
             .card-body {
-                padding: 0.75rem;
+                padding: 1rem 1.5rem 1.5rem 1.5rem;
+                flex: 1;
+                overflow-y: auto;
             }
 
             .info-grid {
-                gap: 0.35rem;
+                display: grid;
+                gap: 0.75rem;
+                height: 100%;
+                padding: 10px;
+                font-weight: bold;
+            }
+
+            .info-grid-details .info-item {
+                padding: 10px;
+                border-bottom: 1px solid var(--gray-200);
+                font-weight: bold;
             }
 
             .info-item {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.875rem;
+                color: var(--gray-700);
+            }
+
+            .info-icon {
+                width: 12px;
+                color: var(--gray-500);
+                text-align: center;
+            }
+
+            .info-label {
+                font-weight: 500;
+                min-width: 50px;
+            }
+
+            .info-value {
+                flex: 1;
+            }
+
+            .badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
                 font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+            }
+
+            .badge.available {
+                background: var(--success-light);
+                color: var(--success);
+            }
+
+            .badge.in-use {
+                background: var(--warning-light);
+                color: var(--warning);
+            }
+
+            .badge.maintenance {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+            .card-actions {
+                padding: 1rem 1.5rem;
+                background: var(--gray-50);
+                border-top: 1px solid var(--gray-100);
+                display: flex;
+                gap: 0.5rem;
+                justify-content: flex-end;
+                margin-top: auto;
+            }
+
+            .btn-action {
+                padding: 0.5rem;
+                border: 5px;
+                border-radius: var(--radius);
+                cursor: pointer;
+                transition: all 0.2s ease;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+            }
+
+            .btn-edit {
+                background: var(--info-light);
+                color: var(--info);
+            }
+
+            .btn-edit:hover {
+                background: var(--info);
+                color: var(--white);
+            }
+
+            .btn-withdraw {
+                background: var(--warning-light);
+                color: var(--warning);
+            }
+
+            .btn-withdraw:hover {
+                background: var(--warning);
+                color: var(--white);
+            }
+
+            .btn-delete {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+            .btn-delete:hover {
+                background: var(--danger);
+                color: var(--white);
+            }
+
+            .modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                backdrop-filter: blur(4px);
             }
 
             .modal {
+                background: var(--white);
+                box-shadow: var(--shadow-xl);
+                border-radius: 0px 0px 15px 15px;
+                max-width: 500px;
+                width: 90vw;
+                max-height: 90vh;
+                overflow-y: auto;
+                animation: modalFadeIn 0.3s ease;
+            }
+
+            @keyframes modalFadeIn {
+                from {
+                    opacity: 0;
+                    transform: scale(0.95) translateY(-20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
+            }
+
+            .modal-header {
+                background: linear-gradient(
+                    135deg,
+                    var(--primary) 0%,
+                    var(--primary-dark) 100%
+                );
+                color: var(--white);
+                padding: 1.5rem 2rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 0px;
                 width: 100%;
-                height: 100%;
-                max-height: 100vh;
-                border-radius: 0;
+            }
+
+            .modal-title {
+                font-size: 1.25rem;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .modal-close {
+                background: none;
+                border: none;
+                color: var(--white);
+                font-size: 1.5rem;
+                cursor: pointer;
+                padding: 0.25rem;
+                border-radius: 50%;
+                transition: background 0.2s ease;
+            }
+
+            .modal-close:hover {
+                background: rgba(255, 255, 255, 0.2);
             }
 
             .modal-body {
-                padding: 1rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .modal {
-                max-width: 700px;
-            }
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.025em;
-        }
-
-        .badge.available {
-            background: var(--success-light);
-            color: var(--success);
-        }
-
-        .badge.in-use {
-            background: var(--warning-light);
-            color: var(--warning);
-        }
-
-        .badge.maintenance {
-            background: var(--danger-light);
-            color: var(--danger);
-        }
-
-        .btn-action.loading {
-            pointer-events: none;
-            opacity: 0.7;
-            position: relative;
-        }
-
-        .btn-action .loading-spinner {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.1em;
-            color: inherit;
-            z-index: 2;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: translate(-50%, -50%) rotate(0deg);
+                padding: 2rem;
             }
 
-            100% {
-                transform: translate(-50%, -50%) rotate(360deg);
+            .form-grid {
+                display: grid;
+                gap: 1.5rem;
             }
-        }
 
-        .btn-action .btn-icon-content {
-            opacity: 1;
-            transition: opacity 0.2s;
-        }
+            .form-group {
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
 
-        .btn-action.loading .btn-icon-content {
-            opacity: 0.2;
-        }
+            .form-label {
+                font-size: 0.875rem;
+                font-weight: 600;
+                color: var(--gray-700);
+            }
 
-        .dynamic-fields-wrapper {
-            border: 1.5px dashed var(--gray-200);
-            border-radius: var(--radius);
-            padding: 0.75rem;
-            background: var(--gray-50);
-            margin-bottom: 0.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+            .form-input {
+                padding: 0.75rem 1rem;
+                border: 2px solid var(--gray-200);
+                border-radius: var(--radius);
+                font-size: 1rem;
+                transition: all 0.3s ease;
+                background: var(--white);
+            }
 
-        .dynamic-field-row {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 0.5rem 0.5rem 0.5rem 0.5rem;
-            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
-        }
+            .form-input:focus {
+                border-color: var(--primary);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
 
-        .dynamic-field-row input {
-            min-width: 0;
-        }
+            .form-select {
+                padding: 0.75rem 1rem;
+                border: 2px solid var(--gray-200);
+                border-radius: var(--radius);
+                font-size: 1rem;
+                background: var(--white);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        .dynamic-field-row .form-input {
-            font-size: 0.95rem;
-            padding: 0.5rem 0.75rem;
-        }
+            .form-select:focus {
+                border-color: var(--primary);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
 
-        .dynamic-field-row .btn-delete {
-            background: var(--danger-light);
-            color: var(--danger);
-            border: none;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: background 0.2s;
-        }
+            .form-textarea {
+                padding: 0.75rem 1rem;
+                border: 2px solid var(--gray-200);
+                border-radius: var(--radius);
+                font-size: 1rem;
+                min-height: 80px;
+                resize: vertical;
+                font-family: inherit;
+                transition: all 0.3s ease;
+            }
 
-        .dynamic-field-row .btn-delete:hover {
-            background: var(--danger);
-            color: var(--white);
-        }
+            .form-textarea:focus {
+                border-color: var(--primary);
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            }
 
-        .add-dynamic-btn {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: var(--primary-light);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            padding: 0.5rem 1rem;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 0.5rem;
-            transition: background 0.2s;
-        }
+            .form-actions {
+                margin-top: 2rem;
+                display: flex;
+                gap: 1rem;
+                justify-content: flex-end;
+            }
 
-        .add-dynamic-btn:hover {
-            background: var(--primary);
-            color: var(--white);
-        }
+            .btn-submit {
+                background: linear-gradient(
+                    135deg,
+                    var(--primary) 0%,
+                    var(--primary-dark) 100%
+                );
+                color: var(--white);
+                border: none;
+                border-radius: var(--radius);
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
 
-        @media (max-width: 768px) {
+            .btn-submit:hover {
+                transform: translateY(-1px);
+                box-shadow: var(--shadow-lg);
+            }
+
+            .btn-cancel {
+                background: var(--gray-100);
+                color: var(--gray-700);
+                border: none;
+                border-radius: var(--radius);
+                padding: 0.875rem 2rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .btn-cancel:hover {
+                background: var(--gray-200);
+            }
+
+            .empty-state {
+                text-align: center;
+                padding: 4rem 2rem;
+                color: var(--gray-500);
+            }
+
+            .empty-icon {
+                font-size: 4rem;
+                margin-bottom: 1rem;
+                opacity: 0.3;
+            }
+
+            .empty-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+
+            .empty-description {
+                font-size: 1rem;
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    margin: 0.5rem;
+                    max-width: 100%;
+                }
+
+                .equipment-grid {
+                    grid-template-columns: 1fr;
+                    gap: 1rem;
+                    padding: 0.5rem;
+                }
+
+                .main-content {
+                    padding: 1rem;
+                }
+
+                .header {
+                    padding: 1.5rem 1rem;
+                }
+
+                .header h1 {
+                    font-size: 1.75rem;
+                }
+
+                .header-subtitle {
+                    font-size: 0.875rem;
+                }
+
+                .equipment-card {
+                    min-height: auto;
+                    max-height: none;
+                    margin: 0;
+                    width: 100%;
+                }
+
+                .summary-panel {
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 0.75rem;
+                }
+
+                .summary-card {
+                    padding: 1rem;
+                }
+
+                .summary-value {
+                    font-size: 1.5rem;
+                }
+
+                .search-section {
+                    margin-bottom: 1rem;
+                }
+
+                .search-bar {
+                    max-width: 100%;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .container {
+                    margin: 0;
+                    border-radius: 0;
+                }
+
+                .summary-panel {
+                    grid-template-columns: 1fr;
+                }
+
+                .card-body {
+                    padding: 0.75rem;
+                }
+
+                .info-grid {
+                    gap: 0.35rem;
+                }
+
+                .info-item {
+                    font-size: 0.75rem;
+                }
+
+                .modal {
+                    width: 100%;
+                    height: 100%;
+                    max-height: 100vh;
+                    border-radius: 0;
+                }
+
+                .modal-body {
+                    padding: 1rem;
+                }
+            }
+
+            @media (min-width: 1024px) {
+                .modal {
+                    max-width: 700px;
+                }
+            }
+
+            .badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 9999px;
+                font-size: 0.75rem;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.025em;
+            }
+
+            .badge.available {
+                background: var(--success-light);
+                color: var(--success);
+            }
+
+            .badge.in-use {
+                background: var(--warning-light);
+                color: var(--warning);
+            }
+
+            .badge.maintenance {
+                background: var(--danger-light);
+                color: var(--danger);
+            }
+
+            .btn-action.loading {
+                pointer-events: none;
+                opacity: 0.7;
+                position: relative;
+            }
+
+            .btn-action .loading-spinner {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                font-size: 1.1em;
+                color: inherit;
+                z-index: 2;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: translate(-50%, -50%) rotate(0deg);
+                }
+
+                100% {
+                    transform: translate(-50%, -50%) rotate(360deg);
+                }
+            }
+
+            .btn-action .btn-icon-content {
+                opacity: 1;
+                transition: opacity 0.2s;
+            }
+
+            .btn-action.loading .btn-icon-content {
+                opacity: 0.2;
+            }
+
             .dynamic-fields-wrapper {
-                padding: 0.5rem;
-                gap: 0.35rem;
+                border: 1.5px dashed var(--gray-200);
+                border-radius: var(--radius);
+                padding: 0.75rem;
+                background: var(--gray-50);
+                margin-bottom: 0.5rem;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
             }
 
             .dynamic-field-row {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 0.35rem;
-                padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+                display: flex;
+                gap: 0.5rem;
+                align-items: center;
+                background: var(--white);
+                border-radius: var(--radius);
+                padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+                box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.03);
+            }
+
+            .dynamic-field-row input {
+                min-width: 0;
+            }
+
+            .dynamic-field-row .form-input {
+                font-size: 0.95rem;
+                padding: 0.5rem 0.75rem;
+            }
+
+            .dynamic-field-row .btn-delete {
+                background: var(--danger-light);
+                color: var(--danger);
+                border: none;
+                border-radius: 50%;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1.1rem;
+                transition: background 0.2s;
+            }
+
+            .dynamic-field-row .btn-delete:hover {
+                background: var(--danger);
+                color: var(--white);
             }
 
             .add-dynamic-btn {
-                width: 100%;
-                justify-content: center;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                background: var(--primary-light);
                 color: white;
+                border: none;
+                border-radius: var(--radius);
+                padding: 0.5rem 1rem;
+                font-size: 1rem;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 0.5rem;
+                transition: background 0.2s;
             }
-        }
 
-        @media (max-width: 480px) {
-            .dynamic-fields-wrapper {
-                padding: 0.3rem;
+            .add-dynamic-btn:hover {
+                background: var(--primary);
+                color: var(--white);
             }
 
-            .dynamic-field-row {
-                padding: 0.2rem 0.2rem 0.2rem 0.2rem;
-            }
-        }
-    </style>
-</head>
+            @media (max-width: 768px) {
+                .dynamic-fields-wrapper {
+                    padding: 0.5rem;
+                    gap: 0.35rem;
+                }
 
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="header-content">
-                <h1><i class="fas fa-toolbox"></i> Inventory Room Items</h1>
-                <p class="header-subtitle">Tool management and control system</p>
-                <div class="action-buttons">
-                    <button class="btn btn-primary" id="addItemBtn">
-                        <i class="fas fa-plus"></i>
-                        Add Item
-                    </button>
+                .dynamic-field-row {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 0.35rem;
+                    padding: 0.4rem 0.4rem 0.4rem 0.4rem;
+                }
+
+                .add-dynamic-btn {
+                    width: 100%;
+                    justify-content: center;
+                    color: white;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .dynamic-fields-wrapper {
+                    padding: 0.3rem;
+                }
+
+                .dynamic-field-row {
+                    padding: 0.2rem 0.2rem 0.2rem 0.2rem;
+                }
+            }
+
+            /* Filter Section Styles */
+            .filter-section {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+                padding: 1rem;
+                background: var(--white);
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .filter-label {
+                font-weight: 600;
+                color: var(--gray-700);
+                font-size: 0.95rem;
+            }
+
+            .filter-buttons {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.75rem 1.25rem;
+                border: 2px solid var(--gray-200);
+                background: var(--white);
+                color: var(--gray-700);
+                border-radius: var(--radius);
+                font-weight: 500;
+                font-size: 0.9rem;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                box-shadow: var(--shadow-sm);
+            }
+
+            .filter-btn:hover {
+                border-color: var(--primary);
+                color: var(--primary);
+                transform: translateY(-1px);
+                box-shadow: var(--shadow);
+            }
+
+            .filter-btn.active {
+                background: var(--primary);
+                border-color: var(--primary);
+                color: var(--white);
+                box-shadow: var(--shadow);
+            }
+
+            .filter-btn.active:hover {
+                background: var(--primary-dark);
+                border-color: var(--primary-dark);
+                color: var(--white);
+            }
+
+            .filter-btn i {
+                font-size: 1rem;
+            }
+
+            @media (max-width: 768px) {
+                .filter-section {
+                    flex-direction: column;
+                    align-items: stretch;
+                    gap: 0.75rem;
+                    padding: 0.75rem;
+                }
+
+                .filter-buttons {
+                    justify-content: center;
+                }
+
+                .filter-btn {
+                    flex: 1;
+                    justify-content: center;
+                    padding: 0.6rem 1rem;
+                    font-size: 0.85rem;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .filter-buttons {
+                    flex-direction: column;
+                    gap: 0.5rem;
+                }
+
+                .filter-btn {
+                    width: 100%;
+                }
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="header-content">
+                    <h1><i class="fas fa-toolbox"></i> Inventory Room Items</h1>
+                    <p class="header-subtitle">
+                        Tool management and control system
+                    </p>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" id="addItemBtn">
+                            <i class="fas fa-plus"></i>
+                            Add Item
+                        </button>
+                    </div>
                 </div>
+            </div>
+
+            <div class="main-content">
+                <div class="summary-panel" id="summaryPanel"></div>
+
+                <div class="filter-section">
+                    <span class="filter-label">Filtrar por local:</span>
+                    <div class="filter-buttons">
+                        <button class="filter-btn" data-filter="pagecar">
+                            <i class="fas fa-car"></i> Estoque Carro
+                        </button>
+                        <button class="filter-btn" data-filter="pageroom">
+                            <i class="fas fa-home"></i> Estoque Salinha
+                        </button>
+                    </div>
+                </div>
+
+                <div class="search-section">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            id="searchInput"
+                            placeholder="Search by name, category, status or user..."
+                        />
+                    </div>
+                </div>
+                <div class="equipment-grid" id="equipmentGrid"></div>
             </div>
         </div>
 
-        <div class="main-content">
-            <div class="summary-panel" id="summaryPanel"></div>
-            <div class="search-section">
-                <div class="search-bar">
-                    <i class="fas fa-search search-icon"></i>
-                    <input type="text" id="searchInput" placeholder="Search by name, category, status or user...">
-                </div>
-            </div>
-            <div class="equipment-grid" id="equipmentGrid"></div>
-        </div>
-    </div>
+        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
+        <script>
+            let equipments = [];
+            let currentFilter = "pageroom"; // Default filter
 
-    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js"></script>
-    <script>
-        let equipments = [];
+            function capitalizeFirst(str) {
+                return str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+            }
 
-        function capitalizeFirst(str) {
-            return str ? str.charAt(0).toUpperCase() + str.slice(1) : '';
-        }
+            function formatDate(dateStr) {
+                if (!dateStr) return "Not informed";
+                const date = new Date(dateStr);
+                return date.toLocaleDateString("en-US");
+            }
 
-        function formatDate(dateStr) {
-            if (!dateStr) return 'Not informed';
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US');
-        }
+            function getStatusInfo(status) {
+                const statusMap = {
+                    Available: {
+                        class: "available",
+                        icon: "fas fa-check-circle",
+                    },
+                    "In use": { class: "in-use", icon: "fas fa-user-check" },
+                    Maintenance: { class: "maintenance", icon: "fas fa-tools" },
+                };
+                return (
+                    statusMap[status] || {
+                        class: "available",
+                        icon: "fas fa-question-circle",
+                    }
+                );
+            }
 
-        function getStatusInfo(status) {
-            const statusMap = {
-                'Available': { class: 'available', icon: 'fas fa-check-circle' },
-                'In use': { class: 'in-use', icon: 'fas fa-user-check' },
-                'Maintenance': { class: 'maintenance', icon: 'fas fa-tools' }
-            };
-            return statusMap[status] || { class: 'available', icon: 'fas fa-question-circle' };
-        }
+            function showDetailsModal(itemId) {
+                removeExistingModal();
+                const eq = equipments.find((e) => e.id == itemId);
+                if (!eq) return;
 
-        function showDetailsModal(itemId) {
-            removeExistingModal();
-            const eq = equipments.find(e => e.id == itemId);
-            if (!eq) return;
+                const modalOverlay = document.createElement("div");
+                modalOverlay.className = "modal-overlay";
+                modalOverlay.id = "modalOverlay";
 
-            const modalOverlay = document.createElement('div');
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.id = 'modalOverlay';
+                const modal = document.createElement("div");
+                modal.className = "modal";
 
-            const modal = document.createElement('div');
-            modal.className = 'modal';
+                const iconMap = {
+                    name: "fas fa-tag",
+                    category: "fas fa-tags",
+                    quantity: "fas fa-sort-numeric-up",
+                    status: "fas fa-check-circle",
+                    note: "fas fa-info-circle",
+                    details: "fas fa-info",
+                    entryDate: "fas fa-calendar-plus",
+                    withdrawDate: "fas fa-calendar-minus",
+                    lastUser: "fas fa-user",
+                    lastQuantity: "fas fa-cubes",
+                    originId: "fas fa-link",
+                };
 
-            const iconMap = {
-                name: 'fas fa-tag',
-                category: 'fas fa-tags',
-                quantity: 'fas fa-sort-numeric-up',
-                status: 'fas fa-check-circle',
-                note: 'fas fa-info-circle',
-                details: 'fas fa-info',
-                entryDate: 'fas fa-calendar-plus',
-                withdrawDate: 'fas fa-calendar-minus',
-                lastUser: 'fas fa-user',
-                lastQuantity: 'fas fa-cubes',
-                originId: 'fas fa-link'
-            };
+                let detailsHtml = "";
+                let exclude = ["id", "image", "_id", "imageId"];
 
-            let detailsHtml = '';
-            let exclude = ['id', 'image', '_id', 'imageId'];
-
-            Object.keys(eq).forEach(key => {
-                if (!exclude.includes(key) && !key.startsWith('dyn_')) {
-                    let value = eq[key];
-                    if (key === 'entryDate' || key === 'withdrawDate') value = formatDate(value);
-                    if (typeof value === 'string' && value.length === 0) return;
-                    const icon = iconMap[key] ? `${iconMap[key]} info-icon` : 'fas fa-info info-icon';
-                    detailsHtml += `
+                Object.keys(eq).forEach((key) => {
+                    if (!exclude.includes(key) && !key.startsWith("dyn_")) {
+                        let value = eq[key];
+                        if (key === "entryDate" || key === "withdrawDate")
+                            value = formatDate(value);
+                        if (typeof value === "string" && value.length === 0)
+                            return;
+                        const icon = iconMap[key]
+                            ? `${iconMap[key]} info-icon`
+                            : "fas fa-info info-icon";
+                        detailsHtml += `
         <div class="info-item">
             <i class="${icon}"></i>
             <span class="info-label">${capitalizeFirst(key)}:</span>
             <span class="info-value">${DOMPurify.sanitize(String(value))}</span>
         </div>
         `;
-                }
-            });
+                    }
+                });
 
-            modal.innerHTML = `
+                modal.innerHTML = `
             <div class="modal-header">
                 <h2 class="modal-title">Item Details</h2>
                 <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -1077,30 +1231,39 @@
                 </div>
             </div>
         `;
-            modalOverlay.appendChild(modal);
-            document.body.appendChild(modalOverlay);
-            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
-        }
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
+                modalOverlay.onclick = (e) => {
+                    if (e.target === modalOverlay) closeModal();
+                };
+            }
 
-        function addDynamicField(container, key = '', value = '') {
-            const div = document.createElement('div');
-            div.className = 'dynamic-field-row';
-            div.innerHTML = `
+            function addDynamicField(container, key = "", value = "") {
+                const div = document.createElement("div");
+                div.className = "dynamic-field-row";
+                div.innerHTML = `
             <input class="form-input" type="text" name="dyn_key[]" placeholder="Field name" value="${DOMPurify.sanitize(key)}" style="flex:1;" autocomplete="off">
             <input class="form-input" type="text" name="dyn_value[]" placeholder="Value" value="${DOMPurify.sanitize(value)}" style="flex:2;" autocomplete="off">
             <button type="button" class="btn-delete" title="Remove" tabindex="-1">
                 <i class="fas fa-times"></i>
             </button>
         `;
-            div.querySelector('.btn-delete').onclick = function () {
-                div.remove();
-            };
-            container.appendChild(div);
-        }
+                div.querySelector(".btn-delete").onclick = function () {
+                    div.remove();
+                };
+                container.appendChild(div);
+            }
 
-
-        function createItemForm(isEdit) {
-            return `
+            function createItemForm(isEdit) {
+                return `
+        <div class="form-group">
+            <label class="form-label" for="location">Localização</label>
+            <select class="form-select" name="location" id="location" required>
+                <option value="">Selecione a localização</option>
+                <option value="pagecar">Estoque Carro</option>
+                <option value="pageroom">Estoque Salinha</option>
+            </select>
+        </div>
         <div class="form-group">
             <label class="form-label" for="name">Item Name</label>
             <input class="form-input" type="text" name="name" id="name" required>
@@ -1115,7 +1278,7 @@
                     <small>PNG or JPEG up to 5MB</small>
                 </div>
             </div>
-            ${isEdit ? '<small>Leave blank to keep the current image</small>' : ''}
+            ${isEdit ? "<small>Leave blank to keep the current image</small>" : ""}
         </div>
         <div class="form-group">
             <label class="form-label" for="category">Category</label>
@@ -1145,15 +1308,15 @@
             </button>
         </div>
         `;
-        }
+            }
 
-        function createWithdrawForm() {
-            const users = ["Carlinhos", "Henrique", "William"];
-            return `
+            function createWithdrawForm() {
+                const users = ["Carlinhos", "Henrique", "William"];
+                return `
                 <div class="form-group">
                     <label class="form-label" for="lastUser">User who withdrew</label>
                     <select class="form-select" name="lastUser" id="lastUser" required>
-                        ${users.map(user => `<option value="${user}">${user}</option>`).join('')}
+                        ${users.map((user) => `<option value="${user}">${user}</option>`).join("")}
                     </select>
                 </div>
         <div class="form-group">
@@ -1165,46 +1328,47 @@
                     <textarea class="form-textarea" name="note" id="note"></textarea>
                 </div>
             `;
-        }
+            }
 
-        function closeModal() {
-            const modal = document.getElementById('modalOverlay');
-            if (modal) modal.remove();
-        }
+            function closeModal() {
+                const modal = document.getElementById("modalOverlay");
+                if (modal) modal.remove();
+            }
 
-        function removeExistingModal() {
-            closeModal();
-        }
+            function removeExistingModal() {
+                closeModal();
+            }
 
-        document.getElementById('addItemBtn').onclick = () => showModal('add');
+            document.getElementById("addItemBtn").onclick = () =>
+                showModal("add");
 
-        function editItem(id, btn) {
-            setButtonLoading(btn, true);
-            setTimeout(() => {
-                setButtonLoading(btn, false);
-                showModal('edit', id);
-            }, 200);
-        }
+            function editItem(id, btn) {
+                setButtonLoading(btn, true);
+                setTimeout(() => {
+                    setButtonLoading(btn, false);
+                    showModal("edit", id);
+                }, 200);
+            }
 
-        function withdrawItem(id, btn) {
-            setButtonLoading(btn, true);
-            setTimeout(() => {
-                setButtonLoading(btn, false);
-                showModal('withdraw', id);
-            }, 200);
-        }
+            function withdrawItem(id, btn) {
+                setButtonLoading(btn, true);
+                setTimeout(() => {
+                    setButtonLoading(btn, false);
+                    showModal("withdraw", id);
+                }, 200);
+            }
 
-        function showDeleteModal(itemId) {
-            removeExistingModal();
+            function showDeleteModal(itemId) {
+                removeExistingModal();
 
-            const modalOverlay = document.createElement('div');
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.id = 'modalOverlay';
+                const modalOverlay = document.createElement("div");
+                modalOverlay.className = "modal-overlay";
+                modalOverlay.id = "modalOverlay";
 
-            const modal = document.createElement('div');
-            modal.className = 'modal';
+                const modal = document.createElement("div");
+                modal.className = "modal";
 
-            modal.innerHTML = `
+                modal.innerHTML = `
         <div class="modal-header">
             <h2 class="modal-title">Delete Item</h2>
             <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -1223,63 +1387,71 @@
         </div>
     `;
 
-            modalOverlay.appendChild(modal);
-            document.body.appendChild(modalOverlay);
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
 
-            modal.querySelector('#deleteForm').onsubmit = async function (e) {
-                e.preventDefault();
-                const quantity = parseInt(document.getElementById('deleteQuantity').value, 10);
-                if (isNaN(quantity) || quantity <= 0) {
-                    alert('Please enter a valid quantity.');
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/delete-equipment', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ id: itemId, quantity })
-                    });
-
-                    if (response.ok) {
-                        closeModal();
-                        await getEquipments();
-                    } else {
-                        const error = await response.json();
-                        alert(error.error || 'Error deleting item.');
+                modal.querySelector("#deleteForm").onsubmit = async function (
+                    e,
+                ) {
+                    e.preventDefault();
+                    const quantity = parseInt(
+                        document.getElementById("deleteQuantity").value,
+                        10,
+                    );
+                    if (isNaN(quantity) || quantity <= 0) {
+                        alert("Please enter a valid quantity.");
+                        return;
                     }
-                } catch (err) {
-                    alert('Error deleting item: ' + err.message);
-                }
-            };
 
-            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
-        }
+                    try {
+                        const response = await fetch("/delete-equipment", {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ id: itemId, quantity }),
+                        });
 
-        function deleteItem(id, btn) {
-            showDeleteModal(id);
-        }
+                        if (response.ok) {
+                            closeModal();
+                            await getEquipments();
+                        } else {
+                            const error = await response.json();
+                            alert(error.error || "Error deleting item.");
+                        }
+                    } catch (err) {
+                        alert("Error deleting item: " + err.message);
+                    }
+                };
 
-        document.getElementById('addItemBtn').onclick = () => showModal('add');
+                modalOverlay.onclick = (e) => {
+                    if (e.target === modalOverlay) closeModal();
+                };
+            }
 
-        function showModal(type, editId = null) {
-            removeExistingModal();
+            function deleteItem(id, btn) {
+                showDeleteModal(id);
+            }
 
-            const modalOverlay = document.createElement('div');
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.id = 'modalOverlay';
+            document.getElementById("addItemBtn").onclick = () =>
+                showModal("add");
 
-            const modal = document.createElement('div');
-            modal.className = 'modal';
+            function showModal(type, editId = null) {
+                removeExistingModal();
 
-            const isWithdraw = type === 'withdraw';
-            const isEdit = type === 'edit';
+                const modalOverlay = document.createElement("div");
+                modalOverlay.className = "modal-overlay";
+                modalOverlay.id = "modalOverlay";
 
-            let title = 'Add Item';
-            if (isEdit) title = 'Edit Item';
-            else if (isWithdraw) title = 'Withdraw Item';
+                const modal = document.createElement("div");
+                modal.className = "modal";
 
-            modal.innerHTML = `
+                const isWithdraw = type === "withdraw";
+                const isEdit = type === "edit";
+
+                let title = "Add Item";
+                if (isEdit) title = "Edit Item";
+                else if (isWithdraw) title = "Withdraw Item";
+
+                modal.innerHTML = `
                 <div class="modal-header">
                     <h2 class="modal-title">${title}</h2>
                     <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -1290,207 +1462,275 @@
                         <div class="form-actions">
                             <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                             <button type="submit" class="btn-submit">
-                                ${isEdit ? 'Save Changes' : isWithdraw ? 'Confirm Withdraw' : 'Add Item'}
+                                ${isEdit ? "Save Changes" : isWithdraw ? "Confirm Withdraw" : "Add Item"}
                             </button>
                         </div>
                     </form>
                 </div>
             `;
 
-            modalOverlay.appendChild(modal);
-            document.body.appendChild(modalOverlay);
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
 
-            if (!isWithdraw) {
-                const dynFieldsContainer = modal.querySelector('#dynamicFields');
-                modal.querySelector('#addFieldBtn').onclick = function (e) {
-                    e.preventDefault();
-                    addDynamicField(dynFieldsContainer);
-                };
-                if (isEdit && editId) {
+                if (!isWithdraw) {
+                    const dynFieldsContainer =
+                        modal.querySelector("#dynamicFields");
+                    modal.querySelector("#addFieldBtn").onclick = function (e) {
+                        e.preventDefault();
+                        addDynamicField(dynFieldsContainer);
+                    };
+                    if (isEdit && editId) {
+                        setTimeout(() => {
+                            const eq = equipments.find((e) => e.id == editId);
+                            if (!eq) return;
+                            const exclude = [
+                                "_id",
+                                "id",
+                                "name",
+                                "imageId",
+                                "image",
+                                "category",
+                                "quantity",
+                                "status",
+                                "note",
+                                "entryDate",
+                                "withdrawDate",
+                                "lastUser",
+                                "originId",
+                            ];
+                            Object.keys(eq).forEach((key) => {
+                                if (
+                                    !exclude.includes(key) &&
+                                    !key.startsWith("dyn_")
+                                ) {
+                                    addDynamicField(
+                                        dynFieldsContainer,
+                                        key,
+                                        eq[key],
+                                    );
+                                }
+                            });
+                        }, 100);
+                    }
+                }
+
+                const fileInput = modal.querySelector('input[type="file"]');
+                if (fileInput) {
+                    fileInput.onchange = function () {
+                        const file = this.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const preview = document.createElement("img");
+                                preview.src = e.target.result;
+                                preview.className = "equipment-img";
+                                preview.style.marginTop = "1rem";
+                                const wrapper = fileInput.closest(
+                                    ".file-input-wrapper",
+                                );
+                                const existingPreview =
+                                    wrapper.querySelector("img");
+                                if (existingPreview) {
+                                    existingPreview.remove();
+                                }
+                                wrapper.appendChild(preview);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    };
+                }
+
+                if (isEdit || isWithdraw) {
                     setTimeout(() => {
-                        const eq = equipments.find(e => e.id == editId);
+                        if (!document.body.contains(modal)) return;
+
+                        const eq = equipments.find((e) => e.id == editId);
                         if (!eq) return;
-                        const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
-                        Object.keys(eq).forEach(key => {
-                            if (!exclude.includes(key) && !key.startsWith('dyn_')) {
-                                addDynamicField(dynFieldsContainer, key, eq[key]);
+
+                        const form = modal.querySelector("#itemForm");
+                        if (!form || !document.body.contains(form)) return;
+
+                        Object.keys(eq).forEach((key) => {
+                            try {
+                                const input = form.querySelector(
+                                    `[name="${key}"]`,
+                                );
+                                if (input && document.body.contains(input)) {
+                                    if (input.type === "checkbox") {
+                                        input.checked = !!eq[key];
+                                    } else if (input.tagName === "SELECT") {
+                                        const options = Array.from(
+                                            input.options,
+                                        );
+                                        options.forEach((opt) => {
+                                            if (opt && opt.parentNode) {
+                                                opt.selected =
+                                                    opt.value == eq[key];
+                                            }
+                                        });
+                                    } else if (input.tagName === "TEXTAREA") {
+                                        input.value = eq[key] || "";
+                                    } else {
+                                        input.value = eq[key] ?? "";
+                                    }
+                                }
+                            } catch (error) {
+                                console.warn(
+                                    "Error filling field:",
+                                    key,
+                                    error,
+                                );
                             }
                         });
                     }, 100);
                 }
-            }
 
-            const fileInput = modal.querySelector('input[type="file"]');
-            if (fileInput) {
-                fileInput.onchange = function () {
-                    const file = this.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const preview = document.createElement('img');
-                            preview.src = e.target.result;
-                            preview.className = 'equipment-img';
-                            preview.style.marginTop = '1rem';
-                            const wrapper = fileInput.closest('.file-input-wrapper');
-                            const existingPreview = wrapper.querySelector('img');
-                            if (existingPreview) {
-                                existingPreview.remove();
-                            }
-                            wrapper.appendChild(preview);
-                        };
-                        reader.readAsDataURL(file);
+                modal.querySelector("#itemForm").onsubmit = async function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const data = {};
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
                     }
+
+                    if (!isWithdraw) {
+                        const dynKeys = Array.from(
+                            modal.querySelectorAll('input[name="dyn_key[]"]'),
+                        );
+                        const dynVals = Array.from(
+                            modal.querySelectorAll('input[name="dyn_value[]"]'),
+                        );
+                        for (let i = 0; i < dynKeys.length; i++) {
+                            const key = dynKeys[i].value.trim();
+                            if (key) {
+                                data[key] = dynVals[i] ? dynVals[i].value : "";
+                            }
+                        }
+                    }
+
+                    let imageId = null;
+                    const imageFile = formData.get("image");
+                    if (imageFile && imageFile.size > 0) {
+                        if (imageFile.size > 5 * 1024 * 1024) {
+                            alert("The image must be at most 5MB");
+                            return;
+                        }
+                        if (
+                            !["image/png", "image/jpeg"].includes(
+                                imageFile.type,
+                            )
+                        ) {
+                            alert("Only PNG or JPEG images are allowed");
+                            return;
+                        }
+                        const imgForm = new FormData();
+                        imgForm.append("image", imageFile);
+                        const imgRes = await fetch("/upload-image", {
+                            method: "POST",
+                            body: imgForm,
+                        });
+                        if (!imgRes.ok) {
+                            throw new Error("Error uploading image");
+                        }
+                        const imgData = await imgRes.json();
+                        imageId = imgData.fileId;
+                    }
+
+                    try {
+                        if (isEdit) {
+                            await fetch("/add-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    ...data,
+                                    id: editId,
+                                    ...(imageId ? { imageId } : {}),
+                                }),
+                            });
+                        } else if (isWithdraw) {
+                            await fetch("/withdraw-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    id: editId,
+                                    withdrawDate: new Date()
+                                        .toISOString()
+                                        .slice(0, 10),
+                                    lastUser: data.lastUser,
+                                    quantity: data.quantity || 1,
+                                    note: data.note || "",
+                                }),
+                            });
+                        } else {
+                            await fetch("/add-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    ...data,
+                                    status: "Available",
+                                    entryDate: new Date()
+                                        .toISOString()
+                                        .slice(0, 10),
+                                    ...(imageId ? { imageId } : {}),
+                                }),
+                            });
+                        }
+
+                        closeModal();
+                        await getEquipments();
+                    } catch (err) {
+                        alert("Error saving to database: " + err.message);
+                    }
+                };
+
+                modalOverlay.onclick = (e) => {
+                    if (e.target === modalOverlay) closeModal();
                 };
             }
 
-            if (isEdit || isWithdraw) {
-                setTimeout(() => {
-                    if (!document.body.contains(modal)) return;
+            function renderEquipments(searchTerm = "") {
+                renderSummary();
+                const grid = document.getElementById("equipmentGrid");
 
-                    const eq = equipments.find(e => e.id == editId);
-                    if (!eq) return;
+                let filtered = equipments.filter(
+                    (eq) =>
+                        // Filter by location first
+                        eq.location === currentFilter &&
+                        // Then apply search filter
+                        ((eq.name || "")
+                            .toLowerCase()
+                            .includes(searchTerm.toLowerCase()) ||
+                            (eq.category || "")
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase()) ||
+                            (eq.status || "")
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase()) ||
+                            (eq.lastUser || "")
+                                .toLowerCase()
+                                .includes(searchTerm.toLowerCase())),
+                );
 
-                    const form = modal.querySelector('#itemForm');
-                    if (!form || !document.body.contains(form)) return;
+                if (filtered.length === 0) {
+                    const locationName =
+                        currentFilter === "pagecar"
+                            ? "Estoque Carro"
+                            : "Estoque Salinha";
+                    const hasSearchTerm = searchTerm.length > 0;
 
-                    Object.keys(eq).forEach(key => {
-                        try {
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input && document.body.contains(input)) {
-                                if (input.type === 'checkbox') {
-                                    input.checked = !!eq[key];
-                                } else if (input.tagName === 'SELECT') {
-                                    const options = Array.from(input.options);
-                                    options.forEach(opt => {
-                                        if (opt && opt.parentNode) {
-                                            opt.selected = opt.value == eq[key];
-                                        }
-                                    });
-                                } else if (input.tagName === 'TEXTAREA') {
-                                    input.value = eq[key] || '';
-                                } else {
-                                    input.value = eq[key] ?? '';
-                                }
-                            }
-                        } catch (error) {
-                            console.warn('Error filling field:', key, error);
-                        }
-                    });
-                }, 100);
-            }
-
-            modal.querySelector('#itemForm').onsubmit = async function (e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const data = {};
-                for (let [key, value] of formData.entries()) {
-                    data[key] = value;
-                }
-
-                if (!isWithdraw) {
-                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
-                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
-                    for (let i = 0; i < dynKeys.length; i++) {
-                        const key = dynKeys[i].value.trim();
-                        if (key) {
-                            data[key] = dynVals[i] ? dynVals[i].value : '';
-                        }
-                    }
-                }
-
-                let imageId = null;
-                const imageFile = formData.get('image');
-                if (imageFile && imageFile.size > 0) {
-                    if (imageFile.size > 5 * 1024 * 1024) {
-                        alert('The image must be at most 5MB');
-                        return;
-                    }
-                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
-                        alert('Only PNG or JPEG images are allowed');
-                        return;
-                    }
-                    const imgForm = new FormData();
-                    imgForm.append('image', imageFile);
-                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
-                    if (!imgRes.ok) {
-                        throw new Error('Error uploading image');
-                    }
-                    const imgData = await imgRes.json();
-                    imageId = imgData.fileId;
-                }
-
-                try {
-                    if (isEdit) {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                id: editId,
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    } else if (isWithdraw) {
-                        await fetch('/withdraw-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                id: editId,
-                                withdrawDate: new Date().toISOString().slice(0, 10),
-                                lastUser: data.lastUser,
-                                quantity: data.quantity || 1,
-                                note: data.note || ''
-                            })
-                        });
-                    } else {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                status: 'Available',
-                                entryDate: new Date().toISOString().slice(0, 10),
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    }
-
-                    closeModal();
-                    await getEquipments();
-
-                } catch (err) {
-                    alert('Error saving to database: ' + err.message);
-                }
-            };
-
-            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
-        }
-
-        function renderEquipments(searchTerm = '') {
-            renderSummary();
-            const grid = document.getElementById('equipmentGrid');
-
-            let filtered = equipments.filter(eq =>
-                (eq.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (eq.category || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (eq.status || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
-                (eq.lastUser || '').toLowerCase().includes(searchTerm.toLowerCase())
-            );
-
-            if (filtered.length === 0) {
-                grid.innerHTML = `
+                    grid.innerHTML = `
                 <div class="empty-state" style="grid-column: 1 / -1;">
                     <div class="empty-icon">
-                        <i class="fas fa-search"></i>
+                        <i class="fas fa-${hasSearchTerm ? "search" : "box-open"}"></i>
                     </div>
-                    <div class="empty-title">No items found</div>
-                    <div class="empty-description">Try adjusting your search terms</div>
+                    <div class="empty-title">${hasSearchTerm ? "No items found" : "No items in " + locationName}</div>
+                    <div class="empty-description">${hasSearchTerm ? "Try adjusting your search terms" : 'Add new items to this location using the "Add Item" button'}</div>
                 </div>
             `;
-                return;
-            }
+                    return;
+                }
 
-            const DEFAULT_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
+                const DEFAULT_IMAGE = `data:image/svg+xml,${encodeURIComponent(`
 <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
     <rect width="200" height="200" fill="#f3f4f6"/>
     <path d="M100 70 C 70 70, 50 85, 50 110 C 50 135, 70 150, 100 150 C 130 150, 150 135, 150 110 C 150 85, 130 70, 100 70" fill="#9ca3af"/>
@@ -1500,9 +1740,10 @@
     <text x="100" y="180" text-anchor="middle" fill="#6b7280" font-family="Arial" font-size="14">No Image</text>
 </svg>`)}`;
 
-            grid.innerHTML = filtered.map(eq => {
-                const statusInfo = getStatusInfo(eq.status);
-                return `
+                grid.innerHTML = filtered
+                    .map((eq) => {
+                        const statusInfo = getStatusInfo(eq.status);
+                        return `
          <div class="equipment-card">
 <div class="card-image-container">
     <a href="/image/${eq.imageId}" target="_blank">
@@ -1512,7 +1753,7 @@
             <div class="card-header">
                 <div class="card-title">
                     <div class="status-indicator ${statusInfo.class}"></div>
-                    ${DOMPurify.sanitize(eq.name || '')}
+                    ${DOMPurify.sanitize(eq.name || "")}
                 </div>
             </div>
             <div class="card-body">
@@ -1535,7 +1776,7 @@
                              <div class="info-item">
                         <i class="fas fa-info-circle info-icon"></i>
                         <span class="info-label">Note:</span>
-                        <span class="info-value">${DOMPurify.sanitize(eq.note || '')}</span>
+                        <span class="info-value">${DOMPurify.sanitize(eq.note || "")}</span>
                     </div>
                 </div>
             </div>
@@ -1546,107 +1787,148 @@
                 <button class="btn-action btn-edit" onclick="editItem('${eq.id}', this)" title="Edit">
                     <span class="btn-icon-content"><i class="fas fa-edit"></i></span>
                 </button>
-                ${eq.status === 'Available'
+                ${
+                    eq.status === "Available"
                         ? `<button class="btn-action btn-withdraw" onclick="withdrawItem('${eq.id}', this)" title="Withdraw">
                             <span class="btn-icon-content"><i class="fas fa-sign-out-alt"></i></span>
                         </button>`
-                        : eq.status === 'In use'
-                            ? `<button class="btn-action btn-edit" onclick="returnItem('${eq.id}', this)" title="Return">
+                        : eq.status === "In use"
+                          ? `<button class="btn-action btn-edit" onclick="returnItem('${eq.id}', this)" title="Return">
                             <span class="btn-icon-content"><i class="fas fa-undo"></i></span>
                         </button>`
-                            : ''
-                    }
+                          : ""
+                }
                 <button class="btn-action btn-delete" onclick="deleteItem('${eq.id}', this)" title="Delete">
                     <span class="btn-icon-content"><i class="fas fa-trash"></i></span>
                 </button>
             </div>
         </div>
     `;
-            }).join('');
-        }
-
-      document.getElementById('searchInput').addEventListener('input', function () {
-            const query = this.value.toLowerCase();
-            renderEquipments(query);
-        });
-
-        function setButtonLoading(btn, loading = true) {
-            if (!btn) return;
-            if (loading) {
-                btn.classList.add('loading');
-                if (!btn.querySelector('.loading-spinner')) {
-                    const spinner = document.createElement('span');
-                    spinner.className = 'loading-spinner fas fa-spinner fa-spin';
-                    btn.appendChild(spinner);
-                }
-            } else {
-                btn.classList.remove('loading');
-                const spinner = btn.querySelector('.loading-spinner');
-                if (spinner) spinner.remove();
+                    })
+                    .join("");
             }
-        }
 
-        function returnItem(id, btn) {
-            setButtonLoading(btn, true);
-            fetch('/return-equipment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id })
-            })
-                .then(async res => {
-                    setButtonLoading(btn, false);
-                    if (res.ok) {
-                        await getEquipments();
-                    } else {
-                        alert('Error returning item!');
-                    }
-                })
-                .catch(() => {
-                    setButtonLoading(btn, false);
-                    alert('Error returning item!');
+            // Add event listeners for filter buttons
+            document.addEventListener("DOMContentLoaded", function () {
+                const filterButtons = document.querySelectorAll(".filter-btn");
+
+                filterButtons.forEach((button) => {
+                    button.addEventListener("click", function () {
+                        // Remove active class from all buttons
+                        filterButtons.forEach((btn) =>
+                            btn.classList.remove("active"),
+                        );
+
+                        // Add active class to clicked button
+                        this.classList.add("active");
+
+                        // Update current filter
+                        currentFilter = this.getAttribute("data-filter");
+
+                        // Re-render equipments with new filter
+                        renderEquipments();
+                        renderSummary();
+                    });
                 });
-        }
 
-        function editItem(id, btn) {
-            setButtonLoading(btn, true);
-            setTimeout(() => {
-                setButtonLoading(btn, false);
-                showModal('edit', id);
-            }, 200);
-        }
+                // Remove active class from all buttons first
+                filterButtons.forEach((btn) => btn.classList.remove("active"));
 
-        function withdrawItem(id, btn) {
-            setButtonLoading(btn, true);
-            setTimeout(() => {
-                setButtonLoading(btn, false);
-                showModal('withdraw', id);
-            }, 200);
-        }
+                // Set default active button
+                document
+                    .querySelector('[data-filter="pageroom"]')
+                    .classList.add("active");
 
-        function deleteItem(id, btn) {
-            showDeleteModal(id);
-        }
+                // Initial render with default filter
+                getEquipments();
+            });
 
-        document.getElementById('addItemBtn').onclick = () => showModal('add');
+            document
+                .getElementById("searchInput")
+                .addEventListener("input", function () {
+                    const query = this.value.toLowerCase();
+                    renderEquipments(query);
+                });
 
-        function showModal(type, editId = null) {
-            removeExistingModal();
+            function setButtonLoading(btn, loading = true) {
+                if (!btn) return;
+                if (loading) {
+                    btn.classList.add("loading");
+                    if (!btn.querySelector(".loading-spinner")) {
+                        const spinner = document.createElement("span");
+                        spinner.className =
+                            "loading-spinner fas fa-spinner fa-spin";
+                        btn.appendChild(spinner);
+                    }
+                } else {
+                    btn.classList.remove("loading");
+                    const spinner = btn.querySelector(".loading-spinner");
+                    if (spinner) spinner.remove();
+                }
+            }
 
-            const modalOverlay = document.createElement('div');
-            modalOverlay.className = 'modal-overlay';
-            modalOverlay.id = 'modalOverlay';
+            function returnItem(id, btn) {
+                setButtonLoading(btn, true);
+                fetch("/return-equipment", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id }),
+                })
+                    .then(async (res) => {
+                        setButtonLoading(btn, false);
+                        if (res.ok) {
+                            await getEquipments();
+                        } else {
+                            alert("Error returning item!");
+                        }
+                    })
+                    .catch(() => {
+                        setButtonLoading(btn, false);
+                        alert("Error returning item!");
+                    });
+            }
 
-            const modal = document.createElement('div');
-            modal.className = 'modal';
+            function editItem(id, btn) {
+                setButtonLoading(btn, true);
+                setTimeout(() => {
+                    setButtonLoading(btn, false);
+                    showModal("edit", id);
+                }, 200);
+            }
 
-            const isWithdraw = type === 'withdraw';
-            const isEdit = type === 'edit';
+            function withdrawItem(id, btn) {
+                setButtonLoading(btn, true);
+                setTimeout(() => {
+                    setButtonLoading(btn, false);
+                    showModal("withdraw", id);
+                }, 200);
+            }
 
-            let title = 'Add Item';
-            if (isEdit) title = 'Edit Item';
-            else if (isWithdraw) title = 'Withdraw Item';
+            function deleteItem(id, btn) {
+                showDeleteModal(id);
+            }
 
-            modal.innerHTML = `
+            document.getElementById("addItemBtn").onclick = () =>
+                showModal("add");
+
+            function showModal(type, editId = null) {
+                removeExistingModal();
+
+                const modalOverlay = document.createElement("div");
+                modalOverlay.className = "modal-overlay";
+                modalOverlay.id = "modalOverlay";
+
+                const modal = document.createElement("div");
+                modal.className = "modal";
+
+                const isWithdraw = type === "withdraw";
+                const isEdit = type === "edit";
+
+                let title = "Add Item";
+                if (isEdit) title = "Edit Item";
+                else if (isWithdraw) title = "Withdraw Item";
+
+                modal.innerHTML = `
                 <div class="modal-header">
                     <h2 class="modal-title">${title}</h2>
                     <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -1657,201 +1939,271 @@
                         <div class="form-actions">
                             <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                             <button type="submit" class="btn-submit">
-                                ${isEdit ? 'Save Changes' : isWithdraw ? 'Confirm Withdraw' : 'Add Item'}
+                                ${isEdit ? "Save Changes" : isWithdraw ? "Confirm Withdraw" : "Add Item"}
                             </button>
                         </div>
                     </form>
                 </div>
             `;
 
-            modalOverlay.appendChild(modal);
-            document.body.appendChild(modalOverlay);
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
 
-            if (!isWithdraw) {
-                const dynFieldsContainer = modal.querySelector('#dynamicFields');
-                modal.querySelector('#addFieldBtn').onclick = function (e) {
-                    e.preventDefault();
-                    addDynamicField(dynFieldsContainer);
-                };
-                if (isEdit && editId) {
+                if (!isWithdraw) {
+                    const dynFieldsContainer =
+                        modal.querySelector("#dynamicFields");
+                    modal.querySelector("#addFieldBtn").onclick = function (e) {
+                        e.preventDefault();
+                        addDynamicField(dynFieldsContainer);
+                    };
+
+                    // Set default location for new items
+                    if (!isEdit) {
+                        const locationSelect = modal.querySelector("#location");
+                        if (locationSelect) {
+                            locationSelect.value = currentFilter;
+                        }
+                    }
+
+                    if (isEdit && editId) {
+                        setTimeout(() => {
+                            const eq = equipments.find((e) => e.id == editId);
+                            if (!eq) return;
+                            const exclude = [
+                                "_id",
+                                "id",
+                                "name",
+                                "imageId",
+                                "image",
+                                "category",
+                                "quantity",
+                                "status",
+                                "note",
+                                "entryDate",
+                                "withdrawDate",
+                                "lastUser",
+                                "originId",
+                            ];
+                            Object.keys(eq).forEach((key) => {
+                                if (
+                                    !exclude.includes(key) &&
+                                    !key.startsWith("dyn_")
+                                ) {
+                                    addDynamicField(
+                                        dynFieldsContainer,
+                                        key,
+                                        eq[key],
+                                    );
+                                }
+                            });
+                        }, 100);
+                    }
+                }
+
+                const fileInput = modal.querySelector('input[type="file"]');
+                if (fileInput) {
+                    fileInput.onchange = function () {
+                        const file = this.files[0];
+                        if (file) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                const preview = document.createElement("img");
+                                preview.src = e.target.result;
+                                preview.className = "equipment-img";
+                                preview.style.marginTop = "1rem";
+                                const wrapper = fileInput.closest(
+                                    ".file-input-wrapper",
+                                );
+                                const existingPreview =
+                                    wrapper.querySelector("img");
+                                if (existingPreview) {
+                                    existingPreview.remove();
+                                }
+                                wrapper.appendChild(preview);
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    };
+                }
+
+                if (isEdit || isWithdraw) {
                     setTimeout(() => {
-                        const eq = equipments.find(e => e.id == editId);
+                        if (!document.body.contains(modal)) return;
+
+                        const eq = equipments.find((e) => e.id == editId);
                         if (!eq) return;
-                        const exclude = ['_id', 'id', 'name', 'imageId', 'image', 'category', 'quantity', 'status', 'note', 'entryDate', 'withdrawDate', 'lastUser', 'originId'];
-                        Object.keys(eq).forEach(key => {
-                            if (!exclude.includes(key) && !key.startsWith('dyn_')) {
-                                addDynamicField(dynFieldsContainer, key, eq[key]);
+
+                        const form = modal.querySelector("#itemForm");
+                        if (!form || !document.body.contains(form)) return;
+
+                        Object.keys(eq).forEach((key) => {
+                            try {
+                                const input = form.querySelector(
+                                    `[name="${key}"]`,
+                                );
+                                if (input && document.body.contains(input)) {
+                                    if (input.type === "checkbox") {
+                                        input.checked = !!eq[key];
+                                    } else if (input.tagName === "SELECT") {
+                                        const options = Array.from(
+                                            input.options,
+                                        );
+                                        options.forEach((opt) => {
+                                            if (opt && opt.parentNode) {
+                                                opt.selected =
+                                                    opt.value == eq[key];
+                                            }
+                                        });
+                                    } else if (input.tagName === "TEXTAREA") {
+                                        input.value = eq[key] || "";
+                                    } else {
+                                        input.value = eq[key] ?? "";
+                                    }
+                                }
+                            } catch (error) {
+                                console.warn(
+                                    "Error filling field:",
+                                    key,
+                                    error,
+                                );
                             }
                         });
                     }, 100);
                 }
-            }
 
-            const fileInput = modal.querySelector('input[type="file"]');
-            if (fileInput) {
-                fileInput.onchange = function () {
-                    const file = this.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function (e) {
-                            const preview = document.createElement('img');
-                            preview.src = e.target.result;
-                            preview.className = 'equipment-img';
-                            preview.style.marginTop = '1rem';
-                            const wrapper = fileInput.closest('.file-input-wrapper');
-                            const existingPreview = wrapper.querySelector('img');
-                            if (existingPreview) {
-                                existingPreview.remove();
-                            }
-                            wrapper.appendChild(preview);
-                        };
-                        reader.readAsDataURL(file);
+                modal.querySelector("#itemForm").onsubmit = async function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const data = {};
+                    for (let [key, value] of formData.entries()) {
+                        data[key] = value;
                     }
+
+                    if (!isWithdraw) {
+                        const dynKeys = Array.from(
+                            modal.querySelectorAll('input[name="dyn_key[]"]'),
+                        );
+                        const dynVals = Array.from(
+                            modal.querySelectorAll('input[name="dyn_value[]"]'),
+                        );
+                        for (let i = 0; i < dynKeys.length; i++) {
+                            const key = dynKeys[i].value.trim();
+                            if (key) {
+                                data[key] = dynVals[i] ? dynVals[i].value : "";
+                            }
+                        }
+                    }
+
+                    let imageId = null;
+                    const imageFile = formData.get("image");
+                    if (imageFile && imageFile.size > 0) {
+                        if (imageFile.size > 5 * 1024 * 1024) {
+                            alert("The image must be at most 5MB");
+                            return;
+                        }
+                        if (
+                            !["image/png", "image/jpeg"].includes(
+                                imageFile.type,
+                            )
+                        ) {
+                            alert("Only PNG or JPEG images are allowed");
+                            return;
+                        }
+                        const imgForm = new FormData();
+                        imgForm.append("image", imageFile);
+                        const imgRes = await fetch("/upload-image", {
+                            method: "POST",
+                            body: imgForm,
+                        });
+                        if (!imgRes.ok) {
+                            throw new Error("Error uploading image");
+                        }
+                        const imgData = await imgRes.json();
+                        imageId = imgData.fileId;
+                    }
+
+                    try {
+                        if (isEdit) {
+                            await fetch("/add-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    ...data,
+                                    id: editId,
+                                    ...(imageId ? { imageId } : {}),
+                                }),
+                            });
+                        } else if (isWithdraw) {
+                            await fetch("/withdraw-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    id: editId,
+                                    withdrawDate: new Date()
+                                        .toISOString()
+                                        .slice(0, 10),
+                                    lastUser: data.lastUser,
+                                    quantity: data.quantity || 1,
+                                    note: data.note || "",
+                                }),
+                            });
+                        } else {
+                            await fetch("/add-equipment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    ...data,
+                                    status: "Available",
+                                    entryDate: new Date()
+                                        .toISOString()
+                                        .slice(0, 10),
+                                    ...(imageId ? { imageId } : {}),
+                                }),
+                            });
+                        }
+
+                        closeModal();
+                        await getEquipments();
+                    } catch (err) {
+                        alert("Error saving to database: " + err.message);
+                    }
+                };
+
+                modalOverlay.onclick = (e) => {
+                    if (e.target === modalOverlay) closeModal();
                 };
             }
 
-            if (isEdit || isWithdraw) {
-                setTimeout(() => {
-                    if (!document.body.contains(modal)) return;
+            function renderSummary() {
+                // Filter equipments by current location
+                const filteredEquipments = equipments.filter(
+                    (e) => e.location === currentFilter,
+                );
 
-                    const eq = equipments.find(e => e.id == editId);
-                    if (!eq) return;
+                const totalQuantity = filteredEquipments.reduce(
+                    (sum, e) => sum + (parseInt(e.quantity) || 0),
+                    0,
+                );
+                const available = filteredEquipments
+                    .filter((e) => e.status === "Available")
+                    .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+                const inUse = filteredEquipments
+                    .filter((e) => e.status === "In use")
+                    .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
+                const maintenance = filteredEquipments
+                    .filter((e) => e.status === "Maintenance")
+                    .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
 
-                    const form = modal.querySelector('#itemForm');
-                    if (!form || !document.body.contains(form)) return;
+                const locationName =
+                    currentFilter === "pagecar" ? "Carro" : "Salinha";
 
-                    Object.keys(eq).forEach(key => {
-                        try {
-                            const input = form.querySelector(`[name="${key}"]`);
-                            if (input && document.body.contains(input)) {
-                                if (input.type === 'checkbox') {
-                                    input.checked = !!eq[key];
-                                } else if (input.tagName === 'SELECT') {
-                                    const options = Array.from(input.options);
-                                    options.forEach(opt => {
-                                        if (opt && opt.parentNode) {
-                                            opt.selected = opt.value == eq[key];
-                                        }
-                                    });
-                                } else if (input.tagName === 'TEXTAREA') {
-                                    input.value = eq[key] || '';
-                                } else {
-                                    input.value = eq[key] ?? '';
-                                }
-                            }
-                        } catch (error) {
-                            console.warn('Error filling field:', key, error);
-                        }
-                    });
-                }, 100);
-            }
-
-            modal.querySelector('#itemForm').onsubmit = async function (e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const data = {};
-                for (let [key, value] of formData.entries()) {
-                    data[key] = value;
-                }
-
-                if (!isWithdraw) {
-                    const dynKeys = Array.from(modal.querySelectorAll('input[name="dyn_key[]"]'));
-                    const dynVals = Array.from(modal.querySelectorAll('input[name="dyn_value[]"]'));
-                    for (let i = 0; i < dynKeys.length; i++) {
-                        const key = dynKeys[i].value.trim();
-                        if (key) {
-                            data[key] = dynVals[i] ? dynVals[i].value : '';
-                        }
-                    }
-                }
-
-                let imageId = null;
-                const imageFile = formData.get('image');
-                if (imageFile && imageFile.size > 0) {
-                    if (imageFile.size > 5 * 1024 * 1024) {
-                        alert('The image must be at most 5MB');
-                        return;
-                    }
-                    if (!['image/png', 'image/jpeg'].includes(imageFile.type)) {
-                        alert('Only PNG or JPEG images are allowed');
-                        return;
-                    }
-                    const imgForm = new FormData();
-                    imgForm.append('image', imageFile);
-                    const imgRes = await fetch('/upload-image', { method: 'POST', body: imgForm });
-                    if (!imgRes.ok) {
-                        throw new Error('Error uploading image');
-                    }
-                    const imgData = await imgRes.json();
-                    imageId = imgData.fileId;
-                }
-
-                try {
-                    if (isEdit) {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                id: editId,
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    } else if (isWithdraw) {
-                        await fetch('/withdraw-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                id: editId,
-                                withdrawDate: new Date().toISOString().slice(0, 10),
-                                lastUser: data.lastUser,
-                                quantity: data.quantity || 1,
-                                note: data.note || ''
-                            })
-                        });
-                    } else {
-                        await fetch('/add-equipment', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                ...data,
-                                status: 'Available',
-                                entryDate: new Date().toISOString().slice(0, 10),
-                                ...(imageId ? { imageId } : {})
-                            })
-                        });
-                    }
-
-                    closeModal();
-                    await getEquipments();
-
-                } catch (err) {
-                    alert('Error saving to database: ' + err.message);
-                }
-            };
-
-            modalOverlay.onclick = (e) => { if (e.target === modalOverlay) closeModal(); };
-        }
-
-        function renderSummary() {
-            const totalQuantity = equipments.reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
-            const available = equipments
-                .filter(e => e.status === 'Available')
-                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
-            const inUse = equipments
-                .filter(e => e.status === 'In use')
-                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
-            const maintenance = equipments
-                .filter(e => e.status === 'Maintenance')
-                .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
-
-            document.getElementById('summaryPanel').innerHTML = `
+                document.getElementById("summaryPanel").innerHTML = `
                 <div class="summary-card">
                     <div class="summary-header">
                         <i class="fas fa-boxes summary-icon" style="color: var(--primary)"></i>
                         <div class="summary-value">${totalQuantity}</div>
                     </div>
-                    <div class="summary-label">Total Items</div>
+                    <div class="summary-label">Total Items - ${locationName}</div>
                 </div>
                 <div class="summary-card success">
                     <div class="summary-header">
@@ -1875,20 +2227,21 @@
                     <div class="summary-label">Maintenance</div>
                 </div>
             `;
-        }
+            }
 
-        function getEquipments() {
-            fetch('/get_all_equipments')
-                .then(res => res.json())
-                .then(data => {
-                    equipments = data;
-                    renderEquipments();
-                })
-                .catch(err => console.error('Error fetching equipments:', err));
-        }
+            function getEquipments() {
+                fetch("/get_all_equipments")
+                    .then((res) => res.json())
+                    .then((data) => {
+                        equipments = data;
+                        renderEquipments();
+                    })
+                    .catch((err) =>
+                        console.error("Error fetching equipments:", err),
+                    );
+            }
 
-        getEquipments();
-    </script>
-</body>
-
+            getEquipments();
+        </script>
+    </body>
 </html>
