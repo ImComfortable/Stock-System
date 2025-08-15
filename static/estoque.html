@@ -14,31 +14,36 @@
         />
         <style>
             :root {
-                --primary: #4b599b;
-                --primary-dark: #4b599b;
-                --primary-light: #4b599b;
-                --success: #10b981;
-                --success-light: #d1fae5;
-                --warning: #f59e0b;
-                --warning-light: #fef3c7;
-                --danger: #ef4444;
-                --danger-light: #fee2e2;
-                --info: #3b82f6;
-                --info-light: #dbeafe;
-                --gray-50: #f9fafb;
-                --gray-100: #f3f4f6;
-                --gray-200: #e5e7eb;
-                --gray-300: #d1d5db;
-                --gray-500: #6b7280;
-                --gray-700: #374151;
-                --gray-900: #111827;
-                --white: #ffffff;
-                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-                --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-                --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
-                --radius: 12px;
-                --radius-lg: 16px;
+                --primary: #D97706;
+                --primary-dark: #B45309;
+                --primary-light: #F59E0B;
+                --success: #10B981;
+                --success-light: #34D399;
+                --warning: #F59E0B;
+                --warning-light: #FCD34D;
+                --danger: #EF4444;
+                --danger-light: #F87171;
+                --info-light: #60A5FA;
+                
+                /* Dark theme colors */
+                --background: #0F0F0F;
+                --surface: #1A1A1A;
+                --surface-elevated: #262626;
+                --surface-hover: #2A2A2A;
+                --border: #404040;
+                --border-light: #525252;
+                
+                --text-primary: #F5F5F5;
+                --text-secondary: #A3A3A3;
+                --text-muted: #737373;
+                --text-inverse: #171717;
+                
+                --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+                --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+                --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+                --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.6);
+                --radius: 8px;
+                --radius-lg: 12px;
             }
 
             * {
@@ -46,49 +51,32 @@
             }
 
             body {
-                background: linear-gradient(
-                    135deg,
-                    #303755 0%,
-                    rgb(44, 35, 54) 100%
-                );
+                background: var(--background);
                 font-family: "Inter", sans-serif;
                 margin: 0;
                 min-height: 100vh;
-                color: var(--gray-900);
+                color: var(--text-primary);
                 font-weight: 400;
+                line-height: 1.6;
             }
 
             .container {
                 max-width: 1200px;
                 margin: 2rem auto;
-                background: var(--white);
+                background: var(--surface);
                 border-radius: var(--radius-lg);
                 box-shadow: var(--shadow-xl);
                 overflow: hidden;
+                border: 1px solid var(--border);
             }
 
             .header {
-                background: linear-gradient(
-                    135deg,
-                    var(--primary) 0%,
-                    var(--primary-dark) 100%
-                );
-                color: var(--white);
-                padding: 2.5rem 2rem;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
+                padding: 2rem;
                 text-align: center;
                 position: relative;
-                overflow: hidden;
-            }
-
-            .header::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
-                opacity: 0.3;
+                border-bottom: 1px solid var(--border);
             }
 
             .header-content {
@@ -97,7 +85,7 @@
             }
 
             .header h1 {
-                font-size: 2.5rem;
+                font-size: 2rem;
                 font-weight: 800;
                 margin: 0 0 0.5rem 0;
                 letter-spacing: -1px;
@@ -121,52 +109,41 @@
             .btn {
                 border: none;
                 border-radius: var(--radius);
-                padding: 0.875rem 1.5rem;
-                font-size: 1rem;
-                font-weight: 600;
+                padding: 0.75rem 1.25rem;
+                font-size: 0.9rem;
+                font-weight: 500;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 display: flex;
                 align-items: center;
                 gap: 0.5rem;
                 text-decoration: none;
                 position: relative;
-                overflow: hidden;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
+                border: 1px solid var(--border);
             }
 
-            .btn::before {
-                content: "";
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255, 255, 255, 0.2),
-                    transparent
-                );
-                transition: left 0.5s;
-            }
-
-            .btn:hover::before {
-                left: 100%;
+            .btn:hover {
+                background: var(--surface-hover);
+                border-color: var(--border-light);
+                transform: translateY(-1px);
             }
 
             .btn-primary {
-                background: var(--white);
-                color: var(--primary);
-                box-shadow: var(--shadow);
+                background: var(--primary);
+                color: var(--text-inverse);
+                border: 1px solid var(--primary);
             }
 
             .btn-primary:hover {
-                transform: translateY(-2px);
-                box-shadow: var(--shadow-lg);
+                background: var(--primary-dark);
+                border-color: var(--primary-dark);
             }
 
             .main-content {
                 padding: 2rem;
+                background: var(--surface);
             }
 
             .summary-panel {
@@ -177,23 +154,49 @@
             }
 
             .summary-card {
-                background: var(--gray-50);
+                background: var(--surface-elevated);
                 border-radius: var(--radius);
                 padding: 1.5rem;
+                border: 1px solid var(--border);
                 border-left: 4px solid var(--primary);
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 position: relative;
-                overflow: hidden;
             }
 
             .btn-secondary {
-                background: #bbbbb8d0;
-                color: black;
+                background: var(--surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-light);
             }
 
             .btn-secondary:hover {
-                background: #646463d0;
-                color: white;
+                background: #404040;
+                color: var(--text-primary);
+                border-color: #525252;
+            }
+
+            .btn-details {
+                background: var(--surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-light);
+            }
+
+            .btn-details:hover {
+                background: #404040;
+                border-color: #525252;
+                color: var(--text-primary);
+            }
+
+            .btn-history {
+                background: var(--surface-hover);
+                color: var(--text-primary);
+                border: 1px solid var(--border-light);
+            }
+
+            .btn-history:hover {
+                background: #404040;
+                border-color: #525252;
+                color: var(--text-primary);
             }
 
             .summary-card::before {
@@ -244,13 +247,13 @@
             .summary-value {
                 font-size: 2.25rem;
                 font-weight: 800;
-                color: var(--gray-900);
+                color: var(--text-primary);
                 line-height: 1;
             }
 
             .summary-label {
                 font-size: 0.875rem;
-                color: var(--gray-500);
+                color: var(--text-secondary);
                 font-weight: 500;
                 margin-top: 0.25rem;
             }
@@ -262,22 +265,30 @@
             .search-bar {
                 position: relative;
                 max-width: 400px;
+                background-color: #2A2A2A;
+                color: white;
+                margin-left: 0.8rem;
             }
 
             .search-bar input {
                 width: 100%;
-                padding: 0.875rem 1rem 0.875rem 3rem;
+                padding: 0.75rem 1rem 0.75rem 3rem;
                 border-radius: var(--radius);
-                border: 2px solid var(--gray-200);
-                font-size: 1rem;
-                background: var(--white);
-                transition: all 0.3s ease;
+                border: 1px solid var(--border);
+                font-size: 0.9rem;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
+                transition: all 0.2s ease;
             }
 
             .search-bar input:focus {
                 border-color: var(--primary);
                 outline: none;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
+            }
+
+            .search-bar input::placeholder {
+                color: var(--text-muted);
             }
 
             .search-icon {
@@ -285,8 +296,8 @@
                 left: 1rem;
                 top: 50%;
                 transform: translateY(-50%);
-                color: var(--gray-500);
-                font-size: 1.125rem;
+                color: var(--text-muted);
+                font-size: 1rem;
             }
 
             .equipment-grid {
@@ -297,12 +308,12 @@
             }
 
             .equipment-card {
-                background: var(--white);
+                background: var(--surface-elevated);
                 border-radius: var(--radius);
                 box-shadow: var(--shadow);
-                border: 1px solid var(--gray-200);
+                border: 1px solid var(--border);
                 overflow: hidden;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
                 position: relative;
                 display: flex;
                 flex-direction: column;
@@ -359,6 +370,7 @@
             }
 
             .card-image-container {
+                margin-top: 15px;
                 width: 100%;
                 height: 180px;
                 padding: 1rem;
@@ -370,19 +382,20 @@
             }
 
             .equipment-card:hover {
-                transform: translateY(-4px);
-                box-shadow: var(--shadow-xl);
+                transform: translateY(-2px);
+                box-shadow: var(--shadow-lg);
+                border-color: var(--border-light);
             }
 
             .card-header {
                 padding: 1.5rem 1.5rem 1rem 1.5rem;
-                border-bottom: 1px solid var(--gray-100);
+                border-bottom: 1px solid var(--border);
             }
 
             .card-title {
                 font-size: 1.25rem;
                 font-weight: 700;
-                color: var(--gray-900);
+                color: var(--text-primary);
                 display: flex;
                 justify-content: left;
                 gap: 0.75rem;
@@ -490,7 +503,7 @@
 
             .btn-action {
                 padding: 0.5rem;
-                border: 5px;
+                border: 1px solid var(--border-light);
                 border-radius: var(--radius);
                 cursor: pointer;
                 transition: all 0.2s ease;
@@ -499,36 +512,14 @@
                 justify-content: center;
                 width: 36px;
                 height: 36px;
+                background: var(--surface-hover);
+                color: var(--text-primary);
             }
 
-            .btn-edit {
-                background: var(--info-light);
-                color: var(--info);
-            }
-
-            .btn-edit:hover {
-                background: var(--info);
-                color: var(--white);
-            }
-
-            .btn-withdraw {
-                background: var(--warning-light);
-                color: var(--warning);
-            }
-
-            .btn-withdraw:hover {
-                background: var(--warning);
-                color: var(--white);
-            }
-
-            .btn-delete {
-                background: var(--danger-light);
-                color: var(--danger);
-            }
-
-            .btn-delete:hover {
-                background: var(--danger);
-                color: var(--white);
+            .btn-action:hover {
+                background: #404040;
+                border-color: #525252;
+                transform: translateY(-1px);
             }
 
             .modal-overlay {
@@ -537,18 +528,19 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0, 0, 0, 0.6);
+                background: rgba(0, 0, 0, 0.8);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 z-index: 1000;
-                backdrop-filter: blur(4px);
+                backdrop-filter: blur(8px);
             }
 
             .modal {
-                background: var(--white);
+                background: var(--surface);
                 box-shadow: var(--shadow-xl);
-                border-radius: 0px 0px 15px 15px;
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--border);
                 max-width: 500px;
                 width: 90vw;
                 max-height: 90vh;
@@ -569,18 +561,14 @@
             }
 
             .modal-header {
-                background: linear-gradient(
-                    135deg,
-                    var(--primary) 0%,
-                    var(--primary-dark) 100%
-                );
-                color: var(--white);
+                background: var(--surface-elevated);
+                color: var(--text-primary);
                 padding: 1.5rem 2rem;
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                border-radius: 0px;
-                width: 100%;
+                border-bottom: 1px solid var(--border);
+                border-radius: var(--radius-lg) var(--radius-lg) 0 0;
             }
 
             .modal-title {
@@ -592,7 +580,7 @@
             .modal-close {
                 background: none;
                 border: none;
-                color: var(--white);
+                color: var(--text-secondary);
                 font-size: 1.5rem;
                 cursor: pointer;
                 padding: 0.25rem;
@@ -601,7 +589,8 @@
             }
 
             .modal-close:hover {
-                background: rgba(255, 255, 255, 0.2);
+                background: var(--surface-hover);
+                color: var(--text-primary);
             }
 
             .modal-body {
@@ -622,55 +611,60 @@
             .form-label {
                 font-size: 0.875rem;
                 font-weight: 600;
-                color: var(--gray-700);
+                color: var(--text-primary);
+                margin-bottom: 0.5rem;
             }
 
             .form-input {
                 padding: 0.75rem 1rem;
-                border: 2px solid var(--gray-200);
+                border: 1px solid var(--border);
                 border-radius: var(--radius);
-                font-size: 1rem;
-                transition: all 0.3s ease;
-                background: var(--white);
+                font-size: 0.9rem;
+                transition: all 0.2s ease;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
             }
 
             .form-input:focus {
                 border-color: var(--primary);
                 outline: none;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
             }
 
             .form-select {
                 padding: 0.75rem 1rem;
-                border: 2px solid var(--gray-200);
+                border: 1px solid var(--border);
                 border-radius: var(--radius);
-                font-size: 1rem;
-                background: var(--white);
+                font-size: 0.9rem;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
             }
 
             .form-select:focus {
                 border-color: var(--primary);
                 outline: none;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
             }
 
             .form-textarea {
                 padding: 0.75rem 1rem;
-                border: 2px solid var(--gray-200);
+                border: 1px solid var(--border);
                 border-radius: var(--radius);
-                font-size: 1rem;
+                font-size: 0.9rem;
                 min-height: 80px;
                 resize: vertical;
                 font-family: inherit;
-                transition: all 0.3s ease;
+                background: var(--surface-elevated);
+                color: var(--text-primary);
+                transition: all 0.2s ease;
             }
 
             .form-textarea:focus {
                 border-color: var(--primary);
                 outline: none;
-                box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+                box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.1);
             }
 
             .form-actions {
@@ -681,40 +675,40 @@
             }
 
             .btn-submit {
-                background: linear-gradient(
-                    135deg,
-                    var(--primary) 0%,
-                    var(--primary-dark) 100%
-                );
-                color: var(--white);
-                border: none;
+                background: var(--primary);
+                color: var(--text-inverse);
+                border: 1px solid var(--primary);
                 border-radius: var(--radius);
-                padding: 0.875rem 2rem;
-                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
                 font-weight: 600;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
             }
 
             .btn-submit:hover {
+                background: var(--primary-dark);
+                border-color: var(--primary-dark);
                 transform: translateY(-1px);
-                box-shadow: var(--shadow-lg);
             }
 
             .btn-cancel {
-                background: var(--gray-100);
-                color: var(--gray-700);
-                border: none;
+                background: var(--surface-elevated);
+                color: var(--text-secondary);
+                border: 1px solid var(--border);
                 border-radius: var(--radius);
-                padding: 0.875rem 2rem;
-                font-size: 1rem;
+                padding: 0.75rem 1.5rem;
+                font-size: 0.9rem;
                 font-weight: 600;
                 cursor: pointer;
-                transition: all 0.3s ease;
+                transition: all 0.2s ease;
             }
 
             .btn-cancel:hover {
-                background: var(--gray-200);
+                background: var(--surface-hover);
+                color: var(--text-primary);
+                border-color: var(--border-light);
+                transform: translateY(-1px);
             }
 
             .empty-state {
@@ -1096,35 +1090,33 @@
                 align-items: center;
                 gap: 0.5rem;
                 padding: 0.75rem 1.25rem;
-                border: 2px solid var(--gray-200);
-                background: var(--white);
-                color: var(--gray-700);
+                border: 1px solid var(--border);
+                background: var(--surface-elevated);
+                color: var(--text-secondary);
                 border-radius: var(--radius);
                 font-weight: 500;
                 font-size: 0.9rem;
                 cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: var(--shadow-sm);
+                transition: all 0.2s ease;
             }
 
             .filter-btn:hover {
                 border-color: var(--primary);
                 color: var(--primary);
                 transform: translateY(-1px);
-                box-shadow: var(--shadow);
+                background: var(--surface-hover);
             }
 
             .filter-btn.active {
                 background: var(--primary);
                 border-color: var(--primary);
-                color: var(--white);
-                box-shadow: var(--shadow);
+                color: var(--text-inverse);
             }
 
             .filter-btn.active:hover {
                 background: var(--primary-dark);
                 border-color: var(--primary-dark);
-                color: var(--white);
+                color: var(--text-inverse);
             }
 
             .filter-btn i {
@@ -1930,10 +1922,10 @@
                 </div>
             </div>
             <div class="card-actions">
-                <button class="btn-action btn-secondary" onclick="showDetailsModal('${eq.id}')" title="Details">
+                <button class="btn-action btn-details" onclick="showDetailsModal('${eq.id}')" title="Details">
                     <span class="btn-icon-content"><i class="fas fa-eye"></i></span>
                 </button>
-                <button class="btn-action btn-secondary" onclick="showHistoryModal('${eq.id}')" title="History">
+                <button class="btn-action btn-history" onclick="showHistoryModal('${eq.id}')" title="History">
                     <span class="btn-icon-content"><i class="fas fa-history"></i></span>
                 </button>
                 <button class="btn-action btn-edit" onclick="editItem('${eq.id}', this)" title="Edit">
