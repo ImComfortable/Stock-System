@@ -179,6 +179,7 @@ app.post("/withdraw-equipment", async (req, res) => {
     quantity = parseInt(quantity, 10);
 
     const collection = db.collection("equipments");
+    const historyCollection = db.collection("equipment_history");
     const equipment = await collection.findOne({ _id: new ObjectId(id) });
 
     if (!equipment) {
@@ -196,6 +197,16 @@ app.post("/withdraw-equipment", async (req, res) => {
     }
 
     const newStock = currentStock - quantity;
+
+    // Add to history
+    await historyCollection.insertOne({
+      equipmentId: equipment._id,
+      equipmentName: equipment.name,
+      action: "withdraw",
+      userName: lastUser,
+      quantity: quantity,
+      date: new Date(),
+    });
 
     if (newStock === 0) {
       await collection.updateOne(
@@ -298,8 +309,9 @@ app.post("/return-equipment", async (req, res) => {
 
 app.post("/delete-equipment", async (req, res) => {
   try {
-    const { id, quantity } = req.body;
+    const { id, quantity, deletedBy } = req.body;
     const collection = db.collection("equipments");
+    const historyCollection = db.collection("equipment_history");
     const equipment = await collection.findOne({ _id: new ObjectId(id) });
 
     if (!equipment) {
@@ -316,6 +328,16 @@ app.post("/delete-equipment", async (req, res) => {
         .status(400)
         .json({ error: "Deletion quantity exceeds available stock." });
     }
+
+    // Add to history
+    await historyCollection.insertOne({
+      equipmentId: equipment._id,
+      equipmentName: equipment.name,
+      action: "delete",
+      userName: deletedBy,
+      quantity: deleteQuantity,
+      date: new Date(),
+    });
 
     if (deleteQuantity === currentStock) {
       const result = await collection.deleteOne({ _id: new ObjectId(id) });
@@ -353,6 +375,40 @@ app.get("/get_all_equipments", async (req, res) => {
     res.json(docsWithId);
   } catch (err) {
     res.status(500).json({ error: "Error fetching audit data" });
+  }
+});
+
+app.get("/get-equipment-history/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const historyCollection = db.collection("equipment_history");
+    
+    // Find history for this specific equipment or any equipment with the same originId
+    const equipment = await db.collection("equipments").findOne({ _id: new ObjectId(id) });
+    if (!equipment) {
+      return res.status(404).json({ error: "Equipment not found" });
+    }
+
+    // Get history for both the equipment itself and any equipment that originated from it
+    const historyQuery = {
+      $or: [
+        { equipmentId: new ObjectId(id) },
+        { equipmentId: equipment.originId ? new ObjectId(equipment.originId) : null }
+      ].filter(Boolean)
+    };
+
+    const history = await historyCollection
+      .find(historyQuery)
+      .sort({ date: -1 })
+      .toArray();
+
+    res.json({
+      success: true,
+      history: history
+    });
+  } catch (error) {
+    console.error("Error fetching equipment history:", error);
+    res.status(500).json({ error: "Error fetching equipment history" });
   }
 });
 

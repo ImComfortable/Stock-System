@@ -997,6 +997,77 @@
                 }
             }
 
+            /* History Modal Styles */
+            .history-list {
+                max-height: 400px;
+                overflow-y: auto;
+            }
+
+            .history-entry {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem;
+                border-bottom: 1px solid var(--gray-200);
+                transition: background-color 0.2s ease;
+            }
+
+            .history-entry:hover {
+                background-color: var(--gray-50);
+            }
+
+            .history-entry:last-child {
+                border-bottom: none;
+            }
+
+            .history-icon {
+                flex-shrink: 0;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.2rem;
+            }
+
+            .history-icon.withdraw {
+                background-color: var(--warning);
+            }
+
+            .history-icon.delete {
+                background-color: var(--danger);
+            }
+
+            .history-details {
+                flex: 1;
+            }
+
+            .history-action {
+                font-weight: 600;
+                font-size: 1.1rem;
+                color: var(--gray-900);
+                margin-bottom: 0.25rem;
+            }
+
+            .history-user {
+                font-size: 0.9rem;
+                color: var(--gray-700);
+                margin-bottom: 0.25rem;
+            }
+
+            .history-date {
+                font-size: 0.85rem;
+                color: var(--gray-500);
+            }
+
+            .history-quantity {
+                font-size: 0.85rem;
+                color: var(--gray-600);
+                font-weight: 500;
+            }
+
             /* Filter Section Styles */
             .filter-section {
                 display: flex;
@@ -1122,6 +1193,9 @@
                         <button class="filter-btn" data-filter="pageroom">
                             <i class="fas fa-home"></i> Estoque Salinha
                         </button>
+                        <button class="filter-btn" data-filter="deposito">
+                            <i class="fas fa-warehouse"></i> Depósito
+                        </button>
                     </div>
                 </div>
 
@@ -1238,6 +1312,72 @@
                 };
             }
 
+            function showHistoryModal(itemId) {
+                removeExistingModal();
+                
+                const modalOverlay = document.createElement("div");
+                modalOverlay.className = "modal-overlay";
+                modalOverlay.id = "modalOverlay";
+
+                const modal = document.createElement("div");
+                modal.className = "modal";
+
+                modal.innerHTML = `
+                    <div class="modal-header">
+                        <h2 class="modal-title">Item History</h2>
+                        <button class="modal-close" onclick="closeModal()">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="historyContent">Loading history...</div>
+                    </div>
+                `;
+                
+                modalOverlay.appendChild(modal);
+                document.body.appendChild(modalOverlay);
+                
+                // Fetch history from server
+                fetch(`/get-equipment-history/${itemId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const historyContent = document.getElementById('historyContent');
+                        if (data.success && data.history.length > 0) {
+                            let historyHtml = '<div class="history-list">';
+                            data.history.forEach(entry => {
+                                const date = formatDate(entry.date);
+                                const action = entry.action === 'withdraw' ? 'Retirada' : 'Exclusão';
+                                const iconClass = entry.action === 'withdraw' ? 'fas fa-sign-out-alt' : 'fas fa-trash';
+                                const historyIconClass = entry.action === 'withdraw' ? 'withdraw' : 'delete';
+                                
+                                historyHtml += `
+                                    <div class="history-entry">
+                                        <div class="history-icon ${historyIconClass}">
+                                            <i class="${iconClass}"></i>
+                                        </div>
+                                        <div class="history-details">
+                                            <div class="history-action">${action}</div>
+                                            <div class="history-user">Por: ${DOMPurify.sanitize(entry.userName)}</div>
+                                            <div class="history-date">${date}</div>
+                                            ${entry.quantity ? `<div class="history-quantity">Quantidade: ${entry.quantity}</div>` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            historyHtml += '</div>';
+                            historyContent.innerHTML = historyHtml;
+                        } else {
+                            historyContent.innerHTML = '<p>No history found for this item.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching history:', error);
+                        document.getElementById('historyContent').innerHTML = '<p>Error loading history.</p>';
+                    });
+
+                modalOverlay.onclick = (e) => {
+                    if (e.target === modalOverlay) closeModal();
+                };
+            }
+
             function addDynamicField(container, key = "", value = "") {
                 const div = document.createElement("div");
                 div.className = "dynamic-field-row";
@@ -1262,6 +1402,7 @@
                 <option value="">Selecione a localização</option>
                 <option value="pagecar">Estoque Carro</option>
                 <option value="pageroom">Estoque Salinha</option>
+                <option value="deposito">Depósito</option>
             </select>
         </div>
         <div class="form-group">
@@ -1311,13 +1452,10 @@
             }
 
             function createWithdrawForm() {
-                const users = ["Carlinhos", "Henrique", "William"];
                 return `
                 <div class="form-group">
-                    <label class="form-label" for="lastUser">User who withdrew</label>
-                    <select class="form-select" name="lastUser" id="lastUser" required>
-                        ${users.map((user) => `<option value="${user}">${user}</option>`).join("")}
-                    </select>
+                    <label class="form-label" for="lastUser">Nome de quem está retirando</label>
+                    <input class="form-input" type="text" name="lastUser" id="lastUser" placeholder="Digite o nome" required>
                 </div>
         <div class="form-group">
             <label class="form-label" for="quantity">Quantity</label>
@@ -1376,6 +1514,10 @@
         <div class="modal-body">
             <form id="deleteForm" class="form-grid">
                 <div class="form-group">
+                    <label class="form-label" for="deletedBy">Nome de quem está excluindo</label>
+                    <input class="form-input" type="text" name="deletedBy" id="deletedBy" placeholder="Digite o nome" required>
+                </div>
+                <div class="form-group">
                     <label class="form-label" for="deleteQuantity">Quantity to delete</label>
                     <input class="form-input" type="number" name="deleteQuantity" id="deleteQuantity" min="1" required>
                 </div>
@@ -1398,8 +1540,15 @@
                         document.getElementById("deleteQuantity").value,
                         10,
                     );
+                    const deletedBy = document.getElementById("deletedBy").value.trim();
+                    
                     if (isNaN(quantity) || quantity <= 0) {
                         alert("Please enter a valid quantity.");
+                        return;
+                    }
+                    
+                    if (!deletedBy) {
+                        alert("Please enter the name of who is deleting the item.");
                         return;
                     }
 
@@ -1407,7 +1556,7 @@
                         const response = await fetch("/delete-equipment", {
                             method: "POST",
                             headers: { "Content-Type": "application/json" },
-                            body: JSON.stringify({ id: itemId, quantity }),
+                            body: JSON.stringify({ id: itemId, quantity, deletedBy }),
                         });
 
                         if (response.ok) {
@@ -1783,6 +1932,9 @@
             <div class="card-actions">
                 <button class="btn-action btn-secondary" onclick="showDetailsModal('${eq.id}')" title="Details">
                     <span class="btn-icon-content"><i class="fas fa-eye"></i></span>
+                </button>
+                <button class="btn-action btn-secondary" onclick="showHistoryModal('${eq.id}')" title="History">
+                    <span class="btn-icon-content"><i class="fas fa-history"></i></span>
                 </button>
                 <button class="btn-action btn-edit" onclick="editItem('${eq.id}', this)" title="Edit">
                     <span class="btn-icon-content"><i class="fas fa-edit"></i></span>
@@ -2195,7 +2347,8 @@
                     .reduce((sum, e) => sum + (parseInt(e.quantity) || 0), 0);
 
                 const locationName =
-                    currentFilter === "pagecar" ? "Carro" : "Salinha";
+                    currentFilter === "pagecar" ? "Carro" : 
+                    currentFilter === "deposito" ? "Depósito" : "Salinha";
 
                 document.getElementById("summaryPanel").innerHTML = `
                 <div class="summary-card">
